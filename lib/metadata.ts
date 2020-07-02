@@ -10,11 +10,11 @@ export class Metadata {
         return Metadata._instance
     }
 
-    registerMetadata(klassName: string, metadata: PropertyMetadata) {
-        const properties = this.propertyMetadata.get(klassName)
+    registerMetadata(className: string, metadata: PropertyMetadata) {
+        const properties = this.propertyMetadata.get(className)
 
         if (!properties) {
-            this.propertyMetadata.set(klassName, [metadata])
+            this.propertyMetadata.set(className, [metadata])
         } else {
             properties.push(metadata)
         }
