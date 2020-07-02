@@ -1,0 +1,37 @@
+{
+  "name": "objectypes",
+  "version": "0.0.1",
+  "description": "Convert and manipulate json objects with type safety",
+  "main": "dist",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "watch": "tsc -p tsconfig.build.json --watch",
+    "prepare": "npm run build",
+    "lint": "eslint --ext .ts --cache lib",
+    "test": "jest --passWithNoTests",
+    "test:watch": "jest --watch",
+    "test:cov": "jest --coverage"
+  },
+  "keywords": [
+    "type-safety",
+    "type safe",
+    "mapper",
+    "json",
+    "converter",
+    "typescript"
+  ],
+  "author": "Vinícius de F. Marques",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/jest": "25.2.1",
+    "@types/mocha": "7.0.2",
+    "@typescript-eslint/eslint-plugin": "2.25.0",
+    "@typescript-eslint/parser": "2.25.0",
+    "eslint": "6.8.0",
+    "eslint-plugin-import": "2.20.1",
+    "jest": "25.5.4",
+    "ts-jest": "25.4.0",
+    "typescript": "3.8.3"
+  }
+}
