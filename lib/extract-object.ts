@@ -5,13 +5,10 @@ type Hashable = { [key: string]: any }
 
 export function extractObject<T>(
     content: Hashable & T,
-    target: ClassConstructor<T>
+    klass: ClassConstructor<T>
 ): object {
-    const propertyMetadata = Metadata.getInstance()
-        .propertyMetadata
-        .get(target.name)
-
     const resultingObject: Hashable = {}
+    const propertyMetadata = Metadata.getInstance().findProperties(klass)
 
     if (propertyMetadata) {
         // TODO validate presence

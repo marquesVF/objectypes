@@ -17,8 +17,8 @@ describe('extractObject method', () => {
             expect(jsonObject).toHaveProperty('Creation_Date', fooModel.createdAt)
         })
 
-        it('should coverted inherited properties', () => {
-            expect(jsonObject).toHaveProperty('id', fooModel.id)
+        it('should coverte inherited properties', () => {
+            expect(jsonObject).toHaveProperty('ID', fooModel.id)
         })
     })
 })
