@@ -2,7 +2,7 @@ import { Property } from '../../lib'
 
 export class BaseModel {
 
-    @Property()
+    @Property({ name: 'ID' })
     id: string
 
     @Property({ nullable: true })
