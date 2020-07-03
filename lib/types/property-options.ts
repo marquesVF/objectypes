@@ -1,6 +1,6 @@
 import { ClassConstructor } from './class-constructor'
 
-export type PropertyOptions = {
+export interface PropertyOptions {
     name?: string
     type?: ClassConstructor<any>
 }
