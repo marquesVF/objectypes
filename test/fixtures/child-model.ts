@@ -1,13 +1,8 @@
 import { Property } from '../../lib'
 
-export class BaseModel {
+import { BaseModel } from './base-model'
 
-    @Property({ name: 'ID' })
-    id: string
-
-}
-
-export class FooModel extends BaseModel {
+export class ChildModel extends BaseModel {
 
     @Property()
     name: string

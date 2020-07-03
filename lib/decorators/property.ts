@@ -7,7 +7,8 @@ export function Property(options?: PropertyOptions): PropertyDecorator {
         const klassName = target.constructor.name
         const metadata: PropertyMetadata = {
             name: options?.name ?? propertyKey as string,
-            propertyKey: propertyKey as string
+            propertyKey: propertyKey as string,
+            type: options?.type
         }
 
         Metadata.getInstance().registerMetadata(klassName, metadata)

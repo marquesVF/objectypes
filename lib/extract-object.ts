@@ -11,11 +11,19 @@ export function extractObject<T>(
     const propertyMetadata = Metadata.getInstance().findProperties(klass)
 
     if (propertyMetadata) {
-        // TODO validate presence
-        for (const { name, propertyKey } of propertyMetadata) {
-            const value = content[propertyKey]
+        for (const { name, propertyKey, type } of propertyMetadata) {
+            let value = content[propertyKey]
+            const resultingProperty = name ?? propertyKey
 
-            resultingObject[name] = value
+            if (type && value !== undefined) {
+                if (Array.isArray(value)) {
+                    value = value.map(val => extractObject(val, type))
+                } else {
+                    value = extractObject(value, type)
+                }
+            }
+
+            resultingObject[resultingProperty] = value
         }
     }
 
