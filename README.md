@@ -8,8 +8,6 @@ Run `npm i --save objectypes` to add it to your project.
 
 ## Decorators
 
-#### Property decorators
-
 ##### `@Property`
 - Parameters:
     - **name**: describe the JSON object property name to use in the JSON object extraction.

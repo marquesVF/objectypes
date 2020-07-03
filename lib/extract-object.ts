@@ -1,7 +1,6 @@
 import { ClassConstructor } from './types/class-constructor'
 import { Metadata } from './metadata'
-
-type Hashable = { [key: string]: any }
+import { Hashable } from './types/hashable'
 
 export function extractObject<T>(
     content: Hashable & T,

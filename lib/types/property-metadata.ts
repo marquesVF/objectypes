@@ -1,5 +1,5 @@
 import { PropertyOptions } from './property-options'
 
-export type PropertyMetadata = PropertyOptions & {
+export interface PropertyMetadata extends PropertyOptions {
     propertyKey: string
 }
