@@ -3,7 +3,7 @@ import { FooModel } from '../fixtures/foo-model'
 import { extractObject } from '../../lib'
 
 describe('extractObject method', () => {
-    describe('when converted a object model with heritance to a json successfully', () => {
+    describe('when converting an object model with heritance to a json successfully', () => {
         const today = new Date()
         const fooModel = {
             id: '01',
@@ -17,7 +17,7 @@ describe('extractObject method', () => {
             expect(jsonObject).toHaveProperty('Creation_Date', fooModel.createdAt)
         })
 
-        it('should coverte inherited properties', () => {
+        it('should convert inherited properties', () => {
             expect(jsonObject).toHaveProperty('ID', fooModel.id)
         })
     })

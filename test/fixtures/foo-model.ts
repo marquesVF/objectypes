@@ -5,9 +5,6 @@ export class BaseModel {
     @Property({ name: 'ID' })
     id: string
 
-    @Property({ nullable: true })
-    originalName?: string
-
 }
 
 export class FooModel extends BaseModel {
