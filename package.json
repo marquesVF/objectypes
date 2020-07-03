@@ -1,10 +1,19 @@
 {
   "name": "objectypes",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Convert and manipulate json objects with type safety",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "main": "dist",
   "types": "dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/marquesVF/objectypes"
+  },
+  "typescript": {
+    "definition": "./dist/index.d.ts"
+  },
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "watch": "tsc -p tsconfig.build.json --watch",
