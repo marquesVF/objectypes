@@ -3,14 +3,14 @@ import { Metadata } from './metadata'
 import { Hashable } from './types/hashable'
 
 export function mapObject<T, K>(
-    targetClass: ClassConstructor<Hashable & T>,
-    objClass: ClassConstructor<K>,
+    targetKlass: ClassConstructor<Hashable & T>,
+    objKlass: ClassConstructor<K>,
     obj: Hashable & K
 ): T {
-    const targetObj = new targetClass()
+    const targetObj = new targetKlass()
     const mappedProperties = Metadata.getInstance()
-        .findMapProperties<T>(targetClass)
-        ?.filter(property => property.mapTarget.name === objClass.name)
+        .findMapProperties<T>(targetKlass)
+        ?.filter(property => property.mapTarget.name === objKlass.name)
 
     // eslint-disable-next-line no-unused-expressions
     mappedProperties?.forEach(property => {
@@ -23,7 +23,7 @@ export function mapObject<T, K>(
     // Get regular properties ignoring mappedProperties
     const mappedKeys = mappedProperties?.map(mapped => mapped.propertyKey)
     const properties = Metadata.getInstance()
-        .findProperties(targetClass)
+        .findProperties(targetKlass)
         ?.filter(property => {
             if (mappedKeys) {
                 // Avoid duplicated properties
