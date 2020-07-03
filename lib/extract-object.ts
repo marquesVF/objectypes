@@ -3,15 +3,15 @@ import { Metadata } from './metadata'
 import { Hashable } from './types/hashable'
 
 export function extractObject<T>(
-    content: Hashable & T,
-    klass: ClassConstructor<T>
+    obj: Hashable & T,
+    objKlass: ClassConstructor<T>
 ): object {
     const resultingObject: Hashable = {}
-    const propertyMetadata = Metadata.getInstance().findProperties(klass)
+    const propertyMetadata = Metadata.getInstance().findProperties(objKlass)
 
     if (propertyMetadata) {
         for (const { name, propertyKey, type } of propertyMetadata) {
-            let value = content[propertyKey]
+            let value = obj[propertyKey]
             const resultingProperty = name ?? propertyKey
 
             if (type && value !== undefined) {
