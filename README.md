@@ -1,6 +1,6 @@
 # objectypes
 
-An easy and type-safe way of handling JSON objects and also type objects in a type-safe and descritive manner with decorators and methods.
+An easy and type-safe way to transform and validate json objects and typed objects in a type-safe and descriptive manner.
 
 ## Installation
 
