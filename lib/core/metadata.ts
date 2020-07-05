@@ -1,6 +1,6 @@
-import { PropertyMetadata } from './types/property-metadata'
-import { ClassConstructor } from './types/class-constructor'
-import { MapPropertyMetadata } from './types/map-property-metadata'
+import { PropertyMetadata } from '../types/property-metadata'
+import { ClassConstructor } from '../types/class-constructor'
+import { MapPropertyMetadata } from '../types/map-property-metadata'
 
 export class Metadata {
 

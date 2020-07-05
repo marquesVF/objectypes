@@ -1,5 +1,5 @@
 import { PropertyOptions } from '../types/property-options'
-import { Metadata } from '../metadata'
+import { Metadata } from '../core/metadata'
 import { PropertyMetadata } from '../types/property-metadata'
 
 export function Property(options?: PropertyOptions): PropertyDecorator {
@@ -8,7 +8,8 @@ export function Property(options?: PropertyOptions): PropertyDecorator {
         const metadata: PropertyMetadata = {
             name: options?.name ?? propertyKey as string,
             propertyKey: propertyKey as string,
-            type: options?.type
+            type: options?.type,
+            nullable: options?.nullable
         }
 
         Metadata.getInstance().registerMetadata(klassName, metadata)
