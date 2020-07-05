@@ -19,7 +19,7 @@
     "watch": "tsc -p tsconfig.build.json --watch",
     "prepare": "npm run build",
     "lint": "eslint --ext .ts --cache lib",
-    "test": "jest --passWithNoTests",
+    "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage"
   },
