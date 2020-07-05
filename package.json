@@ -1,7 +1,7 @@
 {
   "name": "objectypes",
-  "version": "0.0.3",
-  "description": "Convert and manipulate json objects with type safety",
+  "version": "0.0.4",
+  "description": "An easy and type-safe way to transform and validate json objects and typed objects in a type-safe and descriptive mannery",
   "files": [
     "dist"
   ],
@@ -19,7 +19,7 @@
     "watch": "tsc -p tsconfig.build.json --watch",
     "prepare": "npm run build",
     "lint": "eslint --ext .ts --cache lib",
-    "test": "jest --passWithNoTests",
+    "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage"
   },

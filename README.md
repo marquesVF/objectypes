@@ -1,6 +1,6 @@
 # objectypes
 
-An easy and type-safe way of handling typescript and JSON objects properly. With objectypes, you can convert and manipulate such objects in a descritive manner with decorators.
+An easy and type-safe way to transform and validate json objects and typed objects in a type-safe and descriptive manner.
 
 ## Installation
 
@@ -9,11 +9,12 @@ Run `npm i --save objectypes` to add it to your project.
 ## Decorators
 
 ### `@Property`
-Use it to indicate what properties should be validated by `objectypes` methods.
+Indicate what properties should be validated by `objectypes` methods.
 
 - Parameters:
-    - **name**?: describe the JSON object property name to use in the JSON object extraction.
+    - **name**?: describe the json object property name to use in the json object extraction.
     - **type**?: apply `extractObject` to nested property (recursively if an array).
+    - **nullable**?: a flag to indicate if a property can be missing or have a null value in the json representation. It is used by the `buildObject` method when validating property presence. 
 
 - Example:
 
@@ -36,7 +37,7 @@ class FooModel {
 ```
 
 ### `@MapProperty`
-Used to specify how an attribute of an object **A** is mapped to another object **B** if the property name is different. If the property name is the same, there's no need to use this decorator. Use `@Property` instead.
+Specify how an attribute of an object **A** is mapped to another object **B** if the property name is different. If the property name is the same, there's no need to use this decorator. Use `@Property` instead.
 
 - Parameters:
     - **klass**: target class of the mapping.
@@ -68,11 +69,11 @@ class VendorClient {
 
 ### extractObject
 
-Convert a typescript object to a JSON object.
+Convert a typescript object to a json object.
 
 - Parameters:
-    - **obj**: a typescript object.
-    - **objKlass**: the typescript object class with decorated properties.
+    - **obj**: a typed object.
+    - **objKlass**: a typed object class with decorated properties.
 
 - Example:
 ```typescript
@@ -84,40 +85,71 @@ const foo: FooModel = {
     }
 }
 
-/*
- * {
- *     "id": "1",
- *     "originalName": "foo",
- *     "NESTED": {
- *         "CODE": "1234"
- *     }
- * }
- */
+// {
+//     "id": "1",
+//     "originalName": "foo",
+//     "NESTED": {
+//         "CODE": "1234"
+//     }
+// }
 extractObject(foo, FooModel)
 ```
 
 ### mapObject
 
-Convert a typescript object to another typescript object. Even if property names are different.
+Convert a typed object to another typed object. Even if property names are different.
 
 - Parameters:
-    - **targetKlass**: typescript class mapping target
-    - **objKlass**: typescript object class
-    - **obj**: typescript object
+    - **targetKlass**: target class to map the `obj` properties
+    - **objKlass**: `obj` current class
+    - **obj**: typed object
 
 - Example:
 ```typescript
 const vendorObject: VendorModel = {
-    vendorName: 'pink',
+    vendorName: 'Pink Floyd',
     comment: 'another brick on the wall'
 }
 
-// A 'VendorClient' object
-/* 
- * {
- *     "vendor": "pink",
- *     "comment": "another brick on the wall"   
- * }
- */
+// It returns a VendorClient object
+// {
+//     "vendor": "Pink Floyd",
+//     "comment": "another brick on the wall"   
+// }
 mapObject(VendorClient, VendorModel, vendorObject)
+```
+
+### buildObject
+
+Validate the presence of all required attributes in a json object and transform it into a typed object.
+
+It raises an error if a required property is missing in the json object. You can flag a property as optional with the `nullable` option set to `true`.
+
+You can consider `buildObject` as the inverse of `extractObject`.
+
+- Parameters:
+    - **targetKlass**: typed class to map the json properties
+    - **jsonObj**: json object
+
+- Example:
+```typescript
+// Suppose this json object came in a HTTP request body payload.
+// This is a common scenario in many applications.
+const json = {
+    "id": "1",
+    "originalName": "foo",
+    "NESTED": {
+        "CODE": "1234"
+    }
+}
+
+// It returns a FooModel object
+// {
+//     id: '1',
+//     name: 'foo',
+//     nested: {
+//        code: '1234'
+//     }
+// }
+buildObject(FooModel, json)
 ```
