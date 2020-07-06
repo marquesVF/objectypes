@@ -1,6 +1,6 @@
 {
   "name": "objectypes",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "An easy and type-safe way to transform and validate json objects and typed objects in a type-safe and descriptive mannery",
   "files": [
     "dist"
@@ -25,7 +25,6 @@
   },
   "keywords": [
     "type-safety",
-    "type safe",
     "mapper",
     "json",
     "converter",
@@ -43,5 +42,9 @@
     "jest": "25.5.4",
     "ts-jest": "25.4.0",
     "typescript": "3.8.3"
+  },
+  "dependencies": {
+    "@types/ramda": "0.27.7",
+    "ramda": "0.27.0"
   }
 }

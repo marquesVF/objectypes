@@ -12,7 +12,23 @@ Run `npm i --save objectypes` to add it to your project.
 Indicate what properties should be validated by `objectypes` methods.
 
 - Parameters:
-    - **name**?: describe the json object property name to use in the json object extraction.
+    - **name**?: describe the json object property name to use in the json object extraction. You can use an object path notation so `objectype` will extract or build the object with the expected structure. For example:
+    ```typescript
+    class ComplexModel {
+        @Property({ name: 'data.complex '})
+        complexData: string
+    }
+    const typedObj: ComplexModel = {
+        complexData: 'foo'
+    }
+
+    // {
+    //     "data": {
+    //         "complex": "foo"
+    //     }
+    // }
+    extractObject(typedObj, ComplexModel)
+    ```
     - **type**?: apply `extractObject` to nested property (recursively if an array).
     - **nullable**?: a flag to indicate if a property can be missing or have a null value in the json representation. It is used by the `buildObject` method when validating property presence. 
 
@@ -113,8 +129,8 @@ const vendorObject: VendorModel = {
 
 // It returns a VendorClient object
 // {
-//     "vendor": "Pink Floyd",
-//     "comment": "another brick on the wall"   
+//     vendor: "Pink Floyd",
+//     comment: "another brick on the wall"   
 // }
 mapObject(VendorClient, VendorModel, vendorObject)
 ```
