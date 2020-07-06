@@ -81,6 +81,36 @@ class VendorClient {
 }
 ```
 
+### `@PropTransformation`
+*obs: it only works for the extractObject method in the current version 0.0.6*
+
+Sets a transformation function in the form `<T, K>(value: T) => K` in which a property of type `T` is transformed into a type `K`.
+
+- Parameters:
+    - **fn**: transformation function.
+    - **scope**: can be either `extract` or `build` for `extractObject` and `buildObject` respectively.
+
+- Example:
+```typescript
+class Transformable {
+    @PropTransformation(
+        (value: Date): number => value.getTime(),
+        'extract'
+    )
+    @Property({ name: 'time' })
+    timeDate: Date
+}
+
+const transformableObj: Transformable = {
+    timeDate: new Date('2020-07-06T20:28:18.256Z')
+}
+
+// {
+//     time: 1594067298256
+// }
+extractObject(transformableObj, Transformable)
+```
+
 ## Methods
 
 ### extractObject

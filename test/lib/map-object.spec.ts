@@ -3,7 +3,7 @@ import { VendorClient } from '../fixtures/vendor-client-model'
 import { mapObject } from '../../lib'
 
 describe('mapObject method', () => {
-    describe('shallow objects', () => {
+    describe('handle shallow objects', () => {
         const vendor: VendorModel = {
             vendorName: 'Vini',
             comment: 'map object testing',
