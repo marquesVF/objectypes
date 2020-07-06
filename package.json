@@ -1,6 +1,6 @@
 {
   "name": "objectypes",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "An easy and type-safe way to transform and validate json objects and typed objects in a type-safe and descriptive mannery",
   "files": [
     "dist"
