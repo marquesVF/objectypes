@@ -55,7 +55,7 @@ describe('buildObject method', () => {
         }
 
         it('should rise a error when missing a property', () => {
-            expect(test).toThrowError('Missing property baseModel')
+            expect(test).toThrowError(`Missing property named or at path 'baseModel'`)
         })
     })
 })

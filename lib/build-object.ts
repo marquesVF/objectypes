@@ -1,3 +1,5 @@
+import { path } from 'ramda'
+
 import { ClassConstructor } from './types/class-constructor'
 import { Metadata } from './core/metadata'
 import { Hashable } from './types/hashable'
@@ -13,10 +15,12 @@ export function buildObject<T>(
         for (const { propertyKey, name, type, nullable } of properties) {
             const objPropName = name ?? propertyKey
 
-            const value = jsonObj[objPropName]
+            const value = path<any>(objPropName.split('.'), jsonObj)
 
             if (value === undefined && !nullable) {
-                throw new Error(`Missing property ${objPropName}`)
+                throw new Error(
+                    `Missing property named or at path '${objPropName}'`
+                )
             }
 
             if (type && !nullable) {
