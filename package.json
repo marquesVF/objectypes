@@ -1,6 +1,6 @@
 {
   "name": "objectypes",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "An easy and type-safe way to transform and validate json objects and typed objects in a type-safe and descriptive mannery",
   "files": [
     "dist"
@@ -45,6 +45,7 @@
   },
   "dependencies": {
     "@types/ramda": "0.27.7",
-    "ramda": "0.27.0"
+    "ramda": "0.27.0",
+    "reflect-metadata": "0.1.13"
   }
 }
