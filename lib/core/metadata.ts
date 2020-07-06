@@ -1,7 +1,9 @@
 import { PropertyMetadata } from '../types/property-metadata'
 import { ClassConstructor } from '../types/class-constructor'
 import { MapPropertyMetadata } from '../types/map-property-metadata'
+import { TransformationMetadata } from '../types/transform-function'
 
+// TODO refactor this class - too many similiar code
 export class Metadata {
 
     private static _instance = new Metadata()
@@ -9,6 +11,8 @@ export class Metadata {
     readonly propertyMetadata: Map<string, PropertyMetadata[]> = new Map()
     // eslint-disable-next-line max-len
     readonly mapPropertyMetadata: Map<string, Array<MapPropertyMetadata<any>>> = new Map()
+    // eslint-disable-next-line max-len
+    readonly transformationMetadata: Map<string, Array<TransformationMetadata<any, any>>> = new Map()
 
     static getInstance(): Metadata {
         return Metadata._instance
@@ -30,6 +34,19 @@ export class Metadata {
 
         if (!properties) {
             this.mapPropertyMetadata.set(className, [metadata])
+        } else {
+            properties.push(metadata)
+        }
+    }
+
+    registerTransformationMetadata(
+        className: string,
+        metadata: TransformationMetadata<any, any>
+    ) {
+        const properties = this.transformationMetadata.get(className)
+
+        if (!properties) {
+            this.transformationMetadata.set(className, [metadata])
         } else {
             properties.push(metadata)
         }
@@ -81,6 +98,14 @@ export class Metadata {
         }
 
         return properties
+    }
+
+    findTransformations<T, unknow>(
+        klass: ClassConstructor<T>
+    ): Array<TransformationMetadata<T, unknow>> | undefined {
+        const klassName = klass.name ?? klass.constructor.name
+
+        return this.transformationMetadata.get(klassName)
     }
 
 }
