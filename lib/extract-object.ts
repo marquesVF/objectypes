@@ -1,7 +1,7 @@
 import { assocPath } from 'ramda'
 
 import { ClassConstructor } from './types/class-constructor'
-import { Metadata } from './core/metadata'
+import { Metadata } from './utils/metadata'
 import { Hashable } from './types/hashable'
 
 export function extractObject<T>(
