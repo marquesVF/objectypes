@@ -1,5 +1,5 @@
 import { PropertyOptions } from '../types/property-options'
-import { Metadata } from '../core/metadata'
+import { Metadata } from '../utils/metadata'
 import { PropertyMetadata } from '../types/property-metadata'
 
 export function Property(options?: PropertyOptions): PropertyDecorator {

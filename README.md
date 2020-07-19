@@ -82,7 +82,7 @@ class VendorClient {
 ```
 
 ### `@PropTransformation`
-*obs: it only works for the extractObject method in the current version 0.0.6*
+*obs: it only works with extractObject in current implementation
 
 Sets a transformation function in the form `<T, K>(value: T) => K` in which a property of type `T` is transformed into a type `K`.
 
@@ -198,4 +198,37 @@ const json = {
 //     }
 // }
 buildObject(FooModel, json)
+```
+
+### validate
+
+Validate the presence of all required attributes in an unknown object. It returns an array of string describing the validation errors.
+
+- Parameters:
+    - **klass**: target  class to validate against
+    - **obj**: object from unknown type
+
+### isValid
+
+Validate the presence of all required attributes in an unknown object returning a boolean value.
+
+- Parameters:
+    - **klass**: target  class to validate against
+    - **obj**: object from unknown type
+
+### Using the JsonMapper class
+
+You can also use a class based approach to handle object validation and transformation.
+
+- Example:
+```typescript
+function handleRequestPaylaod(value: unknown): VendorModel {
+    const mapper = new Mapper(VendorModel)
+
+    if (mapper.validate(value)) {
+        return mapper.build(value)
+    } else {
+        throw new Error(mapper.validationErrorSummary())
+    }
+}
 ```
