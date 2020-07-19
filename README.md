@@ -14,6 +14,8 @@ Indicate what properties should be validated by `objectypes` methods.
 - Parameters:
     - **name**?: describe the json object property name to use in the json object extraction. You can use an object path notation so `objectype` will extract or build the object with the expected structure. For example:
     ```typescript
+    import { Property, extractObject } from 'objectypes'
+
     class ComplexModel {
         @Property({ name: 'data.complex '})
         complexData: string
@@ -35,6 +37,8 @@ Indicate what properties should be validated by `objectypes` methods.
 - Example:
 
 ```typescript
+import { Property } from 'objectypes'
+
 class NestedModel {
     @Property({ name: 'CODE' })
     code: string
@@ -61,6 +65,8 @@ Specify how an attribute of an object **A** is mapped to another object **B** if
 
 - Example:
 ```typescript
+import { Property, MapProperty } from 'objectypes'
+
 class VendorModel {
 
     @Property()
@@ -92,6 +98,8 @@ Sets a transformation function in the form `<T, K>(value: T) => K` in which a pr
 
 - Example:
 ```typescript
+import { extractObject } from 'objectypes'
+
 class Transformable {
     @PropTransformation(
         (value: Date): number => value.getTime(),
@@ -123,6 +131,8 @@ Convert a typescript object to a json object.
 
 - Example:
 ```typescript
+import { extractObject } from 'objectypes'
+
 const foo: FooModel = {
     id: '1',
     name: 'foo',
@@ -152,6 +162,8 @@ Convert a typed object to another typed object. Even if property names are diffe
 
 - Example:
 ```typescript
+import { mapObject } from 'objectypes'
+
 const vendorObject: VendorModel = {
     vendorName: 'Pink Floyd',
     comment: 'another brick on the wall'
@@ -179,6 +191,8 @@ You can consider `buildObject` as the inverse of `extractObject`.
 
 - Example:
 ```typescript
+import { buildObject } from 'objectypes'
+
 // Suppose this json object came in a HTTP request body payload.
 // This is a common scenario in many applications.
 const json = {
@@ -222,8 +236,10 @@ You can also use a class based approach to handle object validation and transfor
 
 - Example:
 ```typescript
+import { JsonMapper } from 'objectypes'
+
 function handleRequestPaylaod(value: unknown): VendorModel {
-    const mapper = new Mapper(VendorModel)
+    const mapper = new JsonMapper(VendorModel)
 
     if (mapper.validate(value)) {
         return mapper.build(value)
