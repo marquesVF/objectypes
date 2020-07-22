@@ -19,7 +19,8 @@ export function validate<T>(
             const value = path([jsonPropertyName], obj)
 
             if (value === undefined && !nullable) {
-                errors.push(`'${jsonPropertyName} is missing'`)
+                // eslint-disable-next-line max-len
+                errors.push(`Property '${jsonPropertyName}' is missing. Not a valid ${klass.name} object.`)
             }
 
             if (type && !nullable) {

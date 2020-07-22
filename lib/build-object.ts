@@ -19,7 +19,8 @@ export function buildObject<T>(
 
             if (value === undefined && !nullable) {
                 throw new Error(
-                    `Missing property named or at path '${objPropName}'`
+                    // eslint-disable-next-line max-len
+                    `Property '${objPropName}' is missing. Couldn't build an ${targetKlass.name} object.`
                 )
             }
 
