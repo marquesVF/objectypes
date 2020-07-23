@@ -53,6 +53,9 @@ class FooModel {
 
     @Property({ name: 'NESTED', type: NestedModel })
     nested: NestedModel
+
+    @Property({ name: 'FOO', nullable: true })
+    foo?: string
 }
 ```
 
@@ -185,6 +188,8 @@ It raises an error if a required property is missing in the json object. You can
 
 You can consider `buildObject` as the inverse of `extractObject`.
 
+By default, when specifing the property name (e.g. `@Property({ name: 'FOO' })`), if the json object doesn't have the property under the specified name, `buildObject` will look for the typed class property name instead.
+
 - Parameters:
     - **targetKlass**: typed class to map the json properties
     - **jsonObj**: json object
@@ -200,7 +205,8 @@ const json = {
     "originalName": "foo",
     "NESTED": {
         "CODE": "1234"
-    }
+    },
+    "foo": "hello world"
 }
 
 // It returns a FooModel object
@@ -209,7 +215,8 @@ const json = {
 //     name: 'foo',
 //     nested: {
 //        code: '1234'
-//     }
+//     },
+//     foo: 'hello world'
 // }
 buildObject(FooModel, json)
 ```
