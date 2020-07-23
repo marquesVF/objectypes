@@ -1,27 +1,28 @@
 /* eslint-disable max-len */
 import { RequestPayloadModel } from '../fixtures/request-payload-mode'
 import { buildObject } from '../../lib/build-object'
+import { OptionalModel } from '../fixtures/optional-model'
 
 describe('buildObject method', () => {
     describe('when dealing with a valid JSON object', () => {
-        const jsonObject = {
-            name: 'John',
-            baseModel: {
-                title: 'title property'
-            },
-            MODEL_PROPS: [
-                {
-                    title: 'something',
-                    comment: 'this one has a comment'
-                },
-                {
-                    title: 'another something'
-                }
-            ]
-        }
-
         it('should convert and successfuly validate the resulting typescript object', () => {
+            const jsonObject = {
+                name: 'John',
+                baseModel: {
+                    title: 'title property'
+                },
+                MODEL_PROPS: [
+                    {
+                        title: 'something',
+                        comment: 'this one has a comment'
+                    },
+                    {
+                        title: 'another something'
+                    }
+                ]
+            }
             const requestPayload = buildObject(RequestPayloadModel, jsonObject)
+
             const resultingObject: RequestPayloadModel = {
                 name: 'John',
                 baseModel: {
@@ -39,6 +40,23 @@ describe('buildObject method', () => {
             }
 
             expect(requestPayload).toEqual(resultingObject)
+        })
+
+        describe('when json object has no property with the specified name', () => {
+            const uppercaseName = { NAME: 'foo' }
+            const lowercaseName = { name: 'foo' }
+
+            it('should handle when json property has the specified name', () => {
+                const result = buildObject(OptionalModel, uppercaseName)
+
+                expect(result.name).toBe('foo')
+            })
+
+            it('should handle when json property has NOT the specified name', () => {
+                const result = buildObject(OptionalModel, lowercaseName)
+
+                expect(result.name).toBe('foo')
+            })
         })
     })
 
