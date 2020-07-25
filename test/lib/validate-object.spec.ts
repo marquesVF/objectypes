@@ -1,17 +1,17 @@
 import { BaseModel } from '../fixtures/base-model'
 import { NestedModel } from '../fixtures/nested-model'
-import { isValid } from '../../lib/validate'
+import { validateObject } from '../../lib'
 
-describe('isConvertable method', () => {
+describe('validateObject method', () => {
     describe('when there is a valid JSON object', () => {
         const jsonObject = {
             ID: 'foo'
         }
 
-        it('should return true', () => {
-            const { valid } = isValid(BaseModel, jsonObject)
+        it('should return no errors', () => {
+            const errors = validateObject(BaseModel, jsonObject)
 
-            expect(valid).toBeTruthy()
+            expect(errors).toHaveLength(0)
         })
 
         describe('when there is a nested object', () => {
@@ -24,10 +24,10 @@ describe('isConvertable method', () => {
                 }]
             }
 
-            it('should return true', () => {
-                const { valid } = isValid(NestedModel, nestedObject)
+            it('should return no errors', () => {
+                const errors = validateObject(NestedModel, nestedObject)
 
-                expect(valid).toBeTruthy()
+                expect(errors).toHaveLength(0)
             })
         })
     })
@@ -38,9 +38,8 @@ describe('isConvertable method', () => {
         }
 
         it('should return false', () => {
-            const { valid, errors } = isValid(BaseModel, jsonObject)
+            const errors = validateObject(BaseModel, jsonObject)
 
-            expect(valid).toBeFalsy()
             expect(errors).toHaveLength(1)
         })
 
@@ -55,9 +54,8 @@ describe('isConvertable method', () => {
             }
 
             it('should return false', () => {
-                const { valid, errors } = isValid(NestedModel, nestedObject)
+                const errors = validateObject(NestedModel, nestedObject)
 
-                expect(valid).toBeFalsy()
                 expect(errors).toHaveLength(2)
             })
         })
