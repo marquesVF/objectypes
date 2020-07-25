@@ -23,12 +23,6 @@ export class JsonMapper<T> {
         return valid
     }
 
-    validationErrorSummary(separator?: string): string {
-        const actualSeparator = separator ?? ', '
-
-        return this.errors.join(actualSeparator)
-    }
-
     build(jsonObj: object): T {
         return buildObject(this.klass, jsonObj)
     }
