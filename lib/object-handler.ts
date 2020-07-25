@@ -1,26 +1,21 @@
 /* eslint-disable no-useless-constructor */
 import { ClassConstructor } from './types/class-constructor'
 import { Hashable } from './types/hashable'
-import { isValid } from './validate'
 import { buildObject } from './build-object'
 import { extractObject } from './extract-object'
+import { validateObject } from './validate-object'
+import { ValidationResult } from './types/object-handler-validation'
 
-export class JsonMapper<T> {
-
-    readonly errors: string[] = []
+export class ObjectHandler<T> {
 
     constructor(
         private readonly klass: ClassConstructor<T>
     ) { }
 
-    validate(obj: Hashable): boolean {
-        const { valid, errors } = isValid(this.klass, obj)
+    validate(obj: Hashable): ValidationResult {
+        const validationErrors = validateObject(this.klass, obj)
 
-        if (errors) {
-            this.errors.push(...errors)
-        }
-
-        return valid
+        return { valid: validationErrors.length === 0, validationErrors }
     }
 
     build(jsonObj: object): T {

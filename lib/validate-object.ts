@@ -1,10 +1,9 @@
-import { path } from 'ramda'
-
 import { ClassConstructor } from './types/class-constructor'
 import { Metadata } from './utils/metadata'
-import { ValidationResult } from './types/validation-result'
 
-export function validate<T>(
+import { path } from 'ramda'
+
+export function validateObject<T>(
     klass: ClassConstructor<T>,
     obj: unknown
 ): string[] {
@@ -20,28 +19,18 @@ export function validate<T>(
 
             if (value === undefined && !nullable) {
                 // eslint-disable-next-line max-len
-                errors.push(`Property '${jsonPropertyName}' is missing. Not a valid ${klass.name} object.`)
+                errors.push(jsonPropertyName)
             }
 
             if (type && !nullable) {
                 if (Array.isArray(value)) {
-                    value.forEach(val => errors.push(...validate(type, val)))
+                    value.forEach(val => errors.push(...validateObject(type, val)))
                 } else {
-                    errors.push(...validate(type, value))
+                    errors.push(...validateObject(type, value))
                 }
             }
         })
     }
 
     return errors
-}
-
-export function isValid<T>(
-    klass: ClassConstructor<T>,
-    obj: unknown
-): ValidationResult {
-    const errors = validate(klass, obj)
-    const valid = errors.length === 0
-
-    return { valid, errors: valid ? undefined : errors }
 }

@@ -221,7 +221,7 @@ const json = {
 buildObject(FooModel, json)
 ```
 
-### validate
+### validateObject
 
 Validate the presence of all required attributes in an unknown object. It returns an array of string describing the validation errors.
 
@@ -229,29 +229,22 @@ Validate the presence of all required attributes in an unknown object. It return
     - **klass**: target  class to validate against
     - **obj**: object from unknown type
 
-### isValid
-
-Validate the presence of all required attributes in an unknown object returning a boolean value.
-
-- Parameters:
-    - **klass**: target  class to validate against
-    - **obj**: object from unknown type
-
-### Using the JsonMapper class
+### Using the ObjectHandler class
 
 You can also use a class based approach to handle object validation and transformation.
 
 - Example:
 ```typescript
-import { JsonMapper } from 'objectypes'
+import { ObjectHandler } from 'objectypes'
 
 function handleRequestPaylaod(value: unknown): VendorModel {
-    const mapper = new JsonMapper(VendorModel)
+    const handler = new ObjectHandler(VendorModel)
+    const { valid, validationErrors } = handler.validate(value)
 
-    if (mapper.validate(value)) {
-        return mapper.build(value)
+    if (valid) {
+        return handler.build(value)
     } else {
-        throw new Error(mapper.validationErrorSummary())
+        throw new Error(`Missing Properties: ${validationErrors.join(', ')}`)
     }
 }
 ```
