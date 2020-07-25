@@ -1,6 +1,6 @@
 {
   "name": "objectypes",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "A type-safe library to transform and validate objects",
   "files": [
     "dist"
