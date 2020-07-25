@@ -1,5 +1,5 @@
 import { ClassConstructor } from './types/class-constructor'
-import { Metadata } from './utils/metadata'
+import { Metadata } from './core/metadata'
 
 import { path } from 'ramda'
 
@@ -24,7 +24,8 @@ export function validateObject<T>(
 
             if (type && !nullable) {
                 if (Array.isArray(value)) {
-                    value.forEach(val => errors.push(...validateObject(type, val)))
+                    value.forEach(val =>
+                        errors.push(...validateObject(type, val)))
                 } else {
                     errors.push(...validateObject(type, value))
                 }
