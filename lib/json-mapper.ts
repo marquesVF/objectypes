@@ -7,7 +7,7 @@ import { extractObject } from './extract-object'
 
 export class JsonMapper<T> {
 
-    private readonly errors: string[] = []
+    readonly errors: string[] = []
 
     constructor(
         private readonly klass: ClassConstructor<T>
