@@ -1,5 +1,5 @@
 import { ClassConstructor } from './types/class-constructor'
-import { Metadata } from './utils/metadata'
+import { Metadata } from './core/metadata'
 import { Hashable } from './types/hashable'
 
 export function mapObject<T, K>(

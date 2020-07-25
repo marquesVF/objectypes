@@ -1,6 +1,6 @@
 import { TransformFunction, TransformationScope, TransformationMetadata }
     from '../types/transform-function'
-import { Metadata } from '../utils/metadata'
+import { Metadata } from '../core/metadata'
 
 export function PropTransformation<T, K>(
     fn: TransformFunction<T, K>,
