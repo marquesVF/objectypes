@@ -9,7 +9,8 @@ export function Property(options?: PropertyOptions): PropertyDecorator {
             name: options?.name ?? propertyKey as string,
             propertyKey: propertyKey as string,
             type: options?.type,
-            nullable: options?.nullable
+            nullable: options?.nullable,
+            target
         }
 
         Metadata.getInstance().registerMetadata(klassName, metadata)
