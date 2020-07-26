@@ -1,10 +1,9 @@
 /* eslint-disable no-useless-constructor */
-import { ClassConstructor } from './types/class-constructor'
 import { Hashable } from './types/hashable'
 import { buildObject } from './build-object'
 import { extractObject } from './extract-object'
 import { validateObject } from './validate-object'
-import { ValidationResult } from './types/object-handler-validation'
+import { ClassConstructor, ValidationResult } from './types'
 
 export class ObjectHandler<T> {
 

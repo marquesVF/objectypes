@@ -1,6 +1,5 @@
-import { ClassConstructor } from './types/class-constructor'
 import { Metadata } from './core/metadata'
-import { Hashable } from './types/hashable'
+import { Hashable, ClassConstructor } from './types'
 
 import { path } from 'ramda'
 
