@@ -1,6 +1,5 @@
-import { ClassConstructor } from '../types/class-constructor'
 import { Metadata } from '../core/metadata'
-import { MapPropertyMetadata } from '../types/map-property-metadata'
+import { ClassConstructor, MapPropertyMetadata } from '../types'
 
 export function MapProperty<T>(
     klass: ClassConstructor<T>,

@@ -1,6 +1,6 @@
-import { PropertyOptions } from '../types/property-options'
 import { Metadata } from '../core/metadata'
-import { PropertyMetadata } from '../types/property-metadata'
+import { PropertyOptions } from '../types/property-options'
+import { PropertyMetadata } from '../types'
 
 export function Property(options?: PropertyOptions): PropertyDecorator {
     return function (target: Object, propertyKey: string | symbol) {

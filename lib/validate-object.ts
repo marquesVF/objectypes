@@ -1,4 +1,4 @@
-import { ClassConstructor } from './types/class-constructor'
+import { ClassConstructor } from './types'
 import { Metadata } from './core/metadata'
 
 import { path } from 'ramda'
