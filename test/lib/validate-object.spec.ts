@@ -1,6 +1,7 @@
 import { BaseModel } from '../fixtures/base-model'
 import { NestedModel } from '../fixtures/nested-model'
 import { validateObject } from '../../lib'
+import { VendorModel } from '../fixtures/vendor-model'
 
 describe('validateObject method', () => {
     describe('when there is a valid JSON object', () => {
@@ -34,30 +35,32 @@ describe('validateObject method', () => {
 
     describe('when there is an ivalid JSON object', () => {
         const jsonObject = {
-            name: 'mark'
+            vendorName: 'mark',
+            price: 34,
+            confirmed: 'it should be a boolean value'
         }
 
         it('should return false', () => {
-            const errors = validateObject(BaseModel, jsonObject)
+            const errors = validateObject(VendorModel, jsonObject)
 
-            expect(errors).toHaveLength(1)
+            expect(errors).toHaveLength(2)
         })
+    })
 
-        describe('when there is an invalid nested object', () => {
-            const nestedObject = {
-                sameModel: {
-                    id: 'foo'
-                },
-                baseModelArray: [{
-                    ID: 'smile'
-                }]
-            }
+    describe('when there is an invalid nested object', () => {
+        const nestedObject = {
+            sameModel: {
+                id: 'foo'
+            },
+            baseModelArray: [{
+                ID: 'smile'
+            }]
+        }
 
-            it('should return false', () => {
-                const errors = validateObject(NestedModel, nestedObject)
+        it('should return false', () => {
+            const errors = validateObject(NestedModel, nestedObject)
 
-                expect(errors).toHaveLength(2)
-            })
+            expect(errors).toHaveLength(2)
         })
     })
 })
