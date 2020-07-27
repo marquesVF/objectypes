@@ -223,7 +223,7 @@ buildObject(FooModel, json)
 
 ### validateObject
 
-Validate the presence of all required attributes in an unknown object. It returns an array of string describing the validation errors.
+Validate the presence of all required attributes in an unknown object. It returns an object with two arrays of presence and type errors found in the validation. If no error was found, both arrays will be empty.
 
 - Parameters:
     - **klass**: target  class to validate against
@@ -239,12 +239,15 @@ import { ObjectHandler } from 'objectypes'
 
 function handleRequestPaylaod(value: unknown): VendorModel {
     const handler = new ObjectHandler(VendorModel)
-    const { valid, validationErrors } = handler.validate(value)
+    const { valid, presenceErrors, typeErrors } = handler.validate(value)
 
     if (valid) {
         return handler.build(value)
     } else {
-        throw new Error(`Missing Properties: ${validationErrors.join(', ')}`)
+        throw new Error(
+            `Missing properties: ${presenceErrors.join(', ')}.`
+                + ` Type errors: ${typeErrors.join(', ')}`
+        )
     }
 }
 ```
