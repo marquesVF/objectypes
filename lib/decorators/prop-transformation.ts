@@ -1,19 +1,16 @@
-import { TransformFunction, TransformationScope, TransformationMetadata }
-    from '../types/transform-function'
+import { PropTransformer, TransformationMetadata }
+    from '../types/prop-transformation'
 import { Metadata } from '../core/metadata'
 
 export function PropTransformation<T, K>(
-    fn: TransformFunction<T, K>,
-    scope: TransformationScope
+    propTransformer: PropTransformer<T, K>
 ): PropertyDecorator  {
     return function (target: Object, propertyKey: string | symbol) {
         const klassName = target.constructor.name
-        const propKey = propertyKey.toString()
 
         const metadata: TransformationMetadata<T, K> = {
-            fn,
-            scope,
-            propertyKey: propKey
+            propertyKey: propertyKey.toString(),
+            propTransform: propTransformer
         }
 
         Metadata.getInstance()

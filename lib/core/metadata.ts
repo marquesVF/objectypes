@@ -1,7 +1,7 @@
 import { PropertyMetadata } from '../types/property-metadata'
 import { ClassConstructor } from '../types/class-constructor'
 import { MapPropertyMetadata } from '../types/map-property-metadata'
-import { TransformationMetadata } from '../types/transform-function'
+import { TransformationMetadata } from '../types/prop-transformation'
 
 // TODO refactor this class - too many similiar code
 export class Metadata {
