@@ -1,12 +1,19 @@
+import { TypeError } from '../types/validation-errors'
+
 export function isTypeValid(
     target: Object,
     propertyKey: string,
     value: unknown
-): boolean {
-    const propertyType = Reflect
+): TypeError | undefined {
+    const propertyType = typeof value
+    const expectedType = Reflect
         .getMetadata('design:type', target, propertyKey)
         .name
         .toLowerCase()
 
-    return propertyType === typeof value
+    if (expectedType === propertyType) {
+        return
+    }
+
+    return { expectedType, propertyKey, propertyType }
 }

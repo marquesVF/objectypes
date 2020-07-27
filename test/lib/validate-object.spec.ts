@@ -10,9 +10,11 @@ describe('validateObject method', () => {
         }
 
         it('should return no errors', () => {
-            const errors = validateObject(BaseModel, jsonObject)
+            const { presenceErrors, typeErrors }
+                = validateObject(BaseModel, jsonObject)
 
-            expect(errors).toHaveLength(0)
+            expect(presenceErrors).toHaveLength(0)
+            expect(typeErrors).toHaveLength(0)
         })
 
         describe('when there is a nested object', () => {
@@ -26,28 +28,32 @@ describe('validateObject method', () => {
             }
 
             it('should return no errors', () => {
-                const errors = validateObject(NestedModel, nestedObject)
+                const { presenceErrors, typeErrors }
+                    = validateObject(NestedModel, nestedObject)
 
-                expect(errors).toHaveLength(0)
+                expect(presenceErrors).toHaveLength(0)
+                expect(typeErrors).toHaveLength(0)
             })
         })
     })
 
-    describe('when there is an ivalid JSON object', () => {
+    describe('when there is an JSON object with missing property and invalid type', () => {
         const jsonObject = {
             vendorName: 'mark',
             price: 34,
             confirmed: 'it should be a boolean value'
         }
 
-        it('should return false', () => {
-            const errors = validateObject(VendorModel, jsonObject)
+        it('should return presence and type errors', () => {
+            const { presenceErrors, typeErrors }
+                = validateObject(VendorModel, jsonObject)
 
-            expect(errors).toHaveLength(2)
+            expect(presenceErrors).toHaveLength(1)
+            expect(typeErrors).toHaveLength(1)
         })
     })
 
-    describe('when there is an invalid nested object', () => {
+    describe('when there is a nested object with missing property', () => {
         const nestedObject = {
             sameModel: {
                 id: 'foo'
@@ -57,10 +63,12 @@ describe('validateObject method', () => {
             }]
         }
 
-        it('should return false', () => {
-            const errors = validateObject(NestedModel, nestedObject)
+        it('should return presence errors', () => {
+            const { presenceErrors, typeErrors }
+                = validateObject(NestedModel, nestedObject)
 
-            expect(errors).toHaveLength(2)
+            expect(presenceErrors).toHaveLength(1)
+            expect(typeErrors).toHaveLength(0)
         })
     })
 })

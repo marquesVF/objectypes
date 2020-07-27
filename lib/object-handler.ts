@@ -12,9 +12,10 @@ export class ObjectHandler<T> {
     ) { }
 
     validate(obj: Hashable): ValidationResult {
-        const validationErrors = validateObject(this.klass, obj)
+        const { presenceErrors, typeErrors } = validateObject(this.klass, obj)
+        const valid = presenceErrors.length === 0 && typeErrors.length === 0
 
-        return { valid: validationErrors.length === 0, validationErrors }
+        return { valid, presenceErrors, typeErrors }
     }
 
     build(jsonObj: object): T {
