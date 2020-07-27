@@ -1,7 +1,7 @@
+import { path } from 'ramda'
+
 import { Metadata } from './core/metadata'
 import { Hashable, ClassConstructor } from './types'
-
-import { path } from 'ramda'
 
 export function buildObject<T>(
     targetKlass: ClassConstructor<Hashable & T>,

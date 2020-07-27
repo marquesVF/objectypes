@@ -1,16 +1,18 @@
 import 'reflect-metadata'
 
+import { path } from 'ramda'
+
 import { ClassConstructor } from './types'
 import { Metadata } from './core/metadata'
 import { isTypeValid } from './core/type-validator'
-
-import { path } from 'ramda'
+import { ValidationErrors, TypeError } from './types/validation-errors'
 
 export function validateObject<T>(
     klass: ClassConstructor<T>,
     obj: unknown
-): string[] {
-    const errors: string[] = []
+): ValidationErrors {
+    const presenceErrors: string[] = []
+    const typeErrors: TypeError[] = []
     const properties = Metadata.getInstance().findProperties(klass)
 
     if (properties) {
@@ -24,27 +26,34 @@ export function validateObject<T>(
             // Property presence validation
             if (value === undefined && !nullable) {
                 // eslint-disable-next-line max-len
-                errors.push(jsonPropertyName)
+                presenceErrors.push(jsonPropertyName)
             }
 
             // Nested object property validation
             if (type && !nullable) {
+                const validateNestedObject = (val: unknown) => {
+                    const { presenceErrors, typeErrors }
+                        = validateObject(type, val)
+                    presenceErrors.push(...presenceErrors)
+                    typeErrors.push(...typeErrors)
+                }
+
                 if (Array.isArray(value)) {
-                    value.forEach(val =>
-                        errors.push(...validateObject(type, val)))
+                    value.forEach(validateNestedObject)
                 } else {
-                    errors.push(...validateObject(type, value))
+                    validateNestedObject(value)
                 }
             }
 
             // Property primitive type validation
             if (!type && value !== undefined) {
-                if (!isTypeValid(target, propertyKey, value)) {
-                    errors.push(jsonPropertyName)
+                const typeError = isTypeValid(target, propertyKey, value)
+                if (typeError) {
+                    typeErrors.push(typeError)
                 }
             }
         })
     }
 
-    return errors
+    return { presenceErrors, typeErrors }
 }
