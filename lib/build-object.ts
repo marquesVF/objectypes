@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 import { path } from 'ramda'
 
 import { Metadata } from './core/metadata'
@@ -8,13 +9,16 @@ export function buildObject<T>(
     jsonObj: Hashable
 ): T {
     const targetObj = new targetKlass()
-    const properties = Metadata.getInstance().findProperties(targetKlass)
+    const metadataStorage = Metadata.getInstance()
+    const properties = metadataStorage.findProperties(targetKlass)
+    const transformations = metadataStorage
+        .findTransformations(targetKlass, 'build')
 
     if (properties) {
         for (const { propertyKey, name, type, nullable } of properties) {
             const objPropName = name ?? propertyKey
 
-            const value = path<any>(objPropName.split('.'), jsonObj)
+            let value = path<any>(objPropName.split('.'), jsonObj)
                 || path<any>([propertyKey], jsonObj)
 
             if (value === undefined && !nullable) {
@@ -22,6 +26,13 @@ export function buildObject<T>(
                     // eslint-disable-next-line max-len
                     `Property '${objPropName}' is missing. Couldn't build an ${targetKlass.name} object.`
                 )
+            }
+
+            const transformMetadata = transformations
+                ?.find(metadata => metadata.propertyKey === propertyKey)
+            if (transformMetadata) {
+                // TODO improve error handling since it may raise errors in runtine
+                value = transformMetadata.transformer.transform(value)
             }
 
             if (type && !nullable) {

@@ -1,5 +1,3 @@
-import 'reflect-metadata'
-
 import { path } from 'ramda'
 
 import { ClassConstructor } from './types'
