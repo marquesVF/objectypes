@@ -25,11 +25,11 @@ export function extractObject<T>(
                     }
                 }
 
-                const transformation = transformationMetadata?.find(metadata =>
-                    metadata.propertyKey === propertyKey)
-                if (transformation) {
+                const transformMetadata = transformationMetadata
+                    ?.find(metadata => metadata.propertyKey === propertyKey)
+                if (transformMetadata) {
                     // TODO improve error handling since it may raise errors in runtine
-                    value = transformation.fn(value)
+                    value = transformMetadata.propTransform.transform(value)
                 }
 
                 const resultingProperty = name ?? propertyKey

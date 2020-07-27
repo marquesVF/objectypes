@@ -95,19 +95,20 @@ class VendorClient {
 
 Sets a transformation function in the form `<T, K>(value: T) => K` in which a property of type `T` is transformed into a type `K`.
 
-- Parameters:
-    - **fn**: transformation function.
-    - **scope**: can be either `extract` or `build` for `extractObject` and `buildObject` respectively.
+- Parameter:
+    - A `PropTransformer` object:
+        - **scope**: can be either `extract` or `build` for `extractObject` and `buildObject` respectively.
+        - **transform**: transformation function.
 
 - Example:
 ```typescript
 import { extractObject } from 'objectypes'
 
 class Transformable {
-    @PropTransformation(
-        (value: Date): number => value.getTime(),
-        'extract'
-    )
+    @PropTransformation({
+        scope: 'extract',
+        transform: (value: Date): number => value.getTime(),
+    )}
     @Property({ name: 'time' })
     timeDate: Date
 }
