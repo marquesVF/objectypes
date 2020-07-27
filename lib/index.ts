@@ -5,5 +5,11 @@ export { mapObject } from './map-object'
 export { buildObject } from './build-object'
 export { ObjectHandler } from './object-handler'
 export { validateObject } from './validate-object'
-export { ClassConstructor } from './types/class-constructor'
-export { Hashable } from './types/hashable'
+export {
+    ClassConstructor,
+    Hashable,
+    BuildTransformationFn,
+    BuildTransformer,
+    ExtractTransformationFn,
+    ExtractTransformer
+} from './types'

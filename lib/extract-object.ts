@@ -10,7 +10,8 @@ export function extractObject<T>(
     let resultingObject: Hashable = {}
     const metadataStorage = Metadata.getInstance()
     const propertyMetadata = metadataStorage.findProperties(objKlass)
-    const transformationMetadata = metadataStorage.findTransformations(objKlass)
+    const transformations = metadataStorage
+        .findTransformations(objKlass, 'extract')
 
     if (propertyMetadata) {
         for (const { name, propertyKey, type } of propertyMetadata) {
@@ -25,11 +26,11 @@ export function extractObject<T>(
                     }
                 }
 
-                const transformMetadata = transformationMetadata
+                const transformMetadata = transformations
                     ?.find(metadata => metadata.propertyKey === propertyKey)
                 if (transformMetadata) {
                     // TODO improve error handling since it may raise errors in runtine
-                    value = transformMetadata.propTransform.transform(value)
+                    value = transformMetadata.transformer.transform(value)
                 }
 
                 const resultingProperty = name ?? propertyKey

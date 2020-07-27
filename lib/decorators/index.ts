@@ -1,3 +1,4 @@
 export { Property } from './property'
 export { MapProperty } from './map-property'
-export { PropTransformation } from './prop-transformation'
+export { BuildTransformation } from './build-transformation'
+export { ExtractTransformation } from './extract-transformation'
