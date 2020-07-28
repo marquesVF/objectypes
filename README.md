@@ -90,25 +90,57 @@ class VendorClient {
 }
 ```
 
-### `@PropTransformation`
-*obs: it only works with extractObject in current implementation
+### `@BuildTransformation`
 
-Sets a transformation function in the form `<T, K>(value: T) => K` in which a property of type `T` is transformed into a type `K`.
+Sets a transformation function in the form `<T>(value: unknown) => T` in which an unknown property is transformed into a type `T`.
 
 - Parameter:
-    - A `PropTransformer` object:
-        - **scope**: can be either `extract` or `build` for `extractObject` and `buildObject` respectively.
-        - **transform**: transformation function.
+    - **transformer**: a `BuildTransformer` object.
+
+- Example:
+```typescript
+import { extractObject, BuildTransformer } from 'objectypes'
+
+class DateTransformation implements BuildTransformer<Date> {
+    transform(value: unknown): Date {
+        if (typeof value !== 'string') {
+            throw new Error(
+                `'${value}' has not a valid value. Expected a string.`
+            )
+        }
+
+        return new Date(value)
+    }
+}
+
+class Transformable {
+    @BuildTransformation(new DateTransformation())
+    @Property({ name: 'time' })
+    timeDate: Date
+}
+
+const jsonObject = {
+    time: '2020-07-06T20:28:18.256Z'
+}
+
+buildObject(Transformable, jsonObject)
+```
+
+### `@ExtractTransformation`
+
+Sets a transformation function in the form `<T, K>(value: T) => K` to transform a property from type `T` to type `K`.
+
+- Parameter:
+    - **transformer**: a `ExtractTransformer` object.
 
 - Example:
 ```typescript
 import { extractObject } from 'objectypes'
 
 class Transformable {
-    @PropTransformation({
-        scope: 'extract',
-        transform: (value: Date): number => value.getTime(),
-    )}
+    @ExtractTransformation({
+        transform: (value: Date): number => value.getTime()
+    })
     @Property({ name: 'time' })
     timeDate: Date
 }
