@@ -10,8 +10,43 @@ Run `npm i --save objectypes` to add it to your project.
 
 ### Using objectypes with express
 
-```typescript
+Validate incomming data to your API is really easy with objectypes:
 
+```typescript
+import express, { Request, Response, json } from 'express'
+import { Property, ObjectHandler } from 'objectypes'
+
+class UserDto {
+
+    @Property()
+    name: string
+
+    @Property()
+    email: string
+
+    @Property()
+    contactedAt: Date
+
+}
+
+const app = express()
+app.use(json())
+
+app.post('/users', (req: Request, res: Response) => {
+    const userValidator = new ObjectHandler(UserDto)
+    const errors = userValidator.validate(req.body)
+
+    if (errors) {
+        res.status(400).send({ errors: errors.summary })
+    } else {
+        const user = userValidator.build(req.body)
+
+        res.send(userValidator.extract(user))
+    }
+})
+
+app.listen(3000)
+console.log('Listening on port 3000')
 ```
 
 ## API Reference
