@@ -1,8 +1,7 @@
 import { assocPath } from 'ramda'
 
-import { ClassConstructor } from './types/class-constructor'
-import { Metadata } from './utils/metadata'
-import { Hashable } from './types/hashable'
+import { Metadata } from './core/metadata'
+import { Hashable, ClassConstructor } from './types'
 
 export function extractObject<T>(
     obj: Hashable & T,
@@ -11,7 +10,8 @@ export function extractObject<T>(
     let resultingObject: Hashable = {}
     const metadataStorage = Metadata.getInstance()
     const propertyMetadata = metadataStorage.findProperties(objKlass)
-    const transformationMetadata = metadataStorage.findTransformations(objKlass)
+    const transformations = metadataStorage
+        .findTransformations(objKlass, 'extract')
 
     if (propertyMetadata) {
         for (const { name, propertyKey, type } of propertyMetadata) {
@@ -26,11 +26,11 @@ export function extractObject<T>(
                     }
                 }
 
-                const transformation = transformationMetadata?.find(metadata =>
-                    metadata.propertyKey === propertyKey)
-                if (transformation) {
+                const transformMetadata = transformations
+                    ?.find(metadata => metadata.propertyKey === propertyKey)
+                if (transformMetadata) {
                     // TODO improve error handling since it may raise errors in runtine
-                    value = transformation.fn(value)
+                    value = transformMetadata.transformer.transform(value)
                 }
 
                 const resultingProperty = name ?? propertyKey

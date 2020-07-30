@@ -11,4 +11,7 @@ export class VendorModel {
     @Property()
     comment: string
 
+    @Property({ nullable: true })
+    confirmed?: boolean
+
 }

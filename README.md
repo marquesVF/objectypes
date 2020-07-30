@@ -6,9 +6,54 @@ An easy and type-safe way to transform and validate json objects and typed objec
 
 Run `npm i --save objectypes` to add it to your project.
 
-## Decorators
+## Quick Start
 
-### `@Property`
+### Using objectypes with express
+
+Validate incomming data to your API is really easy with objectypes:
+
+```typescript
+import express, { Request, Response, json } from 'express'
+import { Property, ObjectHandler } from 'objectypes'
+
+class UserDto {
+
+    @Property()
+    name: string
+
+    @Property()
+    email: string
+
+    @Property()
+    contactedAt: Date
+
+}
+
+const app = express()
+app.use(json())
+
+app.post('/users', (req: Request, res: Response) => {
+    const userValidator = new ObjectHandler(UserDto)
+    const errors = userValidator.validate(req.body)
+
+    if (errors) {
+        res.status(400).send({ errors: errors.summary })
+    } else {
+        const user = userValidator.build(req.body)
+
+        res.send(userValidator.extract(user))
+    }
+})
+
+app.listen(3000)
+console.log('Listening on port 3000')
+```
+
+## API Reference
+
+### Decorators
+
+#### `@Property`
 Indicate what properties should be validated by `objectypes` methods.
 
 - Parameters:
@@ -59,7 +104,7 @@ class FooModel {
 }
 ```
 
-### `@MapProperty`
+#### `@MapProperty`
 Specify how an attribute of an object **A** is mapped to another object **B** if the property name is different. If the property name is the same, there's no need to use this decorator. Use `@Property` instead.
 
 - Parameters:
@@ -90,24 +135,60 @@ class VendorClient {
 }
 ```
 
-### `@PropTransformation`
-*obs: it only works with extractObject in current implementation
+#### `@BuildTransformation`
 
-Sets a transformation function in the form `<T, K>(value: T) => K` in which a property of type `T` is transformed into a type `K`.
+Sets a transformation function in the form `<T>(value: unknown) => T` in which an unknown property is transformed into a type `T`.
 
-- Parameters:
-    - **fn**: transformation function.
-    - **scope**: can be either `extract` or `build` for `extractObject` and `buildObject` respectively.
+- Parameter:
+    - **transformer**: a `BuildTransformer` object.
+
+- Example:
+```typescript
+import { extractObject, BuildTransformer } from 'objectypes'
+
+class SanitizerTransformation implements BuildTransformer<string> {
+    transform(value: unknown): Date {
+        if (typeof value !== 'string') {
+            throw new Error(
+                `'${value}' has not a valid value. Expected a string.`
+            )
+        }
+
+        return value.replace('-', '')
+    }
+}
+
+class Transformable {
+    @BuildTransformation(new SanitizerTransformation())
+    @Property()
+    code: string
+}
+
+const jsonObject = {
+    code: '34-534'
+}
+
+// {
+//     code: '34534'
+// }
+buildObject(Transformable, jsonObject)
+```
+
+#### `@ExtractTransformation`
+
+Sets a transformation function in the form `<T, K>(value: T) => K` to transform a property from type `T` to type `K`.
+
+- Parameter:
+    - **transformer**: a `ExtractTransformer` object.
 
 - Example:
 ```typescript
 import { extractObject } from 'objectypes'
 
 class Transformable {
-    @PropTransformation(
-        (value: Date): number => value.getTime(),
-        'extract'
-    )
+    @ExtractTransformation({
+        transform: (value: Date): number => value.getTime()
+    })
     @Property({ name: 'time' })
     timeDate: Date
 }
@@ -122,9 +203,9 @@ const transformableObj: Transformable = {
 extractObject(transformableObj, Transformable)
 ```
 
-## Methods
+### Methods
 
-### extractObject
+#### extractObject
 
 Convert a typescript object to a json object.
 
@@ -154,7 +235,7 @@ const foo: FooModel = {
 extractObject(foo, FooModel)
 ```
 
-### mapObject
+#### mapObject
 
 Convert a typed object to another typed object. Even if property names are different.
 
@@ -180,7 +261,7 @@ const vendorObject: VendorModel = {
 mapObject(VendorClient, VendorModel, vendorObject)
 ```
 
-### buildObject
+#### buildObject
 
 Validate the presence of all required attributes in a json object and transform it into a typed object.
 
@@ -221,37 +302,30 @@ const json = {
 buildObject(FooModel, json)
 ```
 
-### validate
+#### validateObject
 
-Validate the presence of all required attributes in an unknown object. It returns an array of string describing the validation errors.
-
-- Parameters:
-    - **klass**: target  class to validate against
-    - **obj**: object from unknown type
-
-### isValid
-
-Validate the presence of all required attributes in an unknown object returning a boolean value.
+Validate the presence of all required attributes in an unknown object. It returns an object with two arrays of presence and type errors found in the validation. If no error was found, both arrays will be empty.
 
 - Parameters:
     - **klass**: target  class to validate against
     - **obj**: object from unknown type
 
-### Using the JsonMapper class
+### Using the ObjectHandler class
 
 You can also use a class based approach to handle object validation and transformation.
 
 - Example:
 ```typescript
-import { JsonMapper } from 'objectypes'
+import { ObjectHandler } from 'objectypes'
 
 function handleRequestPaylaod(value: unknown): VendorModel {
-    const mapper = new JsonMapper(VendorModel)
+    const handler = new ObjectHandler(VendorModel)
+    const errors = handler.validate(value)
 
-    if (mapper.validate(value)) {
-        return mapper.build(value)
-    } else {
-        throw new Error(mapper.validationErrorSummary())
+    if (errors) {
+        throw new Error(errors.summary)
     }
+
+    return handler.build(value)
 }
 ```

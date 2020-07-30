@@ -1,7 +1,8 @@
 import { PropertyMetadata } from '../types/property-metadata'
 import { ClassConstructor } from '../types/class-constructor'
 import { MapPropertyMetadata } from '../types/map-property-metadata'
-import { TransformationMetadata } from '../types/transform-function'
+import { TransformationMetadata, TransformationScope }
+    from '../types/transformation'
 
 // TODO refactor this class - too many similiar code
 export class Metadata {
@@ -39,9 +40,9 @@ export class Metadata {
         }
     }
 
-    registerTransformationMetadata(
+    registerTransformationMetadata<T, K>(
         className: string,
-        metadata: TransformationMetadata<any, any>
+        metadata: TransformationMetadata<T, K>
     ) {
         const properties = this.transformationMetadata.get(className)
 
@@ -100,12 +101,15 @@ export class Metadata {
         return properties
     }
 
-    findTransformations<T, unknow>(
-        klass: ClassConstructor<T>
-    ): Array<TransformationMetadata<T, unknow>> | undefined {
+    findTransformations<T, K>(
+        klass: ClassConstructor<T>,
+        scope: TransformationScope
+    ): Array<TransformationMetadata<T, K>> | undefined {
         const klassName = klass.name ?? klass.constructor.name
 
-        return this.transformationMetadata.get(klassName)
+        return this.transformationMetadata
+            .get(klassName)
+            ?.filter(metadata => metadata.scope === scope)
     }
 
 }
