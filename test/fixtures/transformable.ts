@@ -1,16 +1,14 @@
-import { BuildTransformation, Property, ExtractTransformation } from '../../lib'
-import { BuildTransformer, ExtractTransformer } from '../../lib/types'
+import { Property, ExtractTransformation, BuildTransformation } from '../../lib'
+import { ExtractTransformer, BuildTransformer } from '../../lib/types'
 
-class DateTransformation implements BuildTransformer<Date> {
+class CodeTransformation implements BuildTransformer<string> {
 
-    transform(value: unknown): Date {
+    transform(value: unknown): string  {
         if (typeof value !== 'string') {
-            throw new Error(
-                `'${value}' has not a valid value. Expected a string.`
-            )
+            throw new Error('Not a valid string')
         }
 
-        return new Date(value)
+        return value.replace('-', '')
     }
 
 }
@@ -25,8 +23,11 @@ class EpochTransformation implements ExtractTransformer<Date, number> {
 
 export class Transformable {
 
+    @BuildTransformation(new CodeTransformation())
+    @Property()
+    code: string
+
     @ExtractTransformation(new EpochTransformation())
-    @BuildTransformation(new DateTransformation())
     @Property({ name: 'time' })
     timeDate: Date
 

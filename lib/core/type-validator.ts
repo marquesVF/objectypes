@@ -1,5 +1,3 @@
-import 'reflect-metadata'
-
 import { TypeError } from '../types/validation-errors'
 
 export function isTypeValid(

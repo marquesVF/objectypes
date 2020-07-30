@@ -1,5 +1,10 @@
 import { ValidationErrors } from './validation-errors'
 
-export interface ValidationResult extends ValidationErrors {
+export interface ValidationErrorResult extends ValidationErrors {
+    errorSummary: string
+}
+
+export interface ValidationResult {
     valid: boolean
+    errors?: ValidationErrorResult
 }
