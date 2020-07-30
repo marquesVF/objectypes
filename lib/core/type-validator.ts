@@ -11,6 +11,12 @@ export function isTypeValid(
         .name
         .toLowerCase()
 
+    if (expectedType === 'date' && typeof value === 'string') {
+        if (!isNaN(new Date(value).getTime())) {
+            return
+        }
+    }
+
     if (expectedType === propertyType) {
         return
     }
