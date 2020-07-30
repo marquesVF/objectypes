@@ -6,9 +6,19 @@ An easy and type-safe way to transform and validate json objects and typed objec
 
 Run `npm i --save objectypes` to add it to your project.
 
-## Decorators
+## Quick Start
 
-### `@Property`
+### Using objectypes with express
+
+```typescript
+
+```
+
+## API Reference
+
+### Decorators
+
+#### `@Property`
 Indicate what properties should be validated by `objectypes` methods.
 
 - Parameters:
@@ -59,7 +69,7 @@ class FooModel {
 }
 ```
 
-### `@MapProperty`
+#### `@MapProperty`
 Specify how an attribute of an object **A** is mapped to another object **B** if the property name is different. If the property name is the same, there's no need to use this decorator. Use `@Property` instead.
 
 - Parameters:
@@ -90,7 +100,7 @@ class VendorClient {
 }
 ```
 
-### `@BuildTransformation`
+#### `@BuildTransformation`
 
 Sets a transformation function in the form `<T>(value: unknown) => T` in which an unknown property is transformed into a type `T`.
 
@@ -129,7 +139,7 @@ const jsonObject = {
 buildObject(Transformable, jsonObject)
 ```
 
-### `@ExtractTransformation`
+#### `@ExtractTransformation`
 
 Sets a transformation function in the form `<T, K>(value: T) => K` to transform a property from type `T` to type `K`.
 
@@ -158,9 +168,9 @@ const transformableObj: Transformable = {
 extractObject(transformableObj, Transformable)
 ```
 
-## Methods
+### Methods
 
-### extractObject
+#### extractObject
 
 Convert a typescript object to a json object.
 
@@ -190,7 +200,7 @@ const foo: FooModel = {
 extractObject(foo, FooModel)
 ```
 
-### mapObject
+#### mapObject
 
 Convert a typed object to another typed object. Even if property names are different.
 
@@ -216,7 +226,7 @@ const vendorObject: VendorModel = {
 mapObject(VendorClient, VendorModel, vendorObject)
 ```
 
-### buildObject
+#### buildObject
 
 Validate the presence of all required attributes in a json object and transform it into a typed object.
 
@@ -257,7 +267,7 @@ const json = {
 buildObject(FooModel, json)
 ```
 
-### validateObject
+#### validateObject
 
 Validate the presence of all required attributes in an unknown object. It returns an object with two arrays of presence and type errors found in the validation. If no error was found, both arrays will be empty.
 
