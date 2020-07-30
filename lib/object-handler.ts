@@ -3,8 +3,7 @@ import { Hashable } from './types/hashable'
 import { buildObject } from './build-object'
 import { extractObject } from './extract-object'
 import { validateObject } from './validate-object'
-import { ClassConstructor, ValidationResult, ValidationErrorResult }
-    from './types'
+import { ClassConstructor, ErrorSummary } from './types'
 import { ValidationErrors } from './types/validation-errors'
 
 export class ObjectHandler<T> {
@@ -15,7 +14,7 @@ export class ObjectHandler<T> {
 
     private buildValidationErrorResult(
         errors: ValidationErrors
-    ): ValidationErrorResult {
+    ): ErrorSummary {
         const { presenceErrors, typeErrors } = errors
         const presenceErrorSummary = presenceErrors.length > 0
             ? `properties ('${presenceErrors.join(`, `)}') are missing`
@@ -36,19 +35,19 @@ export class ObjectHandler<T> {
             ? `${presenceErrorSummary}. ${typeErrorSummary}`
             : finalSumarry
 
-        return { presenceErrors, typeErrors, errorSummary }
+        return { presenceErrors, typeErrors, summary: errorSummary }
     }
 
-    validate(obj: Hashable): ValidationResult {
+    validate(obj: Hashable): ErrorSummary | undefined {
         const errors = validateObject(this.klass, obj)
         const { presenceErrors, typeErrors } = errors
         const valid = presenceErrors.length === 0 && typeErrors.length === 0
 
         if (!valid) {
-            return { valid, errors: this.buildValidationErrorResult(errors) }
+            return this.buildValidationErrorResult(errors)
         }
 
-        return { valid }
+        return undefined
     }
 
     build(jsonObj: object): T {

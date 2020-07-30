@@ -101,7 +101,7 @@ Sets a transformation function in the form `<T>(value: unknown) => T` in which a
 ```typescript
 import { extractObject, BuildTransformer } from 'objectypes'
 
-class DateTransformation implements BuildTransformer<Date> {
+class SanitizerTransformation implements BuildTransformer<string> {
     transform(value: unknown): Date {
         if (typeof value !== 'string') {
             throw new Error(
@@ -109,20 +109,23 @@ class DateTransformation implements BuildTransformer<Date> {
             )
         }
 
-        return new Date(value)
+        return value.replace('-', '')
     }
 }
 
 class Transformable {
-    @BuildTransformation(new DateTransformation())
-    @Property({ name: 'time' })
-    timeDate: Date
+    @BuildTransformation(new SanitizerTransformation())
+    @Property()
+    code: string
 }
 
 const jsonObject = {
-    time: '2020-07-06T20:28:18.256Z'
+    code: '34-534'
 }
 
+// {
+//     code: '34534'
+// }
 buildObject(Transformable, jsonObject)
 ```
 
@@ -272,15 +275,12 @@ import { ObjectHandler } from 'objectypes'
 
 function handleRequestPaylaod(value: unknown): VendorModel {
     const handler = new ObjectHandler(VendorModel)
-    const { valid, presenceErrors, typeErrors } = handler.validate(value)
+    const errors = handler.validate(value)
 
-    if (valid) {
-        return handler.build(value)
-    } else {
-        throw new Error(
-            `Missing properties: ${presenceErrors.join(', ')}.`
-                + ` Type errors: ${typeErrors.join(', ')}`
-        )
+    if (errors) {
+        throw new Error(errors.summary)
     }
+
+    return handler.build(value)
 }
 ```
