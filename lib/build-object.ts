@@ -15,7 +15,8 @@ export function buildObject<T>(
         .findTransformations(targetKlass, 'build')
 
     if (properties) {
-        for (const { propertyKey, name, type, nullable } of properties) {
+        for (const property of properties) {
+            const { propertyKey, name, type, nullable, target } = property
             const objPropName = name ?? propertyKey
 
             let value = path<any>(objPropName.split('.'), jsonObj)
@@ -26,6 +27,14 @@ export function buildObject<T>(
                     // eslint-disable-next-line max-len
                     `Property '${objPropName}' is missing. Couldn't build an ${targetKlass.name} object.`
                 )
+            }
+
+            const expectedType = Reflect
+                .getMetadata('design:type', target, propertyKey)
+                .name
+
+            if (expectedType === 'Date') {
+                value = new Date(value)
             }
 
             const transformMetadata = transformations

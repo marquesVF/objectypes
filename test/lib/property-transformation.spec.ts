@@ -3,10 +3,12 @@ import { extractObject, buildObject } from '../../lib'
 
 describe('property transformation', () => {
     const extractedObject = {
-        time: 1594067298256
+        time: 1594067298256,
+        code: '1111'
     }
 
     const transformableObj: Transformable = {
+        code: '1111',
         timeDate: new Date('2020-07-06T20:28:18.256Z')
     }
 
@@ -21,7 +23,8 @@ describe('property transformation', () => {
     describe('when building the object', () => {
         describe('when object is valid', () => {
             const jsonObject = {
-                time: '2020-07-06T20:28:18.256Z'
+                time: '2020-07-06T20:28:18.256Z',
+                code: '11-11'
             }
 
             it('should apply the build transformation', () => {
