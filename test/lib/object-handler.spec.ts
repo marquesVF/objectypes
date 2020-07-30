@@ -8,11 +8,9 @@ describe('ObjectHandler', () => {
         const jsonObject = {
             ID: 'foo'
         }
-        const { valid, errors } = objectHandler
-            .validate(jsonObject)
+        const errors = objectHandler.validate(jsonObject)
 
         it('should return no errors ', () => {
-            expect(valid).toBeTruthy()
             expect(errors).toBeUndefined()
         })
     })
@@ -21,14 +19,13 @@ describe('ObjectHandler', () => {
         const invalidJsonObject = {
             id: 'foo'
         }
-        const { valid, errors } = objectHandler
-            .validate(invalidJsonObject)
+        const errors = objectHandler.validate(invalidJsonObject)
 
         it('should return an error object', () => {
-            expect(valid).toBeFalsy()
-            expect(errors).not.toBeUndefined()
+            expect(errors).toBeDefined()
             expect(errors?.presenceErrors).toHaveLength(1)
             expect(errors?.typeErrors).toHaveLength(0)
+            expect(errors?.summary.length).toBeGreaterThan(0)
         })
     })
 })
