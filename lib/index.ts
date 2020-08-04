@@ -13,5 +13,6 @@ export {
     BuildTransformationFn,
     BuildTransformer,
     ExtractTransformationFn,
-    ExtractTransformer
+    ExtractTransformer,
+    MapTransformer
 } from './types'

@@ -4,14 +4,14 @@ import { MapPropertyMetadata } from '../types/map-property-metadata'
 import { TransformationMetadata, TransformationScope }
     from '../types/transformation'
 
-// TODO refactor this class - too many similiar code
+// TODO refactor this class - too many similar code
 export class Metadata {
 
     private static _instance = new Metadata()
 
     readonly propertyMetadata: Map<string, PropertyMetadata[]> = new Map()
     // eslint-disable-next-line max-len
-    readonly mapPropertyMetadata: Map<string, Array<MapPropertyMetadata<any>>> = new Map()
+    readonly mapPropertyMetadata: Map<string, Array<MapPropertyMetadata<any, any>>> = new Map()
     // eslint-disable-next-line max-len
     readonly transformationMetadata: Map<string, Array<TransformationMetadata<any, any>>> = new Map()
 
@@ -29,8 +29,10 @@ export class Metadata {
         }
     }
 
-    // eslint-disable-next-line max-len
-    registerMapMetadata<T>(className: string, metadata: MapPropertyMetadata<T>) {
+    registerMapMetadata<T, K>(
+        className: string,
+        metadata: MapPropertyMetadata<T, K>
+    ) {
         const properties = this.mapPropertyMetadata.get(className)
 
         if (!properties) {
@@ -77,9 +79,9 @@ export class Metadata {
         return properties
     }
 
-    findMapProperties<T>(
+    findMapProperties<T, K>(
         klass: ClassConstructor<T>
-    ): Array<MapPropertyMetadata<T>> | undefined {
+    ): Array<MapPropertyMetadata<T, K>> | undefined {
         const klassName = klass.name ?? klass.constructor.name
         const properties = this.mapPropertyMetadata.get(klassName)
 
