@@ -1,7 +1,9 @@
 import { ClassConstructor } from './class-constructor'
+import { MapTransformer } from './transformation'
 
-export interface MapPropertyMetadata<T> {
+export interface MapPropertyMetadata<T, K> {
     mapTarget: ClassConstructor<T>
-    mapPropertyKey: string
+    mapPropertyKey?: string
+    mapTransformer?: MapTransformer<T, K>
     propertyKey: string
 }

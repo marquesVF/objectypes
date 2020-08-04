@@ -1,8 +1,14 @@
 # objectypes
 
-An easy and type-safe way to transform and validate json objects and typed objects in a type-safe and descriptive manner.
+A type-safe library to transform and validate objects.
 
 ## Installation
+Make sure these `compilerOptions` flags are in the `tsconfig.json` file.
+
+```json
+"emitDecoratorMetadata": true,
+"experimentalDecorators": true
+```
 
 Run `npm i --save objectypes` to add it to your project.
 
@@ -10,7 +16,7 @@ Run `npm i --save objectypes` to add it to your project.
 
 ### Using objectypes with express
 
-Validate incomming data to your API is really easy with objectypes:
+Validate incoming data to your API is really easy with objectypes:
 
 ```typescript
 import express, { Request, Response, json } from 'express'
@@ -41,7 +47,7 @@ app.post('/users', (req: Request, res: Response) => {
     } else {
         const user = userValidator.build(req.body)
 
-        res.send(userValidator.extract(user))
+        res.send(user)
     }
 })
 
@@ -133,6 +139,63 @@ class VendorClient {
     comment: string
 
 }
+
+const vendor: VendorModel = {
+    vendorName: 'a name',
+    comment: 'a comment'
+}
+
+// {
+//     vendor: 'a name',
+//     comment: 'a comment'
+// }
+mapObject(VendorClient, VendorModel, vendor)
+```
+
+#### `@MapAndTransformProperty`
+Similar to `@MapProperty`. But instead of mapping a property by its name, you can pass a class that implements the `MapTransformer<T, K>` interface. Such class will take a target object `T`, process it and return a value of type `K`. `K` should be the type of property.
+
+- Parameters:
+    - **klass**: target class of the mapping.
+    - **transformer**: a `MapTransformer` object.
+
+- Example:
+```typescript
+class LogSummaryTransformer implements MapTransformer<BuildLog, string > {
+    transform(obj: BuildLog): string {
+        const { builded, logs } = obj
+
+        return builded ? logs.join(' ') : 'No logs'
+    }
+}
+
+class BuildLog {
+
+    @Property()
+    builded: boolean
+
+    @Property()
+    logs: string[]
+
+}
+
+class LogSummary {
+
+    @MapAndTransformProperty(Log, new LogSummaryTransformer())
+    @Property()
+    buildSummary: string
+
+}
+
+const log: Log = {
+    builded: true,
+    logs: ['hello', 'world']
+}
+
+// {
+//     buildSummary: 'hello world'
+// }
+mapObject(LogSummary, BuildLog, log)
 ```
 
 #### `@BuildTransformation`

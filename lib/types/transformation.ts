@@ -17,3 +17,7 @@ export interface TransformationMetadata<T, K> {
     transformer: BuildTransformer<K> | ExtractTransformer<T, K>
     propertyKey: string
 }
+
+export interface MapTransformer<T, K> {
+    transform: (obj: T) => K
+}
