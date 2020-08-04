@@ -6,7 +6,7 @@ export function Property(options?: PropertyOptions): PropertyDecorator {
     return function (target: Object, propertyKey: string | symbol) {
         const klassName = target.constructor.name
         const metadata: PropertyMetadata = {
-            name: options?.name ?? propertyKey as string,
+            name: options?.name,
             propertyKey: propertyKey as string,
             type: options?.type,
             nullable: options?.nullable,

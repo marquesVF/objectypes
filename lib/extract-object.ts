@@ -2,14 +2,17 @@ import { assocPath } from 'ramda'
 
 import { Metadata } from './core/metadata'
 import { Hashable, ClassConstructor } from './types'
+import { ExtractOptions } from './types/extract-options'
 
 export function extractObject<T>(
     obj: Hashable & T,
-    objKlass: ClassConstructor<T>
+    objKlass: ClassConstructor<T>,
+    options?: ExtractOptions
 ): object {
     let resultingObject: Hashable = {}
     const metadataStorage = Metadata.getInstance()
-    const propertyMetadata = metadataStorage.findProperties(objKlass)
+    const propertyMetadata = metadataStorage
+        .findProperties(objKlass, options?.namedOnly)
     const transformations = metadataStorage
         .findTransformations(objKlass, 'extract')
 

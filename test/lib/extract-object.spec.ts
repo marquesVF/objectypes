@@ -4,13 +4,14 @@ import { extractObject } from '../../lib'
 import { NestedModel } from '../fixtures/nested-model'
 
 describe('extractObject method', () => {
+    const today = new Date()
+    const childModel: ChildModel = {
+        id: '01',
+        createdAt: today,
+        name: 'vini'
+    }
+
     describe('when converting an object model with heritance to a json successfully', () => {
-        const today = new Date()
-        const childModel: ChildModel = {
-            id: '01',
-            createdAt: today,
-            name: 'vini'
-        }
         const jsonObject = extractObject(childModel, ChildModel)
 
         it('should convert model class properties', () => {
@@ -45,6 +46,16 @@ describe('extractObject method', () => {
             }
 
             expect(jsonObject).toEqual(extractedObject)
+        })
+    })
+
+    describe('when passing namedOnly option flag as true', () => {
+        const jsonObject = extractObject(childModel, ChildModel, { namedOnly: true })
+
+        it('should only export named properties', () => {
+            expect(jsonObject).toHaveProperty('name', undefined)
+            expect(jsonObject).toHaveProperty('Creation_Date', childModel.createdAt)
+            expect(jsonObject).toHaveProperty('ID', childModel.id)
         })
     })
 })
