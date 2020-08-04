@@ -56,7 +56,8 @@ export class Metadata {
     }
 
     findProperties(
-        klass: ClassConstructor<any>
+        klass: ClassConstructor<any>,
+        namedOnly?: boolean
     ): PropertyMetadata[] | undefined {
         const klassName = klass.name ?? klass.constructor.name
         const properties = this.propertyMetadata.get(klassName)
@@ -65,14 +66,18 @@ export class Metadata {
             return undefined
         }
 
+        const filteredProperty = namedOnly
+            ? properties.filter(property => property.name !== undefined)
+            : properties
+
         const parentKlass = klass.prototype
             ? Object.getPrototypeOf(klass.prototype)
             : undefined
         if (parentKlass !== undefined) {
-            const parentProperties = this.findProperties(parentKlass)
+            const parentProperties = this.findProperties(parentKlass, namedOnly)
 
             if (parentProperties !== undefined) {
-                return [...properties, ...parentProperties]
+                return [...filteredProperty, ...parentProperties]
             }
         }
 

@@ -275,6 +275,8 @@ Convert a typescript object to a json object.
 - Parameters:
     - **obj**: a typed object.
     - **objKlass**: a typed object class with decorated properties.
+    - **options**: a ExtractOptions object.
+        - **namedOnly**?: a `boolean` flag to indicate that only properties with specified names should be extracted. For example: `@Property({ name: 'Name' })`.
 
 - Example:
 ```typescript
