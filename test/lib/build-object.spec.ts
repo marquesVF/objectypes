@@ -76,4 +76,16 @@ describe('buildObject method', () => {
             expect(test).toThrowError(`Property 'baseModel' is missing. Couldn't build an RequestPayloadModel object.`)
         })
     })
+
+    describe('when string field is empty', () => {
+        const model = {
+            NAME: ''
+        }
+
+        it('should build a valid object regardless', () => {
+            const obj = buildObject(OptionalModel, model)
+
+            expect(obj.name).toEqual('')
+        })
+    })
 })
