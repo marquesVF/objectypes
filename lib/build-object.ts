@@ -19,8 +19,9 @@ export function buildObject<T>(
             const { propertyKey, name, type, nullable, target } = property
             const objPropName = name ?? propertyKey
 
-            let value = path<any>(objPropName.split('.'), jsonObj)
-                || path<any>([propertyKey], jsonObj)
+            let value = path<any>(objPropName.split('.'), jsonObj) !== undefined
+                ?  path<any>(objPropName.split('.'), jsonObj)
+                : path<any>([propertyKey], jsonObj)
 
             if (value === undefined && !nullable) {
                 throw new Error(
