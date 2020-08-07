@@ -84,6 +84,7 @@ Indicate what properties should be validated by `objectypes` methods.
     ```
     - **type**?: apply `extractObject` to nested property (recursively if an array).
     - **nullable**?: a flag to indicate if a property can be missing or have a null value in the json representation. It is used by the `buildObject` method when validating property presence. 
+    - **builder**: a function or a instance of `PropertyBuilder` interface. It receive the json object as parameter. _Keep in mind that using it is not type-safe. Your should validate the types by yourself._
 
 - Example:
 

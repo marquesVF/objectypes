@@ -1,6 +1,5 @@
 import 'reflect-metadata'
 
-export * from './types/property-options'
 export * from './decorators'
 export { extractObject } from './extract-object'
 export { mapObject } from './map-object'
@@ -14,5 +13,7 @@ export {
     BuildTransformer,
     ExtractTransformationFn,
     ExtractTransformer,
-    MapTransformer
+    MapTransformer,
+    PropertyBuilder,
+    PropertyOptions
 } from './types'

@@ -1,5 +1,4 @@
-import { PropertyMetadata } from '../types/property-metadata'
-import { ClassConstructor } from '../types/class-constructor'
+import { PropertyMetadata , ClassConstructor } from '../types'
 import { MapPropertyMetadata } from '../types/map-property-metadata'
 import { TransformationMetadata, TransformationScope }
     from '../types/transformation'

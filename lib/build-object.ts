@@ -4,6 +4,7 @@ import { path } from 'ramda'
 import { Metadata } from './core/metadata'
 import { Hashable, ClassConstructor } from './types'
 
+// TODO refactor this method. Use a class to build an object
 export function buildObject<T>(
     targetKlass: ClassConstructor<Hashable & T>,
     jsonObj: Hashable
@@ -16,12 +17,28 @@ export function buildObject<T>(
 
     if (properties) {
         for (const property of properties) {
-            const { propertyKey, name, type, nullable, target } = property
+            const {
+                propertyKey,
+                name,
+                type,
+                nullable,
+                target,
+                builder
+            } = property
             const objPropName = name ?? propertyKey
 
             let value = path<any>(objPropName.split('.'), jsonObj) !== undefined
                 ?  path<any>(objPropName.split('.'), jsonObj)
                 : path<any>([propertyKey], jsonObj)
+
+            if (builder) {
+                if (typeof builder === 'function') {
+                    value = builder(jsonObj)
+                }
+                if (typeof builder === 'object') {
+                    value = builder.build(value)
+                }
+            }
 
             if (value === undefined && !nullable) {
                 throw new Error(
