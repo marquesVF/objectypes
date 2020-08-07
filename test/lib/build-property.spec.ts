@@ -1,5 +1,6 @@
 import { BaseModel } from '../fixtures/base-model'
 import { buildObject } from '../../lib'
+import { BuildPropertyModel } from '../fixtures/build-property-model'
 
 describe('BuildProperty decorator', () => {
     describe('when property to be build is nullable', () => {
@@ -19,6 +20,29 @@ describe('BuildProperty decorator', () => {
 
                 expect(result).toEqual(expectedObject)
             })
+        })
+    })
+
+    describe('when property is an object', () => {
+        const jsonObject = {
+            foo: 'foo property',
+            id: 'id',
+            name: 'jsonObject',
+            createdAt: '2020-08-07T20:31:56.721Z'
+        }
+        const expectedObject: BuildPropertyModel = {
+            foo: 'foo property',
+            childModel: {
+                id: 'id',
+                name: 'jsonObject',
+                createdAt: new Date('2020-08-07T20:31:56.721Z')
+            }
+        }
+
+        it('', () => {
+            const result = buildObject(BuildPropertyModel, jsonObject)
+
+            expect(result).toEqual(expectedObject)
         })
     })
 })
