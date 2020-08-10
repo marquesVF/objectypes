@@ -2,6 +2,7 @@ import { BaseModel } from '../fixtures/base-model'
 import { NestedModel } from '../fixtures/nested-model'
 import { validateObject } from '../../lib'
 import { VendorModel } from '../fixtures/vendor-model'
+import { ComplexModel } from '../fixtures/complex-mode'
 
 describe('validateObject method', () => {
     describe('when there is a valid JSON object', () => {
@@ -30,6 +31,29 @@ describe('validateObject method', () => {
             it('should return no errors', () => {
                 const { presenceErrors, typeErrors }
                     = validateObject(NestedModel, nestedObject)
+
+                expect(presenceErrors).toHaveLength(0)
+                expect(typeErrors).toHaveLength(0)
+            })
+        })
+
+        describe('when there is complex property names', () => {
+            const jsonObject = {
+                data: {
+                    // eslint-disable-next-line @typescript-eslint/camelcase
+                    Complex_Prop: 'foo',
+                    // eslint-disable-next-line @typescript-eslint/camelcase
+                    Deep_Nested: {
+                        Prop: 'nested foo'
+                    }
+                }
+            }
+
+            it('should validate correctly', () => {
+                const {
+                    presenceErrors,
+                    typeErrors
+                } = validateObject(ComplexModel, jsonObject)
 
                 expect(presenceErrors).toHaveLength(0)
                 expect(typeErrors).toHaveLength(0)
