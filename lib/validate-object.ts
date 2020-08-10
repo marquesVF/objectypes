@@ -19,7 +19,7 @@ export function validateObject<T>(
 
             const jsonPropertyName = name ?? propertyKey
 
-            const value = path([jsonPropertyName], obj)
+            const value = path(jsonPropertyName.split('.'), obj)
 
             // Property presence validation
             if (value === undefined && !nullable) {
