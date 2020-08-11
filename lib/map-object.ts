@@ -12,8 +12,7 @@ function processValue<T, K>(
     }
 
     if (!mapTransformer) {
-        // eslint-disable-next-line max-len
-        throw new Error('Invalid mapping options. No property field or transformation found.')
+        throw new Error('Invalid mapping. No property or transformation found.')
     }
 
     return mapTransformer.transform(obj as T)

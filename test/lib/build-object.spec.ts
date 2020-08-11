@@ -73,7 +73,7 @@ describe('buildObject method', () => {
         }
 
         it('should rise a error when missing a property', () => {
-            expect(test).toThrowError(`Property 'baseModel' is missing. Couldn't build an RequestPayloadModel object.`)
+            expect(test).toThrowError(`Property 'baseModel' is missing. Couldn't build RequestPayloadModel object.`)
         })
     })
 
