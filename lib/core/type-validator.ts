@@ -17,6 +17,14 @@ export function isTypeValid(
         }
     }
 
+    if (expectedType === 'number'
+        && ['string', 'number'].includes(typeof value)
+    ) {
+        if (!isNaN(Number(value))) {
+            return
+        }
+    }
+
     if (expectedType === propertyType) {
         return
     }
