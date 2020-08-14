@@ -2,6 +2,7 @@
 import { RequestPayloadModel } from '../fixtures/request-payload-mode'
 import { buildObject } from '../../lib/build-object'
 import { OptionalModel } from '../fixtures/optional-model'
+import { PrimitiveModel } from '../fixtures/primitive-model'
 
 describe('buildObject method', () => {
     describe('when dealing with a valid JSON object', () => {
@@ -86,6 +87,53 @@ describe('buildObject method', () => {
             const obj = buildObject(OptionalModel, model)
 
             expect(obj.name).toEqual('')
+        })
+    })
+
+    describe('when model has primitive types', () => {
+        describe('when json object has unexpected property types but convertable', () => {
+            const model = {
+                counter: '0',
+                createdAt: '2020-08-14T17:34:42.475Z'
+            }
+
+            it('should build the object with expected primitive types', () => {
+                const builder = () => buildObject(PrimitiveModel, model)
+
+                expect(builder).not.toThrowError()
+
+                const result = builder()
+
+                expect(typeof result.counter).toEqual('number')
+                expect(typeof result.createdAt).toEqual('object')
+                expect(Date.parse(result.createdAt.toString())).toBeTruthy()
+            })
+        })
+
+        describe('when json object has not convertable properties', () => {
+            describe('when the expected property type is a number', () => {
+                const model = {
+                    counter: 'foo',
+                    createdAt: '2020-08-14T17:34:42.475Z'
+                }
+                const builder = () => buildObject(PrimitiveModel, model)
+
+                it('should throw an error', () => {
+                    expect(builder).toThrowError()
+                })
+            })
+
+            describe('when the expected property type is a date', () => {
+                const model = {
+                    counter: '54',
+                    createdAt: '2020-08-99'
+                }
+                const builder = () => buildObject(PrimitiveModel, model)
+
+                it('should throw an error', () => {
+                    expect(builder).toThrowError()
+                })
+            })
         })
     })
 })
