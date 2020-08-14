@@ -34,8 +34,11 @@ export function buildObject<T>(
                 .getMetadata('design:type', target, propertyKey)
                 .name
 
-            if (expectedType === 'Date') {
-                value = new Date(value)
+            try {
+                value = castValue(expectedType, value)
+            } catch (err) {
+                // eslint-disable-next-line max-len
+                throw new Error(`Property ${objPropName} type is not assignable to ${expectedType}. Found ${value}`)
             }
 
             const transformMetadata = transformations
@@ -58,4 +61,23 @@ export function buildObject<T>(
     }
 
     return targetObj
+}
+
+function castValue(expectedType: string, value: any): any {
+    if (expectedType === 'Number') {
+        if (isNaN(value)) {
+            throw new Error()
+        }
+
+        return Number(value)
+    }
+    if (expectedType === 'Date') {
+        if (!Date.parse(value)) {
+            throw new Error()
+        }
+
+        return new Date(value)
+    }
+
+    return value
 }

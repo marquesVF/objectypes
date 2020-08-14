@@ -61,10 +61,10 @@ describe('validateObject method', () => {
         })
     })
 
-    describe('when there is an JSON object with missing property and invalid type', () => {
+    describe('when there is a JSON object with missing property and invalid type', () => {
         const jsonObject = {
             vendorName: 'mark',
-            price: 34,
+            price: '34',
             confirmed: 'it should be a boolean value'
         }
 
