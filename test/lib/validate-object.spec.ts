@@ -3,6 +3,7 @@ import { NestedModel } from '../fixtures/nested-model'
 import { validateObject } from '../../lib'
 import { VendorModel } from '../fixtures/vendor-model'
 import { ComplexModel } from '../fixtures/complex-mode'
+import { PrimitiveModel } from '../fixtures/primitive-model'
 
 describe('validateObject method', () => {
     describe('when there is a valid JSON object', () => {
@@ -93,6 +94,21 @@ describe('validateObject method', () => {
 
             expect(presenceErrors).toHaveLength(1)
             expect(typeErrors).toHaveLength(0)
+        })
+    })
+
+    describe('when model has primitive types', () => {
+        describe('when json object has unexpected property types but convertable', () => {
+            const model = {
+                counter: '10',
+                createdAt: '2020-08-14T17:34:42.475Z'
+            }
+
+            it('should not return any type error', () => {
+                const { typeErrors } = validateObject(PrimitiveModel, model)
+
+                expect(typeErrors).toHaveLength(0)
+            })
         })
     })
 })

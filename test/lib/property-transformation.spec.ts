@@ -1,5 +1,6 @@
 import { Transformable } from '../fixtures/transformable'
 import { extractObject, buildObject } from '../../lib'
+import { OptionalBuildModel } from '../fixtures/optional-build-model'
 
 describe('property transformation', () => {
     const extractedObject = {
@@ -43,6 +44,14 @@ describe('property transformation', () => {
                 const result = () => buildObject(Transformable, invalidObject)
 
                 expect(result).toThrowError()
+            })
+        })
+
+        describe('when typed object has a transformation for a optional property', () => {
+            it('should not execute the transformation if property is undefined', () => {
+                const builder = () => buildObject(OptionalBuildModel, { })
+
+                expect(builder).not.toThrowError()
             })
         })
     })
