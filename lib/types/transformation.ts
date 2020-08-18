@@ -1,4 +1,4 @@
-export type BuildTransformationFn<T> = (value: unknown) => T
+export type BuildTransformationFn<T> = (value: any) => T
 
 export interface BuildTransformer<T> {
     transform: BuildTransformationFn<T>
