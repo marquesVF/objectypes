@@ -41,11 +41,13 @@ export function buildObject<T>(
                 throw new Error(`Property ${objPropName} type is not assignable to ${expectedType}. Found ${value}`)
             }
 
-            const transformMetadata = transformations
-                ?.find(metadata => metadata.propertyKey === propertyKey)
-            if (transformMetadata) {
-                // TODO improve error handling since it may raise errors in runtine
-                value = transformMetadata.transformer.transform(value)
+            if (value !== undefined) {
+                const transformMetadata = transformations
+                    ?.find(metadata => metadata.propertyKey === propertyKey)
+                if (transformMetadata) {
+                    // TODO improve error handling since it may raise errors in runtine
+                    value = transformMetadata.transformer.transform(value)
+                }
             }
 
             if (type && !nullable) {
