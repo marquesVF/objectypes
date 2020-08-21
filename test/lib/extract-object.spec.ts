@@ -53,7 +53,7 @@ describe('extractObject method', () => {
         const jsonObject = extractObject(childModel, ChildModel, { namedOnly: true })
 
         it('should only export named properties', () => {
-            expect(jsonObject).toHaveProperty('name', undefined)
+            expect(jsonObject).not.toHaveProperty('name')
             expect(jsonObject).toHaveProperty('Creation_Date', childModel.createdAt)
             expect(jsonObject).toHaveProperty('ID', childModel.id)
         })
