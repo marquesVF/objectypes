@@ -50,12 +50,15 @@ describe('extractObject method', () => {
     })
 
     describe('when passing namedOnly option flag as true', () => {
+        const expectedObj = {
+            // eslint-disable-next-line @typescript-eslint/camelcase
+            Creation_Date: childModel.createdAt,
+            ID: childModel.id
+        }
         const jsonObject = extractObject(childModel, ChildModel, { namedOnly: true })
 
         it('should only export named properties', () => {
-            expect(jsonObject).toHaveProperty('name', undefined)
-            expect(jsonObject).toHaveProperty('Creation_Date', childModel.createdAt)
-            expect(jsonObject).toHaveProperty('ID', childModel.id)
+            expect(jsonObject).toEqual(expectedObj)
         })
     })
 })

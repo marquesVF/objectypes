@@ -67,7 +67,7 @@ export class Metadata {
         }
 
         const filteredProperty = namedOnly
-            ? properties.filter(property => property.name !== undefined)
+            ? properties.filter(property => property.name)
             : properties
 
         const parentKlass = klass.prototype
@@ -81,7 +81,7 @@ export class Metadata {
             }
         }
 
-        return properties
+        return filteredProperty
     }
 
     findMapProperties<T, K>(
