@@ -3,6 +3,7 @@ import { RequestPayloadModel } from '../fixtures/request-payload-mode'
 import { buildObject } from '../../lib/build-object'
 import { OptionalModel } from '../fixtures/optional-model'
 import { PrimitiveModel } from '../fixtures/primitive-model'
+import { Statement } from '../fixtures/nested-in-array-model'
 
 describe('buildObject method', () => {
     describe('when dealing with a valid JSON object', () => {
@@ -134,6 +135,46 @@ describe('buildObject method', () => {
                     expect(builder).toThrowError()
                 })
             })
+        })
+    })
+
+    describe('when nested object is in an array', () => {
+        const payload = {
+            extractions: {
+                data: [
+                    {
+                        date: '02-09-2019',
+                        valueDate: '02-09-2019',
+                        index: '0'
+                    },
+                    {
+                        date: '03/09/2019',
+                        valueDate: '03/09/2019',
+                        index: '1'
+                    }
+                ]
+            }
+        }
+
+        const expected = {
+            movement: [
+                {
+                    date: '02/09/2019',
+                    valueDate: '02/09/2019',
+                    index: 0
+                },
+                {
+                    date: '03/09/2019',
+                    valueDate: '03/09/2019',
+                    index: 1
+                }
+            ]
+        }
+
+        it('should build successfuly', () => {
+            const result = buildObject(Statement, payload)
+
+            expect(result).toEqual(expected)
         })
     })
 })
