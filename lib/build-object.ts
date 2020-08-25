@@ -50,7 +50,7 @@ export function buildObject<T>(
                 }
             }
 
-            if (type && !nullable) {
+            if (type && value !== undefined) {
                 const nestedValue = Array.isArray(value)
                     ? value.map(val => buildObject(type, val))
                     : buildObject(type, value)
