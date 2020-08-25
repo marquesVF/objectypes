@@ -1,6 +1,7 @@
 import { Property } from '../../lib'
 
 import { BaseModel } from './base-model'
+import { Transformable } from './transformable'
 
 export class NestedModel {
 
@@ -9,5 +10,12 @@ export class NestedModel {
 
     @Property({ type: BaseModel })
     baseModelArray: BaseModel[]
+
+}
+
+export class NestedTransformableModel {
+
+    @Property({ name: 'foo', type: Transformable })
+    transformable: Transformable
 
 }

@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 import { ChildModel } from '../fixtures/child-model'
 import { extractObject } from '../../lib'
-import { NestedModel } from '../fixtures/nested-model'
+import { NestedModel, NestedTransformableModel } from '../fixtures/nested-model'
 
 describe('extractObject method', () => {
     const today = new Date()
@@ -11,31 +11,31 @@ describe('extractObject method', () => {
         name: 'vini'
     }
 
-    describe('when converting an object model with heritance to a json successfully', () => {
+    describe('when extracting an object model with heritance to a json successfully', () => {
         const jsonObject = extractObject(childModel, ChildModel)
 
-        it('should convert model class properties', () => {
+        it('should extract model class properties', () => {
             expect(jsonObject).toHaveProperty('name', childModel.name)
             expect(jsonObject).toHaveProperty('Creation_Date', childModel.createdAt)
         })
 
-        it('should convert inherited properties', () => {
+        it('should extract inherited properties', () => {
             expect(jsonObject).toHaveProperty('ID', childModel.id)
         })
     })
 
-    describe('when converting an object model with composition', () => {
-        const nestedModel: NestedModel = {
-            baseModel: {
-                id: 'baseModel'
-            },
-            baseModelArray: [{
-                id: 'baseModelArray'
-            }]
-        }
-        const jsonObject = extractObject(nestedModel, NestedModel)
+    describe('when extracting an object model with composition', () => {
+        it('should extract nested classes even in an arrary', () => {
+            const nestedModel: NestedModel = {
+                baseModel: {
+                    id: 'baseModel'
+                },
+                baseModelArray: [{
+                    id: 'baseModelArray'
+                }]
+            }
+            const jsonObject = extractObject(nestedModel, NestedModel)
 
-        it('should convert nested classes even in an arrary', () => {
             const extractedObject = {
                 BASE_MODEL: {
                     ID: 'baseModel'
@@ -43,6 +43,24 @@ describe('extractObject method', () => {
                 baseModelArray: [{
                     ID: 'baseModelArray'
                 }]
+            }
+
+            expect(jsonObject).toEqual(extractedObject)
+        })
+
+        describe('when nested class has transformations', () => {
+            const nestedTransformable: NestedTransformableModel = {
+                transformable: {
+                    code: '3234',
+                    timeDate: new Date('2020-08-25T13:39:37.760Z')
+                }
+            }
+            const jsonObject = extractObject(nestedTransformable, NestedTransformableModel)
+            const extractedObject = {
+                foo: {
+                    code: '3234',
+                    time: 1598362777760
+                }
             }
 
             expect(jsonObject).toEqual(extractedObject)
