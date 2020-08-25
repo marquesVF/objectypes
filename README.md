@@ -210,13 +210,7 @@ Sets a transformation function in the form `<T>(value: unknown) => T` in which a
 import { extractObject, BuildTransformer } from 'objectypes'
 
 class SanitizerTransformation implements BuildTransformer<string> {
-    transform(value: unknown): Date {
-        if (typeof value !== 'string') {
-            throw new Error(
-                `'${value}' has not a valid value. Expected a string.`
-            )
-        }
-
+    transform(value: string): string {
         return value.replace('-', '')
     }
 }

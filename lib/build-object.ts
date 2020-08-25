@@ -65,7 +65,11 @@ export function buildObject<T>(
     return targetObj
 }
 
-function castValue(expectedType: string, value: any): any {
+function castValue(expectedType: string, value?: any): any {
+    if (value === undefined) {
+        return value
+    }
+
     if (expectedType === 'Number') {
         if (isNaN(value)) {
             throw new Error()
