@@ -8,4 +8,7 @@ export class PrimitiveModel {
     @Property()
     createdAt: Date
 
+    @Property({ nullable: true })
+    someNumber?: number
+
 }
