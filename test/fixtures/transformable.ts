@@ -3,11 +3,7 @@ import { ExtractTransformer, BuildTransformer } from '../../lib/types'
 
 class CodeTransformation implements BuildTransformer<string> {
 
-    transform(value: unknown): string  {
-        if (typeof value !== 'string') {
-            throw new Error('Not a valid string')
-        }
-
+    transform(value: string): string  {
         return value.replace('-', '')
     }
 
