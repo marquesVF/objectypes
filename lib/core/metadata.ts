@@ -3,6 +3,7 @@ import { ClassConstructor } from '../types/class-constructor'
 import { MapPropertyMetadata } from '../types/map-property-metadata'
 import { TransformationMetadata, TransformationScope }
     from '../types/transformation'
+import { ReductionMetadata } from '../types'
 
 // TODO refactor this class - too many similar code
 export class Metadata {
@@ -14,6 +15,8 @@ export class Metadata {
     readonly mapPropertyMetadata: Map<string, Array<MapPropertyMetadata<any, any>>> = new Map()
     // eslint-disable-next-line max-len
     readonly transformationMetadata: Map<string, Array<TransformationMetadata<any, any>>> = new Map()
+    // eslint-disable-next-line max-len
+    readonly reducerMetadata: Map<string, Array<ReductionMetadata<any>>> = new Map()
 
     static getInstance(): Metadata {
         return Metadata._instance
@@ -50,6 +53,19 @@ export class Metadata {
 
         if (!properties) {
             this.transformationMetadata.set(className, [metadata])
+        } else {
+            properties.push(metadata)
+        }
+    }
+
+    registerBuildReduction<T>(
+        className: string,
+        metadata: ReductionMetadata<T>
+    ) {
+        const properties = this.reducerMetadata.get(className)
+
+        if (!properties) {
+            this.reducerMetadata.set(className, [metadata])
         } else {
             properties.push(metadata)
         }
@@ -117,6 +133,14 @@ export class Metadata {
         return this.transformationMetadata
             .get(klassName)
             ?.filter(metadata => metadata.scope === scope)
+    }
+
+    findReductions<T>(
+        klass: ClassConstructor<T>
+    ): Array<ReductionMetadata<any>> | undefined {
+        const klassName = klass.name ?? klass.constructor.name
+
+        return this.reducerMetadata.get(klassName)
     }
 
 }

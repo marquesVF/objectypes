@@ -260,6 +260,37 @@ const transformableObj: Transformable = {
 extractObject(transformableObj, Transformable)
 ```
 
+#### `@BuildReduction`
+
+Sets a reduction function. It can be useful when there's a need to combine multiple
+properties from a json object into a single typed object property.
+
+- Parameter:
+    - **transformer**: a `ExtractTransformer` object.
+
+- Example:
+```typescript
+import { extractObject } from 'objectypes'
+
+class ReducibleObject {
+    @Property()
+    @BuildReduction({
+        reducer: (obj: object): string => `${obj.firstProp} ${obj.secondProp}`
+    })
+    reducedProp: string
+}
+
+const jsonObject = {
+    firstProp: 'hello',
+    secondProp: 'world'
+}
+
+// {
+//     reducedProp: 'hello world'
+// }
+buildObject(transformableObj, Transformable)
+```
+
 ### Methods
 
 #### extractObject
