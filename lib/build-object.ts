@@ -13,11 +13,23 @@ export function buildObject<T>(
     const properties = metadataStorage.findProperties(targetKlass)
     const transformations = metadataStorage
         .findTransformations(targetKlass, 'build')
+    const reductions = metadataStorage.findReductions(targetKlass)
 
     if (properties) {
         for (const property of properties) {
             const { propertyKey, name, type, nullable, target } = property
             const objPropName = name ?? propertyKey
+
+            if (reductions) {
+                const reductionMetada = reductions
+                        ?.find(metadata => metadata.propertyKey === propertyKey)
+                if (reductionMetada) {
+                    const value = reductionMetada.reducer.reduce(jsonObj)
+
+                    Reflect.set(targetObj, propertyKey, value)
+                    continue
+                }
+            }
 
             let value = path<any>(objPropName.split('.'), jsonObj) !== undefined
                 ?  path<any>(objPropName.split('.'), jsonObj)

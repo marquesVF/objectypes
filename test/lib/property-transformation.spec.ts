@@ -22,7 +22,7 @@ describe('property transformation', () => {
     })
 
     describe('when building the object', () => {
-        describe('when object is valid', () => {
+        describe('when object has all required properties with expected types', () => {
             const jsonObject = {
                 time: '2020-07-06T20:28:18.256Z',
                 code: '11-11'
@@ -35,7 +35,7 @@ describe('property transformation', () => {
             })
         })
 
-        describe('when object is invalid', () => {
+        describe('when object has property with invalid type', () => {
             const invalidObject = {
                 time: 34
             }
@@ -47,7 +47,7 @@ describe('property transformation', () => {
             })
         })
 
-        describe('when typed object has a transformation for a optional property', () => {
+        describe('when typed object has a transformation for an optional property', () => {
             it('should not execute the transformation if property is undefined', () => {
                 const builder = () => buildObject(OptionalBuildModel, { })
 
