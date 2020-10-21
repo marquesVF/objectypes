@@ -1,5 +1,4 @@
 /* eslint-disable no-useless-constructor */
-import { Hashable } from './types/hashable'
 import { buildObject } from './build-object'
 import { extractObject } from './extract-object'
 import { validateObject } from './validate-object'
@@ -38,7 +37,7 @@ export class ObjectHandler<T> {
         return { presenceErrors, typeErrors, summary: errorSummary }
     }
 
-    validate(obj: Hashable): ErrorSummary | undefined {
+    validate(obj: unknown): ErrorSummary | undefined {
         const errors = validateObject(this.klass, obj)
         const { presenceErrors, typeErrors } = errors
         const valid = presenceErrors.length === 0 && typeErrors.length === 0
