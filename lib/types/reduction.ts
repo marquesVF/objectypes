@@ -1,4 +1,4 @@
-export type ReductionFn<T> = (obj: object) => T
+export type ReductionFn<T> = (obj: any) => T
 
 export interface Reducer<T> {
     reduce: ReductionFn<T>
