@@ -1,5 +1,7 @@
 import { ClassConstructor, PropertyMetadata } from '../../types'
 
+import { findParentClass } from './utils'
+
 const propertyMetadata: Map<string, PropertyMetadata[]> = new Map()
 
 export function savePropertyMetadata(
@@ -33,25 +35,21 @@ export function findClassPropertiesMetadata(
 
   const classProperties = filterClassPropertiesIfNamed(properties, namedOnly)
 
-  if (parentClassPropertiesMetadata !== undefined) {
-    return [...classProperties, ...parentClassPropertiesMetadata]
-  }
-
-  return classProperties
+  return parentClassPropertiesMetadata
+    ? [...classProperties, ...parentClassPropertiesMetadata]
+    : classProperties
 }
 
 function findParentClassPropertiesMetadata(
   klass: ClassConstructor<any>,
   namedOnly?: boolean
 ) {
-  const parentKlass = findParentClass(klass)
-  if (parentKlass === undefined) {
+  const parentClass = findParentClass(klass)
+  if (parentClass === undefined) {
     return
   }
 
-  const parentProperties = findClassPropertiesMetadata(parentKlass, namedOnly)
-
-  return parentProperties
+  return findClassPropertiesMetadata(parentClass, namedOnly)
 }
 
 function filterClassPropertiesIfNamed(
@@ -59,8 +57,4 @@ function filterClassPropertiesIfNamed(
   namedOnly?: boolean
 ) {
   return namedOnly ? properties.filter(property => property.name) : properties
-}
-
-function findParentClass(klass: ClassConstructor<any>) {
-  return klass.prototype ? Object.getPrototypeOf(klass.prototype) : undefined
 }

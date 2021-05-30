@@ -1,5 +1,7 @@
 import { ClassConstructor, MapPropertyMetadata } from '../../types'
 
+import { findParentClass } from './utils'
+
 type MapPropertyMetadataArray = Array<MapPropertyMetadata<any, any>>
 
 const mapPropertyMetadata: Map<string, MapPropertyMetadataArray> = new Map()
@@ -17,26 +19,29 @@ export function saveMappingMetadata<T, K>(
   }
 }
 
-export function findMappingProperties<T, K>(
+export function findClassMappingMetadata<T, K>(
   klass: ClassConstructor<T>
 ): Array<MapPropertyMetadata<T, K>> | undefined {
   const klassName = klass.name ?? klass.constructor.name
-  const properties = mapPropertyMetadata.get(klassName)
+  const mappingProperties = mapPropertyMetadata.get(klassName)
 
-  if (!properties) {
+  if (!mappingProperties) {
     return undefined
   }
 
-  const parentKlass = klass.prototype
-    ? Object.getPrototypeOf(klass.prototype)
-    : undefined
-  if (parentKlass !== undefined) {
-    const parentProperties = findMappingProperties(parentKlass)
+  const parentClassMappingMetadata = findParentClassMappingMetadata(klass)
 
-    if (parentProperties !== undefined) {
-      return [...properties, ...parentProperties]
-    }
+  return parentClassMappingMetadata
+    ? [...mappingProperties, ...parentClassMappingMetadata]
+    : mappingProperties
+}
+
+function findParentClassMappingMetadata(klass: ClassConstructor<any>) {
+  const parentClass = findParentClass(klass)
+
+  if (parentClass === undefined) {
+    return
   }
 
-  return properties
+  return findClassMappingMetadata(parentClass)
 }
