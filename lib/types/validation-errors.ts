@@ -1,10 +1,10 @@
 export interface TypeError {
-    propertyKey: string
-    propertyType: string
-    expectedType: string
+  propertyKey: string
+  propertyType: string
+  expectedType: string
 }
 
 export interface ValidationErrors {
-    presenceErrors: string[]
-    typeErrors: TypeError[]
+  presenceErrors: string[]
+  typeErrors: TypeError[]
 }

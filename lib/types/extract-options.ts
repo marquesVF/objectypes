@@ -1,3 +1,3 @@
 export interface ExtractOptions {
-    namedOnly?: boolean
+  namedOnly?: boolean
 }

@@ -8,12 +8,12 @@ export { buildObject } from './build-object'
 export { ObjectHandler } from './object-handler'
 export { validateObject } from './validate-object'
 export {
-    ClassConstructor,
-    Hashable,
-    BuildTransformationFn,
-    BuildTransformer,
-    ExtractTransformationFn,
-    ExtractTransformer,
-    MapTransformer,
-    Reducer
+  ClassConstructor,
+  Hashable,
+  BuildTransformationFn,
+  BuildTransformer,
+  ExtractTransformationFn,
+  ExtractTransformer,
+  MapTransformer,
+  Reducer
 } from './types'
