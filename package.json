@@ -18,7 +18,10 @@
     "build": "tsc -p tsconfig.build.json",
     "watch": "tsc -p tsconfig.build.json --watch",
     "prepare": "npm run build",
-    "lint": "eslint --ext .ts --cache lib",
+    "lint": "npm run lint:eslint && npm run lint:prettier",
+    "lint:eslint": "eslint --ext .ts --cache lib",
+    "lint:prettier": "prettier \"**/*.{ts,md}\"",
+    "fix": "npm run lint:prettier --write && npm run lint:eslint --fix",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage"
@@ -38,11 +41,13 @@
     "@typescript-eslint/eslint-plugin": "2.25.0",
     "@typescript-eslint/parser": "2.25.0",
     "eslint": "6.8.0",
+    "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-import": "2.20.1",
     "jest": "25.5.4",
+    "lodash": "4.17.21",
+    "prettier": "^2.3.0",
     "ts-jest": "25.4.0",
-    "typescript": "3.8.3",
-    "lodash": "4.17.21"
+    "typescript": "3.8.3"
   },
   "dependencies": {
     "@types/ramda": "0.27.7",
