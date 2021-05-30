@@ -1,4 +1,5 @@
 import { Metadata } from './core/metadata'
+import { findClassPropertiesMetadata } from './core/metadata/property'
 import { Hashable, ClassConstructor, MapPropertyMetadata } from './types'
 
 function processValue<T, K>(
@@ -37,16 +38,16 @@ export function mapObject<T, K>(
 
   // Get regular properties ignoring mappedProperties
   const mappedKeys = mappedProperties?.map(mapped => mapped.propertyKey)
-  const properties = Metadata.getInstance()
-    .findProperties(targetKlass)
-    ?.filter(property => {
+  const properties = findClassPropertiesMetadata(targetKlass)?.filter(
+    property => {
       if (mappedKeys) {
         // Avoid duplicated properties
         return !mappedKeys.includes(property.propertyKey)
       }
 
       return true
-    })
+    }
+  )
 
   // eslint-disable-next-line no-unused-expressions
   properties?.forEach(property => {

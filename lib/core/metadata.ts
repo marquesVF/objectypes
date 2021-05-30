@@ -1,18 +1,15 @@
-import { PropertyMetadata } from '../types/property-metadata'
 import { ClassConstructor } from '../types/class-constructor'
 import { MapPropertyMetadata } from '../types/map-property-metadata'
 import {
   TransformationMetadata,
-  TransformationScope
+  TransformationScope,
 } from '../types/transformation'
 import { ReductionMetadata } from '../types'
 
 // TODO refactor this class - too many similar code
 export class Metadata {
-
   private static _instance = new Metadata()
 
-  readonly propertyMetadata: Map<string, PropertyMetadata[]> = new Map()
   // eslint-disable-next-line max-len
   readonly mapPropertyMetadata: Map<
     string,
@@ -29,16 +26,6 @@ export class Metadata {
 
   static getInstance(): Metadata {
     return Metadata._instance
-  }
-
-  registerMetadata(className: string, metadata: PropertyMetadata) {
-    const properties = this.propertyMetadata.get(className)
-
-    if (!properties) {
-      this.propertyMetadata.set(className, [metadata])
-    } else {
-      properties.push(metadata)
-    }
   }
 
   registerMapMetadata<T, K>(
@@ -75,35 +62,6 @@ export class Metadata {
     } else {
       properties.push(metadata)
     }
-  }
-
-  findProperties(
-    klass: ClassConstructor<any>,
-    namedOnly?: boolean
-  ): PropertyMetadata[] | undefined {
-    const klassName = klass.name ?? klass.constructor.name
-    const properties = this.propertyMetadata.get(klassName)
-
-    if (!properties) {
-      return undefined
-    }
-
-    const filteredProperty = namedOnly
-      ? properties.filter(property => property.name)
-      : properties
-
-    const parentKlass = klass.prototype
-      ? Object.getPrototypeOf(klass.prototype)
-      : undefined
-    if (parentKlass !== undefined) {
-      const parentProperties = this.findProperties(parentKlass, namedOnly)
-
-      if (parentProperties !== undefined) {
-        return [...filteredProperty, ...parentProperties]
-      }
-    }
-
-    return filteredProperty
   }
 
   findMapProperties<T, K>(
@@ -148,5 +106,4 @@ export class Metadata {
 
     return this.reducerMetadata.get(klassName)
   }
-
 }

@@ -2,6 +2,7 @@
 import { path } from 'ramda'
 
 import { Metadata } from './core/metadata'
+import { findClassPropertiesMetadata } from './core/metadata/property'
 import { Hashable, ClassConstructor } from './types'
 
 export function buildObject<T>(
@@ -10,7 +11,7 @@ export function buildObject<T>(
 ): T {
   const targetObj = new targetKlass()
   const metadataStorage = Metadata.getInstance()
-  const properties = metadataStorage.findProperties(targetKlass)
+  const properties = findClassPropertiesMetadata(targetKlass)
   const transformations = metadataStorage.findTransformations(
     targetKlass,
     'build'
@@ -34,8 +35,8 @@ export function buildObject<T>(
         }
       }
 
-      let value
-        = path<any>(objPropName.split('.'), jsonObj) !== undefined
+      let value =
+        path<any>(objPropName.split('.'), jsonObj) !== undefined
           ? path<any>(objPropName.split('.'), jsonObj)
           : path<any>([propertyKey], jsonObj)
 
