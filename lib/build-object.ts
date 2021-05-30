@@ -4,7 +4,7 @@ import { path } from 'ramda'
 import { findClassPropertiesMetadata } from './core/metadata/property'
 import { findClassReductionMetadata } from './core/metadata/reduction'
 import { findClassTransformationMetadata } from './core/metadata/transformation'
-import { Hashable, ClassConstructor } from './types'
+import { Hashable, ClassConstructor, PropertyMetadata } from './types'
 
 export function buildObject<T>(
   targetKlass: ClassConstructor<Hashable & T>,
@@ -13,23 +13,19 @@ export function buildObject<T>(
   const targetObj = new targetKlass()
   const properties = findClassPropertiesMetadata(targetKlass)
   const transformations = findClassTransformationMetadata(targetKlass, 'build')
-  const reductions = findClassReductionMetadata(targetKlass)
 
   if (properties) {
     for (const property of properties) {
       const { propertyKey, name, type, nullable, target } = property
       const objPropName = name ?? propertyKey
-
-      if (reductions) {
-        const reductionMetada = reductions?.find(
-          metadata => metadata.propertyKey === propertyKey
-        )
-        if (reductionMetada) {
-          const value = reductionMetada.reducer.reduce(jsonObj)
-
-          Reflect.set(targetObj, propertyKey, value)
-          continue
-        }
+      const appliedReductions = applyReductionsToObject(
+        targetKlass,
+        targetObj,
+        jsonObj,
+        property
+      )
+      if (appliedReductions) {
+        continue
       }
 
       let value =
@@ -82,6 +78,27 @@ export function buildObject<T>(
   }
 
   return targetObj
+}
+
+function applyReductionsToObject<T>(
+  targetClass: ClassConstructor<Hashable & T>,
+  targetObject: Hashable & T,
+  jsonObject: Hashable,
+  { propertyKey }: PropertyMetadata
+) {
+  const reductions = findClassReductionMetadata(targetClass)
+  const reductionMetada = reductions?.find(
+    metadata => metadata.propertyKey === propertyKey
+  )
+
+  if (!reductionMetada) {
+    return false
+  }
+
+  const value = reductionMetada.reducer.reduce(jsonObject)
+  Reflect.set(targetObject, propertyKey, value)
+
+  return true
 }
 
 function castValue(expectedType: string, value?: any): any {
