@@ -1,4 +1,4 @@
-import { Metadata } from './core/metadata'
+import { findMappingProperties } from './core/metadata/mapping'
 import { findClassPropertiesMetadata } from './core/metadata/property'
 import { Hashable, ClassConstructor, MapPropertyMetadata } from './types'
 
@@ -25,9 +25,9 @@ export function mapObject<T, K>(
   obj: Hashable & K
 ): T {
   const targetObj = new targetKlass()
-  const mappedProperties = Metadata.getInstance()
-    .findMapProperties<T, unknown>(targetKlass)
-    ?.filter(property => property.mapTarget.name === objKlass.name)
+  const mappedProperties = findMappingProperties<T, unknown>(
+    targetKlass
+  )?.filter(property => property.mapTarget.name === objKlass.name)
 
   // eslint-disable-next-line no-unused-expressions
   mappedProperties?.forEach(property => {

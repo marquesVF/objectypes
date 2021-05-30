@@ -1,4 +1,4 @@
-import { Metadata } from '../core/metadata'
+import { saveMappingMetadata } from '../core/metadata/mapping'
 import { ClassConstructor, MapPropertyMetadata, MapTransformer } from '../types'
 
 export function MapProperty<T>(
@@ -10,10 +10,10 @@ export function MapProperty<T>(
     const metadata: MapPropertyMetadata<T, unknown> = {
       mapTarget: klass,
       mapPropertyKey: propKey.toString(),
-      propertyKey: propertyKey as string
+      propertyKey: propertyKey as string,
     }
 
-    Metadata.getInstance().registerMapMetadata(klassName, metadata)
+    saveMappingMetadata(klassName, metadata)
   }
 }
 
@@ -26,9 +26,9 @@ export function MapAndTransformProperty<T, K>(
     const metadata: MapPropertyMetadata<T, unknown> = {
       mapTarget: klass,
       mapTransformer: transformer,
-      propertyKey: propertyKey as string
+      propertyKey: propertyKey as string,
     }
 
-    Metadata.getInstance().registerMapMetadata(klassName, metadata)
+    saveMappingMetadata(klassName, metadata)
   }
 }
