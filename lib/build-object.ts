@@ -3,6 +3,7 @@ import { path } from 'ramda'
 
 import { Metadata } from './core/metadata'
 import { findClassPropertiesMetadata } from './core/metadata/property'
+import { findClassTransformationMetadata } from './core/metadata/transformation'
 import { Hashable, ClassConstructor } from './types'
 
 export function buildObject<T>(
@@ -12,10 +13,7 @@ export function buildObject<T>(
   const targetObj = new targetKlass()
   const metadataStorage = Metadata.getInstance()
   const properties = findClassPropertiesMetadata(targetKlass)
-  const transformations = metadataStorage.findTransformations(
-    targetKlass,
-    'build'
-  )
+  const transformations = findClassTransformationMetadata(targetKlass, 'build')
   const reductions = metadataStorage.findReductions(targetKlass)
 
   if (properties) {

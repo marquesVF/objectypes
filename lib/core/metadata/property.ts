@@ -4,7 +4,7 @@ import { findParentClass } from './utils'
 
 const propertyMetadata: Map<string, PropertyMetadata[]> = new Map()
 
-export function savePropertyMetadata(
+export function saveClassPropertyMetadata(
   className: string,
   metadata: PropertyMetadata
 ) {

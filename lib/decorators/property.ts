@@ -1,6 +1,6 @@
 import { PropertyOptions } from '../types/property-options'
 import { PropertyMetadata } from '../types'
-import { savePropertyMetadata } from '../core/metadata/property'
+import { saveClassPropertyMetadata } from '../core/metadata/property'
 
 export function Property(options?: PropertyOptions): PropertyDecorator {
   return function (target: Object, propertyKey: string | symbol) {
@@ -13,6 +13,6 @@ export function Property(options?: PropertyOptions): PropertyDecorator {
       target,
     }
 
-    savePropertyMetadata(klassName, metadata)
+    saveClassPropertyMetadata(klassName, metadata)
   }
 }

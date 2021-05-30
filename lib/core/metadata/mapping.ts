@@ -6,7 +6,7 @@ type MapPropertyMetadataArray = Array<MapPropertyMetadata<any, any>>
 
 const mapPropertyMetadata: Map<string, MapPropertyMetadataArray> = new Map()
 
-export function saveMappingMetadata<T, K>(
+export function saveClassMappingMetadata<T, K>(
   className: string,
   metadata: MapPropertyMetadata<T, K>
 ) {

@@ -1,8 +1,8 @@
 import {
   TransformationMetadata,
-  ExtractTransformer
+  ExtractTransformer,
 } from '../types/transformation'
-import { Metadata } from '../core/metadata'
+import { saveClassTransformationMetadata } from '../core/metadata/transformation'
 
 export function ExtractTransformation<T, K>(
   transformer: ExtractTransformer<T, K>
@@ -13,9 +13,9 @@ export function ExtractTransformation<T, K>(
     const metadata: TransformationMetadata<T, K> = {
       scope: 'extract',
       propertyKey: propertyKey.toString(),
-      transformer
+      transformer,
     }
 
-    Metadata.getInstance().registerTransformationMetadata(klassName, metadata)
+    saveClassTransformationMetadata(klassName, metadata)
   }
 }
