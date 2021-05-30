@@ -1,8 +1,8 @@
 /* eslint-disable complexity */
 import { path } from 'ramda'
 
-import { Metadata } from './core/metadata'
 import { findClassPropertiesMetadata } from './core/metadata/property'
+import { findClassReductionMetadata } from './core/metadata/reduction'
 import { findClassTransformationMetadata } from './core/metadata/transformation'
 import { Hashable, ClassConstructor } from './types'
 
@@ -11,10 +11,9 @@ export function buildObject<T>(
   jsonObj: Hashable
 ): T {
   const targetObj = new targetKlass()
-  const metadataStorage = Metadata.getInstance()
   const properties = findClassPropertiesMetadata(targetKlass)
   const transformations = findClassTransformationMetadata(targetKlass, 'build')
-  const reductions = metadataStorage.findReductions(targetKlass)
+  const reductions = findClassReductionMetadata(targetKlass)
 
   if (properties) {
     for (const property of properties) {

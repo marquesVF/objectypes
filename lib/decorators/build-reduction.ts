@@ -1,4 +1,4 @@
-import { Metadata } from '../core/metadata'
+import { saveClassReductionMetadata } from '../core/metadata/reduction'
 import { Reducer, ReductionMetadata } from '../types/reduction'
 
 export function BuildReduction<T>(reducer: Reducer<T>): PropertyDecorator {
@@ -7,9 +7,9 @@ export function BuildReduction<T>(reducer: Reducer<T>): PropertyDecorator {
 
     const metadata: ReductionMetadata<T> = {
       propertyKey: propertyKey.toString(),
-      reducer
+      reducer,
     }
 
-    Metadata.getInstance().registerBuildReduction(className, metadata)
+    saveClassReductionMetadata(className, metadata)
   }
 }
