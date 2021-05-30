@@ -1,4 +1,4 @@
-import { saveMappingMetadata } from '../core/metadata/mapping'
+import { saveClassMappingMetadata } from '../core/metadata/mapping'
 import { ClassConstructor, MapPropertyMetadata, MapTransformer } from '../types'
 
 export function MapProperty<T>(
@@ -13,7 +13,7 @@ export function MapProperty<T>(
       propertyKey: propertyKey as string,
     }
 
-    saveMappingMetadata(klassName, metadata)
+    saveClassMappingMetadata(klassName, metadata)
   }
 }
 
@@ -29,6 +29,6 @@ export function MapAndTransformProperty<T, K>(
       propertyKey: propertyKey as string,
     }
 
-    saveMappingMetadata(klassName, metadata)
+    saveClassMappingMetadata(klassName, metadata)
   }
 }

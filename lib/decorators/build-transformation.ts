@@ -1,6 +1,6 @@
 import { TransformationMetadata } from '../types/transformation'
-import { Metadata } from '../core/metadata'
 import { BuildTransformer } from '../types'
+import { saveClassTransformationMetadata } from '../core/metadata/transformation'
 
 export function BuildTransformation<T>(
   transformer: BuildTransformer<T>
@@ -11,9 +11,9 @@ export function BuildTransformation<T>(
     const metadata: TransformationMetadata<unknown, T> = {
       scope: 'build',
       propertyKey: propertyKey.toString(),
-      transformer
+      transformer,
     }
 
-    Metadata.getInstance().registerTransformationMetadata(klassName, metadata)
+    saveClassTransformationMetadata(klassName, metadata)
   }
 }
