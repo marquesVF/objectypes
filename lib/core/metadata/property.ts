@@ -19,27 +19,48 @@ export function findClassPropertiesMetadata(
   klass: ClassConstructor<any>,
   namedOnly?: boolean
 ): PropertyMetadata[] | undefined {
-  const klassName = klass.name ?? klass.constructor.name
-  const properties = propertyMetadata.get(klassName)
+  const className = klass.name ?? klass.constructor.name
+  const properties = propertyMetadata.get(className)
 
   if (!properties) {
     return undefined
   }
 
-  const filteredProperty = namedOnly
-    ? properties.filter(property => property.name)
-    : properties
+  const parentClassPropertiesMetadata = findParentClassPropertiesMetadata(
+    klass,
+    namedOnly
+  )
 
-  const parentKlass = klass.prototype
-    ? Object.getPrototypeOf(klass.prototype)
-    : undefined
-  if (parentKlass !== undefined) {
-    const parentProperties = findClassPropertiesMetadata(parentKlass, namedOnly)
+  const classProperties = filterClassPropertiesIfNamed(properties, namedOnly)
 
-    if (parentProperties !== undefined) {
-      return [...filteredProperty, ...parentProperties]
-    }
+  if (parentClassPropertiesMetadata !== undefined) {
+    return [...classProperties, ...parentClassPropertiesMetadata]
   }
 
-  return filteredProperty
+  return classProperties
+}
+
+function findParentClassPropertiesMetadata(
+  klass: ClassConstructor<any>,
+  namedOnly?: boolean
+) {
+  const parentKlass = findParentClass(klass)
+  if (parentKlass === undefined) {
+    return
+  }
+
+  const parentProperties = findClassPropertiesMetadata(parentKlass, namedOnly)
+
+  return parentProperties
+}
+
+function filterClassPropertiesIfNamed(
+  properties: PropertyMetadata[],
+  namedOnly?: boolean
+) {
+  return namedOnly ? properties.filter(property => property.name) : properties
+}
+
+function findParentClass(klass: ClassConstructor<any>) {
+  return klass.prototype ? Object.getPrototypeOf(klass.prototype) : undefined
 }
