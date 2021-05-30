@@ -1,6 +1,6 @@
-import { Metadata } from '../core/metadata'
 import { PropertyOptions } from '../types/property-options'
 import { PropertyMetadata } from '../types'
+import { savePropertyMetadata } from '../core/metadata/property'
 
 export function Property(options?: PropertyOptions): PropertyDecorator {
   return function (target: Object, propertyKey: string | symbol) {
@@ -10,9 +10,9 @@ export function Property(options?: PropertyOptions): PropertyDecorator {
       propertyKey: propertyKey as string,
       type: options?.type,
       nullable: options?.nullable,
-      target
+      target,
     }
 
-    Metadata.getInstance().registerMetadata(klassName, metadata)
+    savePropertyMetadata(klassName, metadata)
   }
 }

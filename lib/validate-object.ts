@@ -1,9 +1,9 @@
 import { path } from 'ramda'
 
 import { ClassConstructor } from './types'
-import { Metadata } from './core/metadata'
 import { isTypeValid } from './core/type-validator'
 import { ValidationErrors, TypeError } from './types/validation-errors'
+import { findClassPropertiesMetadata } from './core/metadata/property'
 
 export function validateObject<T>(
   klass: ClassConstructor<T>,
@@ -11,7 +11,7 @@ export function validateObject<T>(
 ): ValidationErrors {
   const presenceErrors: string[] = []
   const typeErrors: TypeError[] = []
-  const properties = Metadata.getInstance().findProperties(klass)
+  const properties = findClassPropertiesMetadata(klass)
 
   if (properties) {
     properties.forEach(property => {
