@@ -6,33 +6,32 @@ import { ClassConstructor, ErrorSummary } from './types'
 import { ValidationErrors } from './types/validation-errors'
 
 export class ObjectHandler<T> {
-
   constructor(private readonly klass: ClassConstructor<T>) {}
 
   private buildValidationErrorResult(errors: ValidationErrors): ErrorSummary {
     const { presenceErrors, typeErrors } = errors
-    const presenceErrorSummary
-      = presenceErrors.length > 0
+    const presenceErrorSummary =
+      presenceErrors.length > 0
         ? `properties ('${presenceErrors.join(`, `)}') are missing`
         : undefined
-    const typeErrorSummary
-      = typeErrors.length > 0
+    const typeErrorSummary =
+      typeErrors.length > 0
         ? typeErrors
-          .map(errors => {
-            const { expectedType, propertyKey, propertyType } = errors
+            .map(errors => {
+              const { expectedType, propertyKey, propertyType } = errors
 
-            return (
-              `'${propertyKey}' type '${propertyType}' is not`
-                + ` assignable to ${expectedType}`
-            )
-          })
-          .join(', ')
+              return (
+                `'${propertyKey}' type '${propertyType}' is not` +
+                ` assignable to ${expectedType}`
+              )
+            })
+            .join(', ')
         : undefined
     const finalSumarry = presenceErrorSummary
       ? presenceErrorSummary
       : typeErrorSummary ?? ''
-    const errorSummary
-      = presenceErrorSummary && typeErrorSummary
+    const errorSummary =
+      presenceErrorSummary && typeErrorSummary
         ? `${presenceErrorSummary}. ${typeErrorSummary}`
         : finalSumarry
 
@@ -58,5 +57,4 @@ export class ObjectHandler<T> {
   extract(obj: T): object {
     return extractObject(obj, this.klass)
   }
-
 }
