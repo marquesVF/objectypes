@@ -18,29 +18,20 @@ export function buildObject<T>(
   }
 
   for (const property of properties) {
-    const { propertyKey, name, nullable } = property
-    const objPropName = name ?? propertyKey
+    const { propertyKey } = property
     const wereReductionsApplied = applyReductionsToObject(
       targetKlass,
       targetObj,
       jsonObj,
       property
     )
+
     if (wereReductionsApplied) {
       continue
     }
 
-    const value =
-      path<any>(objPropName.split('.'), jsonObj) !== undefined
-        ? path<any>(objPropName.split('.'), jsonObj)
-        : path<any>([propertyKey], jsonObj)
-
-    if (value === undefined && !nullable) {
-      throw new Error(
-        // eslint-disable-next-line max-len
-        `Property '${objPropName}' is missing. Couldn't build ${targetKlass.name} object.`
-      )
-    }
+    const value = getValueFromJSONObject(property, jsonObj)
+    validateValueDefinition(property, targetKlass, value)
 
     const typedValue = processValueType(property, value)
     const transformedValue = applyTransformationsToObject(
@@ -96,6 +87,33 @@ function applyReductionsToObject<T>(
   Reflect.set(targetObject, propertyKey, value)
 
   return true
+}
+
+function getValueFromJSONObject(
+  propertyMetadata: PropertyMetadata,
+  jsonObject: Hashable
+) {
+  const { name, propertyKey } = propertyMetadata
+  const objectPropertyName = name ?? propertyKey
+  const namePath = objectPropertyName.split('.')
+  const valueFromPath = path<any>(namePath, jsonObject)
+
+  return valueFromPath ?? path<any>([propertyKey], jsonObject)
+}
+
+function validateValueDefinition(
+  propertyMetadata: PropertyMetadata,
+  targetClass: ClassConstructor<any>,
+  value?: any
+) {
+  const { nullable, name, propertyKey } = propertyMetadata
+  const objPropName = name ?? propertyKey
+
+  if (value === undefined && !nullable) {
+    throw new Error(
+      `Property '${objPropName}' is missing. Couldn't build ${targetClass.name} object.`
+    )
+  }
 }
 
 function applyTransformationsToObject<T>(
