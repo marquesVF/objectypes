@@ -1,4 +1,3 @@
-/* eslint-disable complexity */
 import { path } from 'ramda'
 
 import { findClassPropertiesMetadata } from './core/metadata/property'
@@ -19,15 +18,15 @@ export function buildObject<T>(
   }
 
   for (const property of properties) {
-    const { propertyKey, name, type, nullable } = property
+    const { propertyKey, name, nullable } = property
     const objPropName = name ?? propertyKey
-    const appliedReductions = applyReductionsToObject(
+    const wereReductionsApplied = applyReductionsToObject(
       targetKlass,
       targetObj,
       jsonObj,
       property
     )
-    if (appliedReductions) {
+    if (wereReductionsApplied) {
       continue
     }
 
@@ -49,16 +48,9 @@ export function buildObject<T>(
       property,
       typedValue
     )
+    const finalValue = processNestedValue(property, transformedValue)
 
-    if (type && transformedValue !== undefined) {
-      const nestedValue = Array.isArray(transformedValue)
-        ? transformedValue.map(val => buildObject(type, val))
-        : buildObject(type, transformedValue)
-
-      Reflect.set(targetObj, propertyKey, nestedValue)
-    } else {
-      Reflect.set(targetObj, propertyKey, transformedValue)
-    }
+    Reflect.set(targetObj, propertyKey, finalValue)
   }
 
   return targetObj
@@ -124,4 +116,19 @@ function applyTransformationsToObject<T>(
   }
 
   return transformMetadata.transformer.transform(value)
+}
+
+function processNestedValue(
+  propertyMetadata: PropertyMetadata,
+  transformedValue?: any
+) {
+  const { type } = propertyMetadata
+
+  if (type === undefined) {
+    return transformedValue
+  }
+
+  return Array.isArray(transformedValue)
+    ? transformedValue.map(val => buildObject(type, val))
+    : buildObject(type, transformedValue)
 }
