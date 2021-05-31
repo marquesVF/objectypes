@@ -14,48 +14,50 @@ export function buildObject<T>(
   const targetObj = new targetKlass()
   const properties = findClassPropertiesMetadata(targetKlass)
 
-  if (properties) {
-    for (const property of properties) {
-      const { propertyKey, name, type, nullable } = property
-      const objPropName = name ?? propertyKey
-      const appliedReductions = applyReductionsToObject(
-        targetKlass,
-        targetObj,
-        jsonObj,
-        property
+  if (!properties) {
+    return targetObj
+  }
+
+  for (const property of properties) {
+    const { propertyKey, name, type, nullable } = property
+    const objPropName = name ?? propertyKey
+    const appliedReductions = applyReductionsToObject(
+      targetKlass,
+      targetObj,
+      jsonObj,
+      property
+    )
+    if (appliedReductions) {
+      continue
+    }
+
+    const value =
+      path<any>(objPropName.split('.'), jsonObj) !== undefined
+        ? path<any>(objPropName.split('.'), jsonObj)
+        : path<any>([propertyKey], jsonObj)
+
+    if (value === undefined && !nullable) {
+      throw new Error(
+        // eslint-disable-next-line max-len
+        `Property '${objPropName}' is missing. Couldn't build ${targetKlass.name} object.`
       )
-      if (appliedReductions) {
-        continue
-      }
+    }
 
-      const value =
-        path<any>(objPropName.split('.'), jsonObj) !== undefined
-          ? path<any>(objPropName.split('.'), jsonObj)
-          : path<any>([propertyKey], jsonObj)
+    const typedValue = processValueType(property, value)
+    const transformedValue = applyTransformationsToObject(
+      targetKlass,
+      property,
+      typedValue
+    )
 
-      if (value === undefined && !nullable) {
-        throw new Error(
-          // eslint-disable-next-line max-len
-          `Property '${objPropName}' is missing. Couldn't build ${targetKlass.name} object.`
-        )
-      }
+    if (type && transformedValue !== undefined) {
+      const nestedValue = Array.isArray(transformedValue)
+        ? transformedValue.map(val => buildObject(type, val))
+        : buildObject(type, transformedValue)
 
-      const typedValue = processValueType(property, value)
-      const transformedValue = applyTransformationsToObject(
-        targetKlass,
-        property,
-        typedValue
-      )
-
-      if (type && transformedValue !== undefined) {
-        const nestedValue = Array.isArray(transformedValue)
-          ? transformedValue.map(val => buildObject(type, val))
-          : buildObject(type, transformedValue)
-
-        Reflect.set(targetObj, propertyKey, nestedValue)
-      } else {
-        Reflect.set(targetObj, propertyKey, transformedValue)
-      }
+      Reflect.set(targetObj, propertyKey, nestedValue)
+    } else {
+      Reflect.set(targetObj, propertyKey, transformedValue)
     }
   }
 
