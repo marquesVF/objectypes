@@ -1,10 +1,10 @@
-/* eslint-disable complexity */
 import { path } from 'ramda'
 
 import { findClassPropertiesMetadata } from './core/metadata/property'
 import { findClassReductionMetadata } from './core/metadata/reduction'
 import { findClassTransformationMetadata } from './core/metadata/transformation'
-import { Hashable, ClassConstructor } from './types'
+import { Hashable, ClassConstructor, PropertyMetadata } from './types'
+import { castValue } from './utils/casting'
 
 export function buildObject<T>(
   targetKlass: ClassConstructor<Hashable & T>,
@@ -12,97 +12,141 @@ export function buildObject<T>(
 ): T {
   const targetObj = new targetKlass()
   const properties = findClassPropertiesMetadata(targetKlass)
-  const transformations = findClassTransformationMetadata(targetKlass, 'build')
-  const reductions = findClassReductionMetadata(targetKlass)
 
-  if (properties) {
-    for (const property of properties) {
-      const { propertyKey, name, type, nullable, target } = property
-      const objPropName = name ?? propertyKey
+  if (!properties) {
+    return targetObj
+  }
 
-      if (reductions) {
-        const reductionMetada = reductions?.find(
-          metadata => metadata.propertyKey === propertyKey
-        )
-        if (reductionMetada) {
-          const value = reductionMetada.reducer.reduce(jsonObj)
+  for (const property of properties) {
+    const { propertyKey } = property
+    const wereReductionsApplied = applyReductionsToObject(
+      targetKlass,
+      targetObj,
+      jsonObj,
+      property
+    )
 
-          Reflect.set(targetObj, propertyKey, value)
-          continue
-        }
-      }
-
-      let value =
-        path<any>(objPropName.split('.'), jsonObj) !== undefined
-          ? path<any>(objPropName.split('.'), jsonObj)
-          : path<any>([propertyKey], jsonObj)
-
-      if (value === undefined && !nullable) {
-        throw new Error(
-          // eslint-disable-next-line max-len
-          `Property '${objPropName}' is missing. Couldn't build ${targetKlass.name} object.`
-        )
-      }
-
-      const expectedType = Reflect.getMetadata(
-        'design:type',
-        target,
-        propertyKey
-      ).name
-
-      try {
-        value = castValue(expectedType, value)
-      } catch (err) {
-        throw new Error(
-          // eslint-disable-next-line max-len
-          `Property ${objPropName} type is not assignable to ${expectedType}. Found ${value}`
-        )
-      }
-
-      if (value !== undefined) {
-        const transformMetadata = transformations?.find(
-          metadata => metadata.propertyKey === propertyKey
-        )
-        if (transformMetadata) {
-          // TODO improve error handling since it may raise errors in runtine
-          value = transformMetadata.transformer.transform(value)
-        }
-      }
-
-      if (type && value !== undefined) {
-        const nestedValue = Array.isArray(value)
-          ? value.map(val => buildObject(type, val))
-          : buildObject(type, value)
-
-        Reflect.set(targetObj, propertyKey, nestedValue)
-      } else {
-        Reflect.set(targetObj, propertyKey, value)
-      }
+    if (wereReductionsApplied) {
+      continue
     }
+
+    const value = getValueFromJSONObject(property, jsonObj)
+    validateValueDefinition(property, targetKlass, value)
+
+    const typedValue = processValueType(property, value)
+    const transformedValue = applyTransformationsToObject(
+      targetKlass,
+      property,
+      typedValue
+    )
+    const finalValue = processNestedValue(property, transformedValue)
+
+    Reflect.set(targetObj, propertyKey, finalValue)
   }
 
   return targetObj
 }
 
-function castValue(expectedType: string, value?: any): any {
+function processValueType(propertyMetadata: PropertyMetadata, value?: any) {
+  const { name, target, propertyKey } = propertyMetadata
+  const objPropName = name ?? propertyKey
+  const expectedType = Reflect.getMetadata(
+    'design:type',
+    target,
+    propertyKey
+  ).name
+
+  try {
+    const castedValue = castValue(expectedType, value)
+
+    return castedValue
+  } catch (err) {
+    throw new Error(
+      // eslint-disable-next-line max-len
+      `Property ${objPropName} type is not assignable to ${expectedType}. Found ${value}`
+    )
+  }
+}
+
+function applyReductionsToObject<T>(
+  targetClass: ClassConstructor<Hashable & T>,
+  targetObject: Hashable & T,
+  jsonObject: Hashable,
+  { propertyKey }: PropertyMetadata
+) {
+  const reductions = findClassReductionMetadata(targetClass)
+  const reductionMetada = reductions?.find(
+    metadata => metadata.propertyKey === propertyKey
+  )
+
+  if (!reductionMetada) {
+    return false
+  }
+
+  const value = reductionMetada.reducer.reduce(jsonObject)
+  Reflect.set(targetObject, propertyKey, value)
+
+  return true
+}
+
+function getValueFromJSONObject(
+  propertyMetadata: PropertyMetadata,
+  jsonObject: Hashable
+) {
+  const { name, propertyKey } = propertyMetadata
+  const objectPropertyName = name ?? propertyKey
+  const namePath = objectPropertyName.split('.')
+  const valueFromPath = path<any>(namePath, jsonObject)
+
+  return valueFromPath ?? path<any>([propertyKey], jsonObject)
+}
+
+function validateValueDefinition(
+  propertyMetadata: PropertyMetadata,
+  targetClass: ClassConstructor<any>,
+  value?: any
+) {
+  const { nullable, name, propertyKey } = propertyMetadata
+  const objPropName = name ?? propertyKey
+
+  if (value === undefined && !nullable) {
+    throw new Error(
+      `Property '${objPropName}' is missing. Couldn't build ${targetClass.name} object.`
+    )
+  }
+}
+
+function applyTransformationsToObject<T>(
+  targetClass: ClassConstructor<Hashable & T>,
+  { propertyKey }: PropertyMetadata,
+  value?: any
+) {
   if (value === undefined) {
     return value
   }
 
-  if (expectedType === 'Number') {
-    if (isNaN(value)) {
-      throw new Error()
-    }
-
-    return Number(value)
-  }
-  if (expectedType === 'Date') {
-    if (!Date.parse(value)) {
-      throw new Error()
-    }
-
-    return new Date(value)
+  const transformations = findClassTransformationMetadata(targetClass, 'build')
+  const transformMetadata = transformations?.find(
+    metadata => metadata.propertyKey === propertyKey
+  )
+  if (!transformMetadata) {
+    return value
   }
 
-  return value
+  return transformMetadata.transformer.transform(value)
+}
+
+function processNestedValue(
+  propertyMetadata: PropertyMetadata,
+  transformedValue?: any
+) {
+  const { type } = propertyMetadata
+
+  if (type === undefined) {
+    return transformedValue
+  }
+
+  return Array.isArray(transformedValue)
+    ? transformedValue.map(val => buildObject(type, val))
+    : buildObject(type, transformedValue)
 }
