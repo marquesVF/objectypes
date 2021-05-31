@@ -7,44 +7,44 @@ import { Hashable, ClassConstructor, PropertyMetadata } from './types'
 import { castValue } from './utils/casting'
 
 export function buildObject<T>(
-  targetKlass: ClassConstructor<Hashable & T>,
-  jsonObj: Hashable
+  targetClass: ClassConstructor<Hashable & T>,
+  jsonObject: Hashable
 ): T {
-  const targetObj = new targetKlass()
-  const properties = findClassPropertiesMetadata(targetKlass)
+  const targetObject = new targetClass()
+  const propertyMetadatas = findClassPropertiesMetadata(targetClass)
 
-  if (!properties) {
-    return targetObj
+  if (!propertyMetadatas) {
+    return targetObject
   }
 
-  for (const property of properties) {
-    const { propertyKey } = property
+  for (const propertyMetadata of propertyMetadatas) {
+    const { propertyKey } = propertyMetadata
     const wereReductionsApplied = applyReductionsToObject(
-      targetKlass,
-      targetObj,
-      jsonObj,
-      property
+      targetClass,
+      targetObject,
+      jsonObject,
+      propertyMetadata
     )
 
     if (wereReductionsApplied) {
       continue
     }
 
-    const value = getValueFromJSONObject(property, jsonObj)
-    validateValueDefinition(property, targetKlass, value)
+    const value = getValueFromJSONObject(propertyMetadata, jsonObject)
+    validateValueDefinition(propertyMetadata, targetClass, value)
 
-    const typedValue = processValueType(property, value)
+    const typedValue = processValueType(propertyMetadata, value)
     const transformedValue = applyTransformationsToObject(
-      targetKlass,
-      property,
+      targetClass,
+      propertyMetadata,
       typedValue
     )
-    const finalValue = processNestedValue(property, transformedValue)
+    const finalValue = processNestedValue(propertyMetadata, transformedValue)
 
-    Reflect.set(targetObj, propertyKey, finalValue)
+    Reflect.set(targetObject, propertyKey, finalValue)
   }
 
-  return targetObj
+  return targetObject
 }
 
 function processValueType(propertyMetadata: PropertyMetadata, value?: any) {
