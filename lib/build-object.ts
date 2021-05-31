@@ -5,6 +5,7 @@ import { findClassPropertiesMetadata } from './core/metadata/property'
 import { findClassReductionMetadata } from './core/metadata/reduction'
 import { findClassTransformationMetadata } from './core/metadata/transformation'
 import { Hashable, ClassConstructor, PropertyMetadata } from './types'
+import { castValue } from './utils/casting'
 
 export function buildObject<T>(
   targetKlass: ClassConstructor<Hashable & T>,
@@ -15,7 +16,7 @@ export function buildObject<T>(
 
   if (properties) {
     for (const property of properties) {
-      const { propertyKey, name, type, nullable, target } = property
+      const { propertyKey, name, type, nullable } = property
       const objPropName = name ?? propertyKey
       const appliedReductions = applyReductionsToObject(
         targetKlass,
@@ -27,7 +28,7 @@ export function buildObject<T>(
         continue
       }
 
-      let value =
+      const value =
         path<any>(objPropName.split('.'), jsonObj) !== undefined
           ? path<any>(objPropName.split('.'), jsonObj)
           : path<any>([propertyKey], jsonObj)
@@ -39,35 +40,47 @@ export function buildObject<T>(
         )
       }
 
-      const expectedType = Reflect.getMetadata(
-        'design:type',
-        target,
-        propertyKey
-      ).name
+      const typedValue = processValueType(property, value)
+      const transformedValue = applyTransformationsToObject(
+        targetKlass,
+        property,
+        typedValue
+      )
 
-      try {
-        value = castValue(expectedType, value)
-      } catch (err) {
-        throw new Error(
-          // eslint-disable-next-line max-len
-          `Property ${objPropName} type is not assignable to ${expectedType}. Found ${value}`
-        )
-      }
-      value = applyTransformationsToObject(targetKlass, property, value)
-
-      if (type && value !== undefined) {
-        const nestedValue = Array.isArray(value)
-          ? value.map(val => buildObject(type, val))
-          : buildObject(type, value)
+      if (type && transformedValue !== undefined) {
+        const nestedValue = Array.isArray(transformedValue)
+          ? transformedValue.map(val => buildObject(type, val))
+          : buildObject(type, transformedValue)
 
         Reflect.set(targetObj, propertyKey, nestedValue)
       } else {
-        Reflect.set(targetObj, propertyKey, value)
+        Reflect.set(targetObj, propertyKey, transformedValue)
       }
     }
   }
 
   return targetObj
+}
+
+function processValueType(propertyMetadata: PropertyMetadata, value?: any) {
+  const { name, target, propertyKey } = propertyMetadata
+  const objPropName = name ?? propertyKey
+  const expectedType = Reflect.getMetadata(
+    'design:type',
+    target,
+    propertyKey
+  ).name
+
+  try {
+    const castedValue = castValue(expectedType, value)
+
+    return castedValue
+  } catch (err) {
+    throw new Error(
+      // eslint-disable-next-line max-len
+      `Property ${objPropName} type is not assignable to ${expectedType}. Found ${value}`
+    )
+  }
 }
 
 function applyReductionsToObject<T>(
@@ -109,27 +122,4 @@ function applyTransformationsToObject<T>(
   }
 
   return transformMetadata.transformer.transform(value)
-}
-
-function castValue(expectedType: string, value?: any): any {
-  if (value === undefined) {
-    return value
-  }
-
-  if (expectedType === 'Number') {
-    if (isNaN(value)) {
-      throw new Error()
-    }
-
-    return Number(value)
-  }
-  if (expectedType === 'Date') {
-    if (!Date.parse(value)) {
-      throw new Error()
-    }
-
-    return new Date(value)
-  }
-
-  return value
 }
