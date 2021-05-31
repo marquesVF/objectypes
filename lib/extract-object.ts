@@ -7,12 +7,12 @@ import { ExtractOptions } from './types/extract-options'
 
 export function extractObject<T>(
   obj: Hashable & T,
-  objKlass: ClassConstructor<T>,
+  objClass: ClassConstructor<T>,
   options?: ExtractOptions
 ): object {
   let resultingObject: Hashable = {}
   const propertyMetadatas = findClassPropertiesMetadata(
-    objKlass,
+    objClass,
     options?.namedOnly
   )
 
@@ -26,7 +26,7 @@ export function extractObject<T>(
       }
 
       const transformedValue = applyTransformationsToObject(
-        objKlass,
+        objClass,
         propertyMetadata,
         value
       )
@@ -45,13 +45,13 @@ export function extractObject<T>(
 }
 
 function applyTransformationsToObject<T>(
-  targetClass: ClassConstructor<T>,
+  objectClass: ClassConstructor<T>,
   propertyMetadata: PropertyMetadata,
   value?: any
 ) {
   const { propertyKey } = propertyMetadata
   const transformationMetadatas = findClassTransformationMetadata(
-    targetClass,
+    objectClass,
     'extract'
   )
   const transformationMetadata = transformationMetadatas?.find(
