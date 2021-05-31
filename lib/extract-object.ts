@@ -19,30 +19,25 @@ export function extractObject<T>(
   if (propertyMetadatas) {
     for (const propertyMetadata of propertyMetadatas) {
       const { name, propertyKey, type } = propertyMetadata
-      let value = obj[propertyKey]
+      const value = obj[propertyKey]
 
-      if (value !== undefined) {
-        if (type) {
-          if (Array.isArray(value)) {
-            value = value.map(val => extractObject(val, type))
-          } else {
-            value = extractObject(value, type)
-          }
-        }
-
-        const transformedValue = applyTransformationsToObject(
-          objKlass,
-          propertyMetadata,
-          value
-        )
-        const resultingProperty = name ?? propertyKey
-
-        resultingObject = assocPath(
-          resultingProperty.split('.'),
-          transformedValue,
-          resultingObject
-        )
+      if (value === undefined) {
+        continue
       }
+
+      const transformedValue = applyTransformationsToObject(
+        objKlass,
+        propertyMetadata,
+        value
+      )
+      const finalValue = processNestedValue(transformedValue, type)
+      const resultingProperty = name ?? propertyKey
+
+      resultingObject = assocPath(
+        resultingProperty.split('.'),
+        finalValue,
+        resultingObject
+      )
     }
   }
 
@@ -55,17 +50,27 @@ function applyTransformationsToObject<T>(
   value?: any
 ) {
   const { propertyKey } = propertyMetadata
-  const transformations = findClassTransformationMetadata(
+  const transformationMetadatas = findClassTransformationMetadata(
     targetClass,
     'extract'
   )
-
-  const transformMetadata = transformations?.find(
+  const transformationMetadata = transformationMetadatas?.find(
     metadata => metadata.propertyKey === propertyKey
   )
-  if (!transformMetadata) {
+
+  if (!transformationMetadata) {
     return value
   }
 
-  return transformMetadata.transformer.transform(value)
+  return transformationMetadata.transformer.transform(value)
+}
+
+function processNestedValue(value: any, type?: any) {
+  if (!type) {
+    return value
+  }
+
+  return Array.isArray(value)
+    ? (value = value.map(val => extractObject(val, type)))
+    : extractObject(value, type)
 }
