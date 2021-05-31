@@ -12,7 +12,6 @@ export function buildObject<T>(
 ): T {
   const targetObj = new targetKlass()
   const properties = findClassPropertiesMetadata(targetKlass)
-  const transformations = findClassTransformationMetadata(targetKlass, 'build')
 
   if (properties) {
     for (const property of properties) {
@@ -54,16 +53,7 @@ export function buildObject<T>(
           `Property ${objPropName} type is not assignable to ${expectedType}. Found ${value}`
         )
       }
-
-      if (value !== undefined) {
-        const transformMetadata = transformations?.find(
-          metadata => metadata.propertyKey === propertyKey
-        )
-        if (transformMetadata) {
-          // TODO improve error handling since it may raise errors in runtine
-          value = transformMetadata.transformer.transform(value)
-        }
-      }
+      value = applyTransformationsToObject(targetKlass, property, value)
 
       if (type && value !== undefined) {
         const nestedValue = Array.isArray(value)
@@ -99,6 +89,26 @@ function applyReductionsToObject<T>(
   Reflect.set(targetObject, propertyKey, value)
 
   return true
+}
+
+function applyTransformationsToObject<T>(
+  targetClass: ClassConstructor<Hashable & T>,
+  { propertyKey }: PropertyMetadata,
+  value?: any
+) {
+  if (value === undefined) {
+    return value
+  }
+
+  const transformations = findClassTransformationMetadata(targetClass, 'build')
+  const transformMetadata = transformations?.find(
+    metadata => metadata.propertyKey === propertyKey
+  )
+  if (!transformMetadata) {
+    return value
+  }
+
+  return transformMetadata.transformer.transform(value)
 }
 
 function castValue(expectedType: string, value?: any): any {
