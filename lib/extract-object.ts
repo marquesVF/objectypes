@@ -2,52 +2,75 @@ import { assocPath } from 'ramda'
 
 import { findClassPropertiesMetadata } from './core/metadata/property'
 import { findClassTransformationMetadata } from './core/metadata/transformation'
-import { Hashable, ClassConstructor } from './types'
+import { Hashable, ClassConstructor, PropertyMetadata } from './types'
 import { ExtractOptions } from './types/extract-options'
 
 export function extractObject<T>(
   obj: Hashable & T,
-  objKlass: ClassConstructor<T>,
+  objClass: ClassConstructor<T>,
   options?: ExtractOptions
 ): object {
   let resultingObject: Hashable = {}
-  const propertyMetadata = findClassPropertiesMetadata(
-    objKlass,
+  const propertyMetadatas = findClassPropertiesMetadata(
+    objClass,
     options?.namedOnly
   )
-  const transformations = findClassTransformationMetadata(objKlass, 'extract')
 
-  if (propertyMetadata) {
-    for (const { name, propertyKey, type } of propertyMetadata) {
-      let value = obj[propertyKey]
+  if (propertyMetadatas) {
+    for (const propertyMetadata of propertyMetadatas) {
+      const { name, propertyKey, type } = propertyMetadata
+      const value = obj[propertyKey]
 
-      if (value !== undefined) {
-        if (type) {
-          if (Array.isArray(value)) {
-            value = value.map(val => extractObject(val, type))
-          } else {
-            value = extractObject(value, type)
-          }
-        }
-
-        const transformMetadata = transformations?.find(
-          metadata => metadata.propertyKey === propertyKey
-        )
-        if (transformMetadata) {
-          // TODO improve error handling since it may raise errors in runtine
-          value = transformMetadata.transformer.transform(value)
-        }
-
-        const resultingProperty = name ?? propertyKey
-
-        resultingObject = assocPath(
-          resultingProperty.split('.'),
-          value,
-          resultingObject
-        )
+      if (value === undefined) {
+        continue
       }
+
+      const transformedValue = applyTransformationsToObject(
+        objClass,
+        propertyMetadata,
+        value
+      )
+      const finalValue = processNestedValue(transformedValue, type)
+      const resultingProperty = name ?? propertyKey
+
+      resultingObject = assocPath(
+        resultingProperty.split('.'),
+        finalValue,
+        resultingObject
+      )
     }
   }
 
   return resultingObject
+}
+
+function applyTransformationsToObject<T>(
+  objectClass: ClassConstructor<T>,
+  propertyMetadata: PropertyMetadata,
+  value?: any
+) {
+  const { propertyKey } = propertyMetadata
+  const transformationMetadatas = findClassTransformationMetadata(
+    objectClass,
+    'extract'
+  )
+  const transformationMetadata = transformationMetadatas?.find(
+    metadata => metadata.propertyKey === propertyKey
+  )
+
+  if (!transformationMetadata) {
+    return value
+  }
+
+  return transformationMetadata.transformer.transform(value)
+}
+
+function processNestedValue(value: any, type?: any) {
+  if (!type) {
+    return value
+  }
+
+  return Array.isArray(value)
+    ? (value = value.map(val => extractObject(val, type)))
+    : extractObject(value, type)
 }
