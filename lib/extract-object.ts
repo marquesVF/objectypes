@@ -6,42 +6,42 @@ import { Hashable, ClassConstructor, PropertyMetadata } from './types'
 import { ExtractOptions } from './types/extract-options'
 
 export function extractObject<T>(
-  obj: Hashable & T,
-  objClass: ClassConstructor<T>,
+  typedObject: Hashable & T,
+  typedObjectClass: ClassConstructor<T>,
   options?: ExtractOptions
 ): object {
-  let resultingObject: Hashable = {}
+  let jsonObject: Hashable = {}
   const propertyMetadatas = findClassPropertiesMetadata(
-    objClass,
+    typedObjectClass,
     options?.namedOnly
   )
 
   if (propertyMetadatas) {
     for (const propertyMetadata of propertyMetadatas) {
       const { name, propertyKey, type } = propertyMetadata
-      const value = obj[propertyKey]
+      const value = typedObject[propertyKey]
 
       if (value === undefined) {
         continue
       }
 
       const transformedValue = applyTransformationsToObject(
-        objClass,
+        typedObjectClass,
         propertyMetadata,
         value
       )
       const finalValue = processNestedValue(transformedValue, type)
       const resultingProperty = name ?? propertyKey
 
-      resultingObject = assocPath(
+      jsonObject = assocPath(
         resultingProperty.split('.'),
         finalValue,
-        resultingObject
+        jsonObject
       )
     }
   }
 
-  return resultingObject
+  return jsonObject
 }
 
 function applyTransformationsToObject<T>(

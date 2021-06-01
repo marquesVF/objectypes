@@ -9,39 +9,47 @@ import {
 
 export function mapObject<T, K>(
   targetClass: ClassConstructor<Hashable & T>,
-  objectClass: ClassConstructor<K>,
-  obj: Hashable & K
+  sourceObjectClass: ClassConstructor<K>,
+  sourceObject: Hashable & K
 ): T {
-  const targetObj = new targetClass()
-  const mappingMetadata = getMappingMetadata(targetClass, objectClass.name)
+  const targetObject = new targetClass()
+  const mappingMetadata = getMappingMetadata(
+    targetClass,
+    sourceObjectClass.name
+  )
   if (!mappingMetadata) {
-    return targetObj
+    return targetObject
   }
 
-  processMappingProperties(mappingMetadata, obj, targetObj)
-  processRegularProperties(mappingMetadata, targetClass, obj, targetObj)
+  processMappingProperties(mappingMetadata, sourceObject, targetObject)
+  processRegularProperties(
+    mappingMetadata,
+    targetClass,
+    sourceObject,
+    targetObject
+  )
 
-  return targetObj
+  return targetObject
 }
 
 function getMappingMetadata<T>(
   targetClass: ClassConstructor<Hashable & T>,
-  objectClassName: string
+  sourceObjectClassName: string
 ) {
   const mappingMetadata = findClassMappingMetadata(targetClass)
 
   return mappingMetadata?.filter(
-    property => property.mapTarget.name === objectClassName
+    property => property.mapTarget.name === sourceObjectClassName
   )
 }
 
 function processMappingProperties<T, K>(
   mappingProperties: Array<MapPropertyMetadata<Hashable & T, unknown>>,
-  obj: Hashable & K,
+  sourceObject: Hashable & K,
   targetObject: Hashable & T
 ) {
   for (const mappingProperty of mappingProperties) {
-    const value = processValue(mappingProperty, obj)
+    const value = processValue(mappingProperty, sourceObject)
 
     Reflect.set(targetObject, mappingProperty.propertyKey, value)
   }
@@ -50,7 +58,7 @@ function processMappingProperties<T, K>(
 function processRegularProperties<T, K>(
   mappingProperties: Array<MapPropertyMetadata<Hashable & T, unknown>>,
   targetClass: ClassConstructor<Hashable & T>,
-  obj: Hashable & K,
+  sourceObject: Hashable & K,
   targetObject: Hashable & T
 ) {
   const propertyMetadata = findClassPropertiesMetadata(targetClass)
@@ -63,7 +71,7 @@ function processRegularProperties<T, K>(
     propertyMetadata
   )
 
-  processProperties(classProperties, targetObject, obj)
+  processProperties(classProperties, targetObject, sourceObject)
 }
 
 function filterNotMappedProperties<T>(
@@ -84,28 +92,28 @@ function filterNotMappedProperties<T>(
 function processProperties<T>(
   classProperties: PropertyMetadata[],
   targetObject: Hashable & T,
-  obj: Hashable
+  sourceObject: Hashable
 ) {
   for (const classProperty of classProperties) {
     const { propertyKey } = classProperty
 
-    Reflect.set(targetObject, propertyKey, obj[propertyKey])
+    Reflect.set(targetObject, propertyKey, sourceObject[propertyKey])
   }
 }
 
 function processValue<T, K>(
   mapProperty: MapPropertyMetadata<T, K>,
-  obj: Hashable
+  sourceObject: Hashable
 ): K {
   const { mapPropertyKey, mapTransformer } = mapProperty
 
   if (mapPropertyKey) {
-    return obj[mapPropertyKey]
+    return sourceObject[mapPropertyKey]
   }
 
   if (!mapTransformer) {
     throw new Error('Invalid mapping. No property or transformation found.')
   }
 
-  return mapTransformer.transform(obj as T)
+  return mapTransformer.transform(sourceObject as T)
 }
