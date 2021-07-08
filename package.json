@@ -36,7 +36,7 @@
   "author": "Vinícius de F. Marques",
   "license": "MIT",
   "devDependencies": {
-    "@types/jest": "26.0.23",
+    "@types/jest": "26.0.24",
     "@types/mocha": "8.2.3",
     "@typescript-eslint/eslint-plugin": "2.34.0",
     "@typescript-eslint/parser": "2.34.0",
