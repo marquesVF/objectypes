@@ -6,4 +6,7 @@ export class OptionalBuildModel {
   })
   @Property({ nullable: true })
   code?: string
+
+  @Property({ defaultValue: 'No name informed' })
+  name: string
 }
