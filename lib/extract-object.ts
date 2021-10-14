@@ -18,8 +18,8 @@ export function extractObject<T>(
 
   if (propertyMetadatas) {
     for (const propertyMetadata of propertyMetadatas) {
-      const { name, propertyKey, type } = propertyMetadata
-      const value = obj[propertyKey]
+      const { name, propertyKey, type, defaultValue } = propertyMetadata
+      const value = obj[propertyKey] ?? defaultValue
 
       if (value === undefined) {
         continue
