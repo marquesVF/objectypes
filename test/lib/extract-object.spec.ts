@@ -2,6 +2,7 @@
 import { ChildModel } from '../fixtures/child-model'
 import { extractObject } from '../../lib'
 import { NestedModel, NestedTransformableModel } from '../fixtures/nested-model'
+import { DefaultPropModel } from '../fixtures/default-prop-model'
 
 describe('extractObject method', () => {
   const today = new Date()
@@ -86,6 +87,26 @@ describe('extractObject method', () => {
 
     it('should only export named properties', () => {
       expect(jsonObject).toEqual(expectedObj)
+    })
+  })
+
+  describe('when target class has a property with a default value set', () => {
+    describe('when the property is present in the JSON object', () => {
+      it('should set the target object property with the JSON object value', () => {
+        const name = 'JSON object name'
+        const jsonObject: DefaultPropModel = { name, code: '123' }
+        const targetObject = extractObject(jsonObject, DefaultPropModel)
+
+        expect(targetObject).toHaveProperty('name', name)
+      })
+    })
+
+    describe('when the property is not present in the JSON object', () => {
+      it('should set the target object property with the default value', () => {
+        const targetObject = extractObject({ code: '123' }, DefaultPropModel)
+
+        expect(targetObject).toHaveProperty('name', 'default value')
+      })
     })
   })
 })
