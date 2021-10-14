@@ -11,6 +11,7 @@ export function Property(options?: PropertyOptions): PropertyDecorator {
       type: options?.type,
       nullable: options?.nullable,
       target,
+      defaultValue: options?.defaultValue,
     }
 
     saveClassPropertyMetadata(klassName, metadata)

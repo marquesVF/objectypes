@@ -48,7 +48,8 @@ export function buildObject<T>(
 }
 
 function processValueType(propertyMetadata: PropertyMetadata, value?: any) {
-  const { name, target, propertyKey } = propertyMetadata
+  const { name, target, propertyKey, defaultValue } = propertyMetadata
+  const valueWithDefaultValue = value ?? defaultValue
   const objPropName = name ?? propertyKey
   const expectedType = Reflect.getMetadata(
     'design:type',
@@ -57,13 +58,13 @@ function processValueType(propertyMetadata: PropertyMetadata, value?: any) {
   ).name
 
   try {
-    const castedValue = castValue(expectedType, value)
+    const castedValue = castValue(expectedType, valueWithDefaultValue)
 
     return castedValue
   } catch (err) {
     throw new Error(
       // eslint-disable-next-line max-len
-      `Property ${objPropName} type is not assignable to ${expectedType}. Found ${value}`
+      `Property ${objPropName} type is not assignable to ${expectedType}. Found ${valueWithDefaultValue}`
     )
   }
 }
@@ -106,10 +107,11 @@ function validateValueDefinition(
   targetClass: ClassConstructor<any>,
   value?: any
 ) {
-  const { nullable, name, propertyKey } = propertyMetadata
+  const { nullable, name, propertyKey, defaultValue } = propertyMetadata
   const objPropName = name ?? propertyKey
+  const valueShouldBePresent = !nullable && defaultValue === undefined
 
-  if (value === undefined && !nullable) {
+  if (value === undefined && valueShouldBePresent) {
     throw new Error(
       `Property '${objPropName}' is missing. Couldn't build ${targetClass.name} object.`
     )

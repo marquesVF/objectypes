@@ -4,4 +4,5 @@ export interface PropertyOptions {
   name?: string
   type?: ClassConstructor<any>
   nullable?: true
+  defaultValue?: any
 }

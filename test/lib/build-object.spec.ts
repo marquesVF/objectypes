@@ -4,6 +4,7 @@ import { buildObject } from '../../lib/build-object'
 import { OptionalModel } from '../fixtures/optional-model'
 import { PrimitiveModel } from '../fixtures/primitive-model'
 import { Statement } from '../fixtures/nested-in-array-model'
+import { OptionalBuildModel } from '../fixtures/optional-build-model'
 
 describe('buildObject method', () => {
   describe('when dealing with a valid JSON object', () => {
@@ -58,6 +59,26 @@ describe('buildObject method', () => {
         const result = buildObject(OptionalModel, lowercaseName)
 
         expect(result.name).toBe('foo')
+      })
+    })
+
+    describe('when target class has a property with a default value set', () => {
+      describe('when the property is present in the JSON object', () => {
+        it('should set the target object property with the JSON object value', () => {
+          const name = 'JSON object name'
+          const jsonObject = { name }
+          const targetObject = buildObject(OptionalBuildModel, jsonObject)
+
+          expect(targetObject.name).toEqual(name)
+        })
+      })
+
+      describe('when the property is not present in the JSON object', () => {
+        it('should set the target object property with the default value', () => {
+          const targetObject = buildObject(OptionalBuildModel, {})
+
+          expect(targetObject.name).toEqual('No name informed')
+        })
       })
     })
   })
