@@ -18,7 +18,7 @@ export function buildObject<T>(
   }
 
   for (const propertyMetadata of propertyMetadatas) {
-    const { propertyKey } = propertyMetadata
+    const { propertyKey, nullable } = propertyMetadata
     const wereReductionsApplied = applyReductionsToObject(
       targetClass,
       targetObject,
@@ -31,6 +31,10 @@ export function buildObject<T>(
     }
 
     const value = getValueFromJSONObject(propertyMetadata, jsonObject)
+    if (nullable && !value) {
+      continue
+    }
+
     validateValueDefinition(propertyMetadata, targetClass, value)
 
     const typedValue = processValueType(propertyMetadata, value)
@@ -144,7 +148,7 @@ function processNestedValue(
 ) {
   const { type } = propertyMetadata
 
-  if (type === undefined) {
+  if (type === undefined || type === Date) {
     return transformedValue
   }
 
