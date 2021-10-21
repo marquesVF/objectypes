@@ -4,7 +4,7 @@ import { APIResponse } from '../fixtures/readme-example'
 describe('README example', () => {
   it('successfully build an object', () => {
     const jsonObject = {
-      user: [
+      userData: [
         {
           name: 'John  ',
           age: 19,
@@ -30,7 +30,7 @@ describe('README example', () => {
       ],
     }
     const expectedTypedObject: APIResponse = {
-      userData: [
+      users: [
         {
           name: 'John',
           age: 19,
@@ -57,6 +57,6 @@ describe('README example', () => {
     }
     const typedObject = buildObject(APIResponse, jsonObject)
 
-    expect(expectedTypedObject).toMatchObject(typedObject)
+    expect(expectedTypedObject).toEqual(typedObject)
   })
 })
