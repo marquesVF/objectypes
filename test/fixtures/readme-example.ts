@@ -4,7 +4,7 @@ class Post {
   @Property()
   title: string
 
-  @Property({ type: Date })
+  @Property()
   createdAt: Date
 
   @Property({ nullable: true })
@@ -29,6 +29,6 @@ class User extends PostPublisher {
 }
 
 export class APIResponse {
-  @Property({ name: 'user', type: User })
-  userData: User[]
+  @Property({ name: 'userData', type: User })
+  users: User[]
 }
