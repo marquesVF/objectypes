@@ -2,5 +2,10 @@ module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'node',
   clearMocks: true,
-  coverageDirectory: "coverage",
-};
+  coverageDirectory: 'coverage',
+  globals: {
+    'ts-jest': {
+      tsconfig: 'tsconfig.test.json',
+    },
+  },
+}
