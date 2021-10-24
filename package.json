@@ -15,8 +15,9 @@
     "definition": "./dist/index.d.ts"
   },
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
-    "watch": "tsc -p tsconfig.build.json --watch",
+    "build": "tsc -p tsconfig.lib.json",
+    "clean": "rm -rf dist",
+    "watch": "tsc -p tsconfig.lib.json --watch",
     "prepare": "npm run build",
     "lint": "npm run lint:eslint && npm run lint:prettier",
     "lint:eslint": "eslint --ext .ts --cache lib",

@@ -2,8 +2,6 @@
     "compilerOptions": {
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
-        "outDir": "./dist",
-        "baseUrl": ".",
         "declaration": true,
         "typeRoots": ["node_modules/@types"],
         "allowJs": false,
@@ -23,8 +21,8 @@
         "noImplicitAny": true,
         "strictPropertyInitialization": false
     },
-    "include": [
-        "lib/**/*",
-        "test/**/*"
-    ]
+    "references": [
+        { "path": "./tsconfig.lib.json" },
+        { "path": "./tsconfig.test.json" }
+    ],
 }
