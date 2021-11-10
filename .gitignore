@@ -1,7 +1,8 @@
-coverage/*
-node_modules/*
-dist/*
 .DS_Store
 .eslintcache
 .vscode/
+build-benchmark/*
+coverage/*
+dist/*
+node_modules/*
 tsconfig.lib.tsbuildinfo
