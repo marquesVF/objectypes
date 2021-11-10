@@ -24,7 +24,7 @@
     "prepare": "npm run build",
     "lint": "npm run lint:eslint && npm run lint:prettier",
     "lint:eslint": "eslint --ext .ts --cache lib",
-    "lint:prettier": "prettier \"**/*.{ts,md}\"",
+    "lint:prettier": "prettier \"**/*.{ts,md,yml}\"",
     "fix": "npm run lint:prettier --write && npm run lint:eslint --fix",
     "test": "jest",
     "test:watch": "jest --watch",
