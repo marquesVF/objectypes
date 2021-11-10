@@ -79,26 +79,31 @@ rules:
       error,
       { multiline: { delimiter: none }, singleline: { delimiter: comma } },
     ]
+  "@typescript-eslint/ban-types": "off"
+  "@typescript-eslint/explicit-function-return-type": "off"
+  "@typescript-eslint/explicit-module-boundary-types": "off"
   "@typescript-eslint/no-empty-interface": "off"
   "@typescript-eslint/no-explicit-any": "off"
   "@typescript-eslint/no-extraneous-class": "off"
+  "@typescript-eslint/no-floating-promises": error
+  "@typescript-eslint/no-misused-promises": "off"
   "@typescript-eslint/no-parameter-properties": "off"
   "@typescript-eslint/no-require-imports": error
   "@typescript-eslint/no-unnecessary-qualifier": error
+  "@typescript-eslint/no-unsafe-argument": "off"
+  "@typescript-eslint/no-unsafe-assignment": "off"
+  "@typescript-eslint/no-unsafe-call": "off"
+  "@typescript-eslint/no-unsafe-member-access": "off"
+  "@typescript-eslint/no-unsafe-return": "off"
+  "@typescript-eslint/no-unused-vars": [error, { argsIgnorePattern: ^_ }]
+  "@typescript-eslint/no-use-before-define": [error, { functions: false, classes: false }]
   "@typescript-eslint/prefer-for-of": error
   "@typescript-eslint/prefer-function-type": error
   "@typescript-eslint/prefer-interface": "off"
-  "@typescript-eslint/restrict-plus-operands": error
-  "@typescript-eslint/unified-signatures": error
-  "@typescript-eslint/no-floating-promises": error
-  "@typescript-eslint/no-unused-vars": [error, { argsIgnorePattern: ^_ }]
-  "@typescript-eslint/explicit-function-return-type": "off"
-  "@typescript-eslint/no-misused-promises": "off"
-  "@typescript-eslint/no-use-before-define":
-    [error, { functions: false, classes: false }]
-  "@typescript-eslint/ban-types": "off"
   "@typescript-eslint/require-await": "off"
-  "@typescript-eslint/explicit-module-boundary-types": "off"
+  "@typescript-eslint/restrict-plus-operands": error
+  "@typescript-eslint/restrict-template-expressions": "off"
+  "@typescript-eslint/unified-signatures": error
 
   import/order: ["error", { newlines-between: always }]
   import/no-named-as-default: "off"
