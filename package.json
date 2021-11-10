@@ -18,6 +18,8 @@
     "build": "tsc -p tsconfig.lib.json",
     "clean": "rm -rf dist",
     "watch": "tsc -p tsconfig.lib.json --watch",
+    "benchmark:build": "tsc -p tsconfig.benchmark.json",
+    "benchmark:run": "node build-benchmark/benchmark/objectypes.js",
     "prepare": "npm run build",
     "lint": "npm run lint:eslint && npm run lint:prettier",
     "lint:eslint": "eslint --ext .ts --cache lib",
@@ -48,7 +50,7 @@
     "lodash": "4.17.21",
     "prettier": "^2.3.0",
     "ts-jest": "25.5.1",
-    "typescript": "3.9.10"
+    "typescript": "^4.4.4"
   },
   "dependencies": {
     "@types/ramda": "0.27.7",
