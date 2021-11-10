@@ -18,6 +18,7 @@
     "build": "tsc -p tsconfig.lib.json",
     "clean": "rm -rf dist",
     "watch": "tsc -p tsconfig.lib.json --watch",
+    "benchmark": "npm run benchmark:build && npm run benchmark:run",
     "benchmark:build": "tsc -p tsconfig.benchmark.json",
     "benchmark:run": "node build-benchmark/benchmark/objectypes.js",
     "prepare": "npm run build",
