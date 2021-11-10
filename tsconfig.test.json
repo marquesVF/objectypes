@@ -2,6 +2,6 @@
   "compilerOptions": {
     "composite": true
   },
-  "include": ["test/**/*"],
+  "include": ["test/**/*", "lib/**/*"],
   "extends": "./tsconfig.json"
 }

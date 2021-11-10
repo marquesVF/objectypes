@@ -5,6 +5,7 @@
         "declaration": true,
         "typeRoots": ["node_modules/@types"],
         "allowJs": false,
+        "rootDir": ".",
         "allowSyntheticDefaultImports": true,
         "esModuleInterop": true,
         "lib": ["es2018"],
@@ -15,14 +16,13 @@
         "strictNullChecks": true,
         "noImplicitThis": true,
         "noImplicitReturns": true,
-        "noUnusedLocals": true,
-        "noUnusedParameters": true,
         "skipLibCheck": true,
-        "noImplicitAny": true,
         "strictPropertyInitialization": false
     },
+    "exclude": ["dist", "build-benchmark"],
     "references": [
         { "path": "./tsconfig.lib.json" },
-        { "path": "./tsconfig.test.json" }
+        { "path": "./tsconfig.test.json" },
+        { "path": "./tsconfig.benchmark.json" }
     ],
 }

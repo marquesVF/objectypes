@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "resolveJsonModule": true,
+    "composite": true,
+    "outDir": "build-benchmark"
+  },
+  "files": [
+    "benchmark/data.json"
+  ],
+  "include": ["benchmark/**/*", "lib/**/*"],
+  "extends": "./tsconfig.json"
+}
