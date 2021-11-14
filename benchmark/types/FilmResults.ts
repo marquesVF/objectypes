@@ -1,6 +1,6 @@
 import { Property } from '../../lib/decorators/property'
 
-class Result {
+class FilmResult {
   @Property() id: number
   @Property() title: string
   @Property() adult: boolean
@@ -16,6 +16,6 @@ class PaginatedData {
   @Property({ name: 'total_pages' }) totalPages: 4
 }
 
-export class BenchmarkData extends PaginatedData {
-  @Property({ type: Result }) results: Result[]
+export class FilmResults extends PaginatedData {
+  @Property({ type: FilmResult }) results: FilmResult[]
 }
