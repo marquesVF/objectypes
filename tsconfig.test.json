@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
+    "resolveJsonModule": true,
     "composite": true
   },
-  "include": ["test/**/*", "lib/**/*"],
+  "files": [
+    "benchmark/data.json"
+  ],
+  "include": ["test/**/*", "lib/**/*", "benchmark/**/*"],
   "extends": "./tsconfig.json"
 }
