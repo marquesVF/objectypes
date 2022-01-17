@@ -505,17 +505,6 @@
     source-map "^0.6.1"
     write-file-atomic "^3.0.0"
 
-"@jest/types@^27.2.5":
-  version "27.2.5"
-  resolved "https://registry.yarnpkg.com/@jest/types/-/types-27.2.5.tgz#420765c052605e75686982d24b061b4cbba22132"
-  integrity sha512-nmuM4VuDtCZcY+eTpw+0nvstwReMsjPoj7ZR80/BbixulhLaiX+fbv8oeLW8WZlJMcsGQsTmMKT/iTZu1Uy/lQ==
-  dependencies:
-    "@types/istanbul-lib-coverage" "^2.0.0"
-    "@types/istanbul-reports" "^3.0.0"
-    "@types/node" "*"
-    "@types/yargs" "^16.0.0"
-    chalk "^4.0.0"
-
 "@jest/types@^27.4.2":
   version "27.4.2"
   resolved "https://registry.yarnpkg.com/@jest/types/-/types-27.4.2.tgz#96536ebd34da6392c2b7c7737d693885b5dd44a5"
@@ -655,9 +644,9 @@
   integrity sha512-Fo79ojj3vdEZOHg3wR9ksAMRz4P3S5fDB5e/YWZiFnyFQI1WY2Vftu9XoXVVtJfxB7Bpce/QTqWSSntkz2Znrw==
 
 "@types/ramda@^0.27.47":
-  version "0.27.63"
-  resolved "https://registry.yarnpkg.com/@types/ramda/-/ramda-0.27.63.tgz#a5cd903e229e0aa603395adf4da58c9298b1dd4a"
-  integrity sha512-gG8P2Y54L1O0Q4fz+y93BJZ6//p1kyvej1hFFsmPk4A/bnB6twY/5SYYmavxlhby5uB5GPYVrrREH9BTaocAjw==
+  version "0.27.64"
+  resolved "https://registry.yarnpkg.com/@types/ramda/-/ramda-0.27.64.tgz#7e23f2bf7b9729bcbd59223f100460ead6829008"
+  integrity sha512-EDf++ss/JoMiDpvT1MuA8oi88OwpvmqVE+o8Ojm5v/5bdJEPZ6eIQd/XYAeQ0imlwG6Tf0Npfq4Z9w3hAKBk9Q==
   dependencies:
     ts-toolbelt "^6.15.1"
 
