@@ -1,7 +1,7 @@
 import { assocPath } from 'ramda'
 
-import { findClassPropertiesMetadata } from './core/metadata/property'
-import { findClassTransformationMetadata } from './core/metadata/transformation'
+import { findClassPropertiesMetadata } from './metadata/property'
+import { findClassTransformationMetadata } from './metadata/transformation'
 import { Hashable, ClassConstructor, PropertyMetadata } from './types'
 import { ExtractOptions } from './types/extract-options'
 

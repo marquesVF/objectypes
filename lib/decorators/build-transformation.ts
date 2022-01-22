@@ -1,6 +1,6 @@
 import { TransformationMetadata } from '../types/transformation'
 import { BuildTransformer } from '../types'
-import { saveClassTransformationMetadata } from '../core/metadata/transformation'
+import { saveClassTransformationMetadata } from '../metadata/transformation'
 
 export function BuildTransformation<T>(
   transformer: BuildTransformer<T>

@@ -2,7 +2,7 @@ import {
   TransformationMetadata,
   ExtractTransformer,
 } from '../types/transformation'
-import { saveClassTransformationMetadata } from '../core/metadata/transformation'
+import { saveClassTransformationMetadata } from '../metadata/transformation'
 
 export function ExtractTransformation<T, K>(
   transformer: ExtractTransformer<T, K>
