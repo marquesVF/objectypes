@@ -1,8 +1,8 @@
 import { path } from 'ramda'
 
-import { findClassPropertiesMetadata } from './core/metadata/property'
-import { findClassReductionMetadata } from './core/metadata/reduction'
-import { findClassTransformationMetadata } from './core/metadata/transformation'
+import { findClassPropertiesMetadata } from './metadata/property'
+import { findClassReductionMetadata } from './metadata/reduction'
+import { findClassTransformationMetadata } from './metadata/transformation'
 import { Hashable, ClassConstructor, PropertyMetadata } from './types'
 import { castValue } from './utils/casting'
 

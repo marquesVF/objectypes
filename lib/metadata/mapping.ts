@@ -1,4 +1,4 @@
-import { ClassConstructor, MapPropertyMetadata } from '../../types'
+import { ClassConstructor, MapPropertyMetadata } from '../types'
 
 import { findParentClass } from './utils'
 

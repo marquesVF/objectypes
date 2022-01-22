@@ -1,4 +1,4 @@
-import { saveClassReductionMetadata } from '../core/metadata/reduction'
+import { saveClassReductionMetadata } from '../metadata/reduction'
 import { Reducer, ReductionMetadata } from '../types/reduction'
 
 export function BuildReduction<T>(reducer: Reducer<T>): PropertyDecorator {

@@ -1,5 +1,5 @@
-import { findClassMappingMetadata } from './core/metadata/mapping'
-import { findClassPropertiesMetadata } from './core/metadata/property'
+import { findClassMappingMetadata } from './metadata/mapping'
+import { findClassPropertiesMetadata } from './metadata/property'
 import { Hashable, ClassConstructor, MapPropertyMetadata } from './types'
 
 function processValue<T, K>(

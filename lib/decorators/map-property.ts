@@ -1,4 +1,4 @@
-import { saveClassMappingMetadata } from '../core/metadata/mapping'
+import { saveClassMappingMetadata } from '../metadata/mapping'
 import { ClassConstructor, MapPropertyMetadata, MapTransformer } from '../types'
 
 export function MapProperty<T>(

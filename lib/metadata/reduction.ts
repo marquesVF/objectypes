@@ -1,5 +1,5 @@
-import { ClassConstructor } from '../../types/class-constructor'
-import { ReductionMetadata } from '../../types'
+import { ClassConstructor } from '../types/class-constructor'
+import { ReductionMetadata } from '../types'
 
 const reducerMetadata: Map<string, Array<ReductionMetadata<any>>> = new Map()
 
