@@ -6,42 +6,44 @@ import { Hashable, ClassConstructor, PropertyMetadata } from './types'
 import { ExtractOptions } from './types/extract-options'
 
 export function extractObject<T>(
-  obj: Hashable & T,
-  objClass: ClassConstructor<T>,
+  object: Hashable & T,
+  objectClass: ClassConstructor<T>,
   options?: ExtractOptions
 ): object {
-  let resultingObject: Hashable = {}
   const propertyMetadatas = findClassPropertiesMetadata(
-    objClass,
+    objectClass,
     options?.namedOnly
   )
-
-  if (propertyMetadatas) {
-    for (const propertyMetadata of propertyMetadatas) {
-      const { name, propertyKey, type, defaultValue } = propertyMetadata
-      const value = obj[propertyKey] ?? defaultValue
-
-      if (value === undefined) {
-        continue
-      }
-
-      const transformedValue = applyTransformationsToObject(
-        objClass,
-        propertyMetadata,
-        value
-      )
-      const finalValue = processNestedValue(transformedValue, type)
-      const resultingProperty = name ?? propertyKey
-
-      resultingObject = assocPath(
-        resultingProperty.split('.'),
-        finalValue,
-        resultingObject
-      )
-    }
+  if (!propertyMetadatas) {
+    return {}
   }
 
-  return resultingObject
+  return generateExtractedObject(object, objectClass, propertyMetadatas)
+}
+
+function generateExtractedObject(
+  object: Hashable,
+  objectClass: ClassConstructor<any>,
+  propertyMetadatas: PropertyMetadata[]
+) {
+  return propertyMetadatas.reduce((acc, propertyMetadata) => {
+    const { name, propertyKey, type, defaultValue } = propertyMetadata
+    const value = object[propertyKey] ?? defaultValue
+
+    if (value === undefined) {
+      return acc
+    }
+
+    const transformedValue = applyTransformationsToObject(
+      objectClass,
+      propertyMetadata,
+      value
+    )
+    const finalValue = processNestedValue(transformedValue, type)
+    const resultingProperty = name ?? propertyKey
+
+    return assocPath(resultingProperty.split('.'), finalValue, acc)
+  }, {})
 }
 
 function applyTransformationsToObject<T>(
