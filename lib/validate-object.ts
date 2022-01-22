@@ -1,9 +1,9 @@
 import { path } from 'ramda'
 
 import { ClassConstructor } from './types'
-import { isTypeValid } from './core/type-validator'
+import { isTypeValid } from './type-validator'
 import { ValidationErrors, TypeError } from './types/validation-errors'
-import { findClassPropertiesMetadata } from './core/metadata/property'
+import { findClassPropertiesMetadata } from './metadata/property'
 
 export function validateObject<T>(
   klass: ClassConstructor<T>,

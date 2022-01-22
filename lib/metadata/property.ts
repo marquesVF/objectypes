@@ -1,4 +1,4 @@
-import { ClassConstructor, PropertyMetadata } from '../../types'
+import { ClassConstructor, PropertyMetadata } from '../types'
 
 import { findParentClass } from './utils'
 

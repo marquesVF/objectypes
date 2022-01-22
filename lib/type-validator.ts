@@ -1,4 +1,4 @@
-import { TypeError } from '../types/validation-errors'
+import { TypeError } from './types/validation-errors'
 
 export function isTypeValid(
   target: Object,
@@ -19,8 +19,8 @@ export function isTypeValid(
   }
 
   if (
-    expectedType === 'number'
-    && ['string', 'number'].includes(typeof value)
+    expectedType === 'number' &&
+    ['string', 'number'].includes(typeof value)
   ) {
     if (!isNaN(Number(value))) {
       return

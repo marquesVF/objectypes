@@ -2,7 +2,7 @@ import {
   ClassConstructor,
   TransformationMetadata,
   TransformationScope,
-} from '../../types'
+} from '../types'
 
 type TransformationMetadataArray = Array<TransformationMetadata<any, any>>
 type TransformationMetadataMap = Map<string, TransformationMetadataArray>
