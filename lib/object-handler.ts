@@ -1,5 +1,5 @@
 /* eslint-disable no-useless-constructor */
-import { buildObject } from './build-object'
+import { buildObject } from './build-object/build-object'
 import { extractObject } from './extract-object'
 import { validateObject } from './validate-object'
 import { ClassConstructor, ErrorSummary } from './types'
