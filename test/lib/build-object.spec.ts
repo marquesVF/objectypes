@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 import { RequestPayloadModel } from '../fixtures/request-payload-mode'
-import { buildObject } from '../../lib/build-object'
+import { buildObject } from '../../lib/build-object/build-object'
 import { OptionalModel } from '../fixtures/optional-model'
 import { PrimitiveModel } from '../fixtures/primitive-model'
 import { Statement } from '../fixtures/nested-in-array-model'

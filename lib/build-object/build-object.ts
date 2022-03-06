@@ -1,10 +1,11 @@
-import { applyReductionsToObject } from './build-object/apply-reductions'
-import { applyTransformationsToObject } from './build-object/apply-transformations-to-object'
-import { extractValueFromJsonObject } from './build-object/extract-value-from-json'
-import { processValueType } from './build-object/process-value-type'
-import { validateValueDefinition } from './build-object/validate-value-definition'
-import { findClassPropertiesMetadata } from './metadata/property'
-import { Hashable, ClassConstructor, PropertyMetadata } from './types'
+import { findClassPropertiesMetadata } from '../metadata/property'
+import { Hashable, ClassConstructor, PropertyMetadata } from '../types'
+
+import { applyReductionsToObject } from './apply-reductions'
+import { applyTransformationsToObject } from './apply-transformations-to-object'
+import { extractValueFromJsonObject } from './extract-value-from-json'
+import { processValueType } from './process-value-type'
+import { validateValueDefinition } from './validate-value-definition'
 
 export function buildObject<T>(
   targetClass: ClassConstructor<Hashable & T>,

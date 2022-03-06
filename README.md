@@ -41,9 +41,7 @@ A JSON example:
         {
           "title": "Comment here some lines from musics you like",
           "createdAt": "2021-10-14T20: 40: 07.609Z",
-          "comments": [
-            "Such a lonely day and it's mine"
-          ]
+          "comments": ["Such a lonely day and it's mine"]
         }
       ],
       "likes": 100
@@ -55,7 +53,7 @@ A JSON example:
 The target Typescript type:
 
 ```typescript
-import { BuildTransformation, Property } from "objectypes"
+import { BuildTransformation, Property } from 'objectypes'
 
 class Post {
   @Property()
@@ -90,4 +88,3 @@ export class APIResponse {
   users: User[]
 }
 ```
-

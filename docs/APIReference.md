@@ -13,7 +13,6 @@ Indicate what properties should be validated by `objectypes` methods.
   - **nullable**?: a flag to indicate if a property can be missing or have a null value in the json representation. It is used by the `buildObject` method when validating property presence.
   - **defaultValue?**: if the object hasn't the value, the value defined by this parameter is used instead.
 
-
 For example:
 
 ```typescript
