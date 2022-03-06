@@ -1,5 +1,5 @@
 import { ComplexModel } from '../fixtures/complex-mode'
-import { buildObject } from '../../lib/build-object'
+import { buildObject } from '../../lib/build-object/build-object'
 import { extractObject } from '../../lib'
 
 /* eslint-disable @typescript-eslint/camelcase */
