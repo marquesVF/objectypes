@@ -6,9 +6,8 @@ export function castValueBasedOnExpectedTypeName(
   propertyMetadata: PropertyMetadata,
   value?: any
 ) {
-  const { name, expectedTypeName, propertyKey, defaultValue } = propertyMetadata
+  const { propertyName, expectedTypeName, defaultValue } = propertyMetadata
   const valueWithDefaultValue = value ?? defaultValue
-  const objPropName = name ?? propertyKey
 
   try {
     const castedValue = castValue(expectedTypeName, valueWithDefaultValue)
@@ -17,7 +16,7 @@ export function castValueBasedOnExpectedTypeName(
   } catch (err) {
     throw new Error(
       // eslint-disable-next-line max-len
-      `Property ${objPropName} type is not assignable to ${expectedTypeName}. Found ${valueWithDefaultValue}`
+      `Property ${propertyName} type is not assignable to ${expectedTypeName}. Found ${valueWithDefaultValue}`
     )
   }
 }

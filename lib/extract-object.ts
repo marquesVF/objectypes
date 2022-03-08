@@ -27,7 +27,7 @@ function generateExtractedObject(
   propertyMetadatas: PropertyMetadata[]
 ) {
   return propertyMetadatas.reduce((acc, propertyMetadata) => {
-    const { name, propertyKey, type, defaultValue } = propertyMetadata
+    const { propertyName, propertyKey, type, defaultValue } = propertyMetadata
     const value = object[propertyKey] ?? defaultValue
 
     if (value === undefined) {
@@ -40,9 +40,8 @@ function generateExtractedObject(
       value
     )
     const finalValue = processNestedValue(transformedValue, type)
-    const resultingProperty = name ?? propertyKey
 
-    return assocPath(resultingProperty.split('.'), finalValue, acc)
+    return assocPath(propertyName.split('.'), finalValue, acc)
   }, {})
 }
 

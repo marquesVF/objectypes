@@ -12,6 +12,7 @@ export function Property(options?: PropertyOptions): PropertyDecorator {
     ).name
     const metadata: PropertyMetadata = {
       defaultValue: options?.defaultValue,
+      propertyName: options?.name ?? (propertyKey as string),
       expectedTypeName,
       name: options?.name,
       nullable: options?.nullable,

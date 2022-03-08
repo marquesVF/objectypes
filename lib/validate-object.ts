@@ -15,16 +15,14 @@ export function validateObject<T>(
 
   if (properties) {
     properties.forEach(property => {
-      const { name, propertyKey, nullable, type, target } = property
+      const { propertyName, propertyKey, nullable, type, target } = property
 
-      const jsonPropertyName = name ?? propertyKey
-
-      const value = path(jsonPropertyName.split('.'), obj)
+      const value = path(propertyName.split('.'), obj)
 
       // Property presence validation
       if (value === undefined && !nullable) {
         // eslint-disable-next-line max-len
-        presenceErrors.push(jsonPropertyName)
+        presenceErrors.push(propertyName)
       }
 
       // Nested object property validation

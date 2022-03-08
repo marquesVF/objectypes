@@ -6,14 +6,13 @@ export function extractValueFromJsonObject(
   propertyMetadata: PropertyMetadata,
   jsonObject: Hashable
 ) {
-  const { name, propertyKey } = propertyMetadata
-  const objectPropertyName = name ?? propertyKey
+  const { propertyName, propertyKey } = propertyMetadata
 
-  if (!objectPropertyName.includes('.')) {
-    return jsonObject[objectPropertyName] ?? jsonObject[propertyKey]
+  if (!propertyName.includes('.')) {
+    return jsonObject[propertyName] ?? jsonObject[propertyKey]
   }
 
-  const namePath = objectPropertyName.split('.')
+  const namePath = propertyName.split('.')
   const valueFromPath = path<any>(namePath, jsonObject)
 
   return valueFromPath ?? path<any>([propertyKey], jsonObject)

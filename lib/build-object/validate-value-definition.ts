@@ -5,13 +5,12 @@ export function validateValueDefinition(
   targetClass: ClassConstructor<any>,
   value?: any
 ) {
-  const { nullable, name, propertyKey, defaultValue } = propertyMetadata
-  const objPropName = name ?? propertyKey
+  const { nullable, propertyName, defaultValue } = propertyMetadata
   const valueShouldBePresent = !nullable && defaultValue === undefined
 
   if (value === undefined && valueShouldBePresent) {
     throw new Error(
-      `Property '${objPropName}' is missing. Couldn't build ${targetClass.name} object.`
+      `Property '${propertyName}' is missing. Couldn't build ${targetClass.name} object.`
     )
   }
 }
