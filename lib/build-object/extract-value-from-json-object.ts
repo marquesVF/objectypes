@@ -2,7 +2,7 @@ import { path } from 'ramda'
 
 import { Hashable, PropertyMetadata } from '../types'
 
-export function extractValueFromJSONObject(
+export function extractValueFromJsonObject(
   propertyMetadata: PropertyMetadata,
   jsonObject: Hashable
 ) {
