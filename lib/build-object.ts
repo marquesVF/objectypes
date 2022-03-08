@@ -1,7 +1,7 @@
 import { applyReductionsToObject } from './build-object/apply-reductions'
 import { applyTransformationsToObject } from './build-object/apply-transformations-to-object'
 import { extractValueFromJsonObject } from './build-object/extract-value-from-json'
-import { processValueType } from './build-object/process-value-type'
+import { castValueBasedOnExpectedTypeName } from './build-object/cast-value-based-on-expected-type-name'
 import { validateValueDefinition } from './build-object/validate-value-definition'
 import { findClassPropertiesMetadata } from './metadata/property'
 import { Hashable, ClassConstructor, PropertyMetadata } from './types'
@@ -37,7 +37,7 @@ export function buildObject<T>(
 
     validateValueDefinition(propertyMetadata, targetClass, value)
 
-    const typedValue = processValueType(propertyMetadata, value)
+    const typedValue = castValueBasedOnExpectedTypeName(propertyMetadata, value)
     const transformedValue = applyTransformationsToObject(
       targetClass,
       propertyMetadata,

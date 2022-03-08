@@ -4,7 +4,7 @@ import { Hashable, ClassConstructor, PropertyMetadata } from '../types'
 import { applyReductionsToObject } from './apply-reductions'
 import { applyTransformationsToObject } from './apply-transformations-to-object'
 import { extractValueFromJsonObject } from './extract-value-from-json'
-import { processValueType } from './process-value-type'
+import { castValueBasedOnExpectedTypeName } from './cast-value-based-on-expected-type-name'
 import { validateValueDefinition } from './validate-value-definition'
 
 export function buildObject<T>(
@@ -38,7 +38,7 @@ export function buildObject<T>(
 
     validateValueDefinition(propertyMetadata, targetClass, value)
 
-    const typedValue = processValueType(propertyMetadata, value)
+    const typedValue = castValueBasedOnExpectedTypeName(propertyMetadata, value)
     const transformedValue = applyTransformationsToObject(
       targetClass,
       propertyMetadata,
