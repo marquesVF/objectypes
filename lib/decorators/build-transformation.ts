@@ -8,7 +8,7 @@ export function BuildTransformation<T>(
   return function (target: Object, propertyKey: string | symbol) {
     const klassName = target.constructor.name
 
-    const metadata: TransformationMetadata<unknown, T> = {
+    const metadata: TransformationMetadata<T> = {
       scope: 'build',
       propertyKey: propertyKey.toString(),
       transformer,

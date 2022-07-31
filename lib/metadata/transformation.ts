@@ -4,14 +4,14 @@ import {
   TransformationScope,
 } from '../types'
 
-type TransformationMetadataArray = Array<TransformationMetadata<any, any>>
+type TransformationMetadataArray = Array<TransformationMetadata<any>>
 type TransformationMetadataMap = Map<string, TransformationMetadataArray>
 
 const transformationMetadata: TransformationMetadataMap = new Map()
 
-export function saveClassTransformationMetadata<T, K>(
+export function saveClassTransformationMetadata<T>(
   className: string,
-  metadata: TransformationMetadata<T, K>
+  metadata: TransformationMetadata<T>
 ) {
   const classTransformationMetadata = transformationMetadata.get(className)
 
@@ -22,10 +22,10 @@ export function saveClassTransformationMetadata<T, K>(
   }
 }
 
-export function findClassTransformationMetadata<T, K>(
+export function findClassTransformationMetadata<T>(
   klass: ClassConstructor<T>,
   scope: TransformationScope
-): Array<TransformationMetadata<T, K>> | undefined {
+): Array<TransformationMetadata<T>> | undefined {
   const className = klass.name ?? klass.constructor.name
   const classTransformationMetadata = transformationMetadata.get(className)
 

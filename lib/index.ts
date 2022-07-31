@@ -2,7 +2,6 @@ import 'reflect-metadata'
 
 export * from './types/property-options'
 export * from './decorators'
-export { mapObject } from './map-object'
 export { buildObject } from './build-object/build-object'
 export { ObjectHandler } from './object-handler'
 export { validateObject } from './validate-object'
@@ -11,8 +10,6 @@ export {
   Hashable,
   BuildTransformationFn,
   BuildTransformer,
-  ExtractTransformationFn,
-  ExtractTransformer,
   MapTransformer,
   Reducer,
 } from './types'
