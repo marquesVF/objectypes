@@ -1,25 +1,12 @@
 import { Transformable } from '../fixtures/transformable'
-import { extractObject, buildObject } from '../../lib'
+import { buildObject } from '../../lib'
 import { OptionalBuildModel } from '../fixtures/optional-build-model'
 
 describe('property transformation', () => {
-  const extractedObject = {
-    time: 1594067298256,
-    code: '1111',
-  }
-
   const transformableObj: Transformable = {
     code: '1111',
     timeDate: new Date('2020-07-06T20:28:18.256Z'),
   }
-
-  describe('when extracting the object', () => {
-    it('should apply the extract transformation', () => {
-      const result = extractObject(transformableObj, Transformable)
-
-      expect(result).toEqual(extractedObject)
-    })
-  })
 
   describe('when building the object', () => {
     describe('when object has all required properties with expected types', () => {

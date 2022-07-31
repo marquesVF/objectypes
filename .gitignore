@@ -6,3 +6,4 @@ coverage/*
 dist/*
 node_modules/*
 tsconfig.lib.tsbuildinfo
+tsconfig.test.tsbuildinfo

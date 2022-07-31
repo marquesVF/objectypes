@@ -1,6 +1,5 @@
 /* eslint-disable no-useless-constructor */
 import { buildObject } from './build-object/build-object'
-import { extractObject } from './extract-object'
 import { validateObject } from './validate-object'
 import { ClassConstructor, ErrorSummary } from './types'
 import { ValidationErrors } from './types/validation-errors'
@@ -52,9 +51,5 @@ export class ObjectHandler<T> {
 
   build(jsonObj: object): T {
     return buildObject(this.klass, jsonObj)
-  }
-
-  extract(obj: T): object {
-    return extractObject(obj, this.klass)
   }
 }

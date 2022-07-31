@@ -1,8 +1,6 @@
 import { ComplexModel } from '../fixtures/complex-mode'
 import { buildObject } from '../../lib/build-object/build-object'
-import { extractObject } from '../../lib'
 
-/* eslint-disable @typescript-eslint/camelcase */
 describe('dealing with complex json objects', () => {
   const jsonObject = {
     data: {
@@ -22,14 +20,6 @@ describe('dealing with complex json objects', () => {
       const result = buildObject(ComplexModel, jsonObject)
 
       expect(result).toEqual(typedObject)
-    })
-  })
-
-  describe('when using extractObject', () => {
-    it('should generate correctly a json object', () => {
-      const result = extractObject(typedObject, ComplexModel)
-
-      expect(result).toEqual(jsonObject)
     })
   })
 })

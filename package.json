@@ -28,7 +28,10 @@
     "fix": "yarn lint:prettier --write && yarn lint:eslint --fix",
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:cov": "jest --coverage"
+    "test:cov": "jest --coverage",
+    "typecheck": "yarn typecheck:lib && yarn typecheck:test",
+    "typecheck:lib": "tsc -p tsconfig.lib.json --noEmit",
+    "typecheck:test": "tsc -p tsconfig.test.json --noEmit"
   },
   "keywords": [
     "type-safety",
