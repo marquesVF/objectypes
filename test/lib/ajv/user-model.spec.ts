@@ -18,7 +18,18 @@ describe('UserModel spec', () => {
         nullable: true,
         type: 'number',
       })
-      expect(userParser.schema).toHaveProperty('required', ['rating'])
+      expect(userParser.schema.properties).toHaveProperty('name', {
+        maxLength: 30,
+        type: 'string',
+      })
+      expect(userParser.schema.properties).toHaveProperty('email', {
+        type: 'string',
+      })
+      expect(userParser.schema).toHaveProperty('required', [
+        'name',
+        'email',
+        'rating',
+      ])
     })
   })
 })

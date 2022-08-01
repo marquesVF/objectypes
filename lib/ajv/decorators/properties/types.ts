@@ -13,3 +13,16 @@ export type NumberPropertyOptions = {
   expectedType: 'number'
   options?: NumberOptions
 }
+
+export type StringOptions = SharedOptions & {
+  maxLength?: number
+  minLength?: number
+  pattern?: RegExp
+}
+
+export type StringPropertyOptions = {
+  expectedType: 'string'
+  options?: StringOptions
+}
+
+export type PropertyOptions = NumberPropertyOptions | StringPropertyOptions

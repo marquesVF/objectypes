@@ -1,6 +1,6 @@
-import { NumberPropertyOptions } from '../decorators/properties/types'
+import { PropertyOptions } from '../decorators/properties/types'
 
-export type PropertyMetadata = NumberPropertyOptions & {
+export type PropertyMetadata = PropertyOptions & {
   propertyName: string
 }
 

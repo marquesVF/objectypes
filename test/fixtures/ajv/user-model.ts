@@ -1,13 +1,18 @@
-import { Number } from '../../../lib/ajv/decorators/properties/number'
+import { NumberProperty } from '../../../lib/ajv/decorators/properties/number'
+import { StringProperty } from '../../../lib/ajv/decorators/properties/string'
 
 export class UserModel {
+  @StringProperty({ maxLength: 30 })
   name: string
+
+  @StringProperty()
   email: string
+
   isEmailConfirmed: boolean
 
-  @Number({ minimum: 0, maximum: 5 })
+  @NumberProperty({ minimum: 0, maximum: 5 })
   rating: number
 
-  @Number({ nullable: true })
+  @NumberProperty({ nullable: true })
   age?: number
 }
