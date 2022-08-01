@@ -1,3 +1,4 @@
+import { BooleanProperty } from '../../../lib/ajv/decorators/properties/boolean'
 import { NumberProperty } from '../../../lib/ajv/decorators/properties/number'
 import { StringProperty } from '../../../lib/ajv/decorators/properties/string'
 
@@ -8,6 +9,7 @@ export class UserModel {
   @StringProperty()
   email: string
 
+  @BooleanProperty()
   isEmailConfirmed: boolean
 
   @NumberProperty({ minimum: 0, maximum: 5 })

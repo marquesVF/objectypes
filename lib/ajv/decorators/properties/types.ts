@@ -25,4 +25,12 @@ export type StringPropertyOptions = {
   options?: StringOptions
 }
 
-export type PropertyOptions = NumberPropertyOptions | StringPropertyOptions
+export type BooleanPropertyOptions = {
+  expectedType: 'boolean'
+  options?: SharedOptions
+}
+
+export type PropertyOptions =
+  | NumberPropertyOptions
+  | StringPropertyOptions
+  | BooleanPropertyOptions
