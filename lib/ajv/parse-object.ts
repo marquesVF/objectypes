@@ -28,8 +28,8 @@ export function parseObject<T>(
 
   const jsonSchema = generateJsonSchemaFromMetadata(metadata)
 
-  console.log(metadata)
-  console.log(jsonSchema)
+  // console.log('metadata', JSON.stringify(metadata))
+  // console.log('jsonSchema', JSON.stringify(jsonSchema))
 
   return {
     isObjectValid: true,

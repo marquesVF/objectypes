@@ -1,5 +1,11 @@
-import { BooleanProperty } from '../../../lib/ajv/decorators/properties/boolean'
-import { NumberProperty } from '../../../lib/ajv/decorators/properties/number'
+import {
+  BooleanArrayProperty,
+  BooleanProperty,
+} from '../../../lib/ajv/decorators/properties/boolean'
+import {
+  NumberArrayProperty,
+  NumberProperty,
+} from '../../../lib/ajv/decorators/properties/number'
 import {
   StringArrayProperty,
   StringProperty,
@@ -20,6 +26,12 @@ export class UserModel {
 
   @StringArrayProperty({ minLength: 5 })
   favoriteStoreNames: string[]
+
+  @BooleanArrayProperty()
+  isActionSuccessfull: boolean[]
+
+  @NumberArrayProperty({ nullable: true, uniqueItems: true })
+  orderIndexes?: number[]
 
   @NumberProperty({ nullable: true })
   age?: number

@@ -37,12 +37,28 @@ describe('UserModel spec', () => {
           },
         }
       )
+      expect(userParser.schema.properties).toHaveProperty('orderIndexes', {
+        type: 'array',
+        items: {
+          type: 'number',
+        },
+      })
+      expect(userParser.schema.properties).toHaveProperty(
+        'isActionSuccessfull',
+        {
+          type: 'array',
+          items: {
+            type: 'boolean',
+          },
+        }
+      )
       expect(userParser.schema).toHaveProperty('required', [
         'name',
         'email',
         'isEmailConfirmed',
         'rating',
         'favoriteStoreNames',
+        'isActionSuccessfull',
       ])
     })
   })
