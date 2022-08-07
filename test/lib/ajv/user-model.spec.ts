@@ -28,11 +28,21 @@ describe('UserModel spec', () => {
       expect(userParser.schema.properties).toHaveProperty('isEmailConfirmed', {
         type: 'boolean',
       })
+      expect(userParser.schema.properties).toHaveProperty(
+        'favoriteStoreNames',
+        {
+          type: 'array',
+          items: {
+            type: 'string',
+          },
+        }
+      )
       expect(userParser.schema).toHaveProperty('required', [
         'name',
         'email',
         'isEmailConfirmed',
         'rating',
+        'favoriteStoreNames',
       ])
     })
   })

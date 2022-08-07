@@ -30,7 +30,20 @@ export type BooleanPropertyOptions = {
   options?: SharedOptions
 }
 
+export type ArrayOptions = SharedOptions & {
+  maxItems?: number
+  minItems?: number
+  uniqueItems?: boolean
+}
+
+export type ArrayPropertyOptions = {
+  expectedType: 'array'
+  options?: SharedOptions
+  itemPropertyOptions: PropertyOptions
+}
+
 export type PropertyOptions =
   | NumberPropertyOptions
   | StringPropertyOptions
   | BooleanPropertyOptions
+  | ArrayPropertyOptions
