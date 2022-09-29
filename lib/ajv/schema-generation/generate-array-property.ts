@@ -1,6 +1,6 @@
 import { PropertyMetadata } from '../utils/metadata'
 
-export function generateArrayProperty(metadata: PropertyMetadata) {
+export function generateArrayProperty<T>(metadata: PropertyMetadata<T>) {
   if (metadata.expectedType !== 'array') {
     return
   }

@@ -18,18 +18,15 @@ type ParseResult<T> = (SuccessfulParse<T> | FailedParse) & {
 }
 
 export function parseObject<T>(
-  targetClass: T & { [key: string]: any }
+  targetClass: () => T & { [key: string]: any }
 ): ParseResult<T> {
-  const className = targetClass.constructor.name
+  const className = targetClass().constructor.name
   const metadata = findMetadata(className)
   if (!metadata) {
     throw new Error('Unkown error while parsing: no metadata found')
   }
 
   const jsonSchema = generateJsonSchemaFromMetadata(metadata)
-
-  // console.log('metadata', JSON.stringify(metadata))
-  // console.log('jsonSchema', JSON.stringify(jsonSchema))
 
   return {
     isObjectValid: true,

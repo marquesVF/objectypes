@@ -1,15 +1,17 @@
 import {
   BooleanArrayProperty,
   BooleanProperty,
-} from '../../../lib/ajv/decorators/properties/boolean'
-import {
   NumberArrayProperty,
   NumberProperty,
-} from '../../../lib/ajv/decorators/properties/number'
-import {
   StringArrayProperty,
   StringProperty,
-} from '../../../lib/ajv/decorators/properties/string'
+  ObjectProperty,
+} from '../../../lib/ajv/decorators/properties'
+
+export class CartModel {
+  @StringProperty()
+  cartId: string
+}
 
 export class UserModel {
   @StringProperty({ maxLength: 30 })
@@ -29,6 +31,9 @@ export class UserModel {
 
   @BooleanArrayProperty()
   isActionSuccessfull: boolean[]
+
+  @ObjectProperty({ type: () => CartModel })
+  currentCart: CartModel
 
   @NumberArrayProperty({ nullable: true, uniqueItems: true })
   orderIndexes?: number[]

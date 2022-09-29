@@ -4,7 +4,7 @@ import { UserModel } from '../../fixtures/ajv/user-model'
 describe('UserModel spec', () => {
   describe('when parsing an object', () => {
     it('generates the expected schema', () => {
-      const userParser = parseObject(new UserModel())
+      const userParser = parseObject(() => new UserModel())
 
       expect(userParser.schema).toHaveProperty('additionalProperties', false)
       expect(userParser.schema).toHaveProperty('type', 'object')
@@ -52,6 +52,14 @@ describe('UserModel spec', () => {
           },
         }
       )
+      expect(userParser.schema.properties).toHaveProperty('currentCart', {
+        additionalProperties: false,
+        properties: {
+          cartId: { type: 'string' },
+        },
+        required: ['cartId'],
+        type: 'object',
+      })
       expect(userParser.schema).toHaveProperty('required', [
         'name',
         'email',
@@ -59,6 +67,7 @@ describe('UserModel spec', () => {
         'rating',
         'favoriteStoreNames',
         'isActionSuccessfull',
+        'currentCart',
       ])
     })
   })

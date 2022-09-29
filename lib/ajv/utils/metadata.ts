@@ -1,12 +1,12 @@
 import { PropertyOptions } from '../decorators/properties/types'
 
-export type PropertyMetadata = PropertyOptions & {
+export type PropertyMetadata<T> = PropertyOptions<T> & {
   propertyName: string
 }
 
-const metadataStorage = new Map<string, PropertyMetadata[]>()
+const metadataStorage = new Map<string, Array<PropertyMetadata<unknown>>>()
 
-export function saveMetadata(key: string, metadata: PropertyMetadata) {
+export function saveMetadata<T>(key: string, metadata: PropertyMetadata<T>) {
   const existingMetadata = metadataStorage.get(key)
   if (!existingMetadata) {
     metadataStorage.set(key, [metadata])
