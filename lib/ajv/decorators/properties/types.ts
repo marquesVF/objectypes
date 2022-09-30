@@ -1,3 +1,5 @@
+import { LazyClassConstructor } from '../../types'
+
 export type ArrayOptions = SharedOptions & {
   maxItems?: number
   minItems?: number
@@ -27,16 +29,16 @@ export type NumberPropertyOptions = {
   options?: NumberOptions
 }
 
-export type ObjectOptions<T> = SharedOptions & {
-  type: () => new () => T
+export type ObjectOptions<T extends object> = SharedOptions & {
+  type: LazyClassConstructor<T>
 }
 
-export type ObjectPropertyOptions<T> = {
+export type ObjectPropertyOptions<T extends object> = {
   expectedType: 'object'
   options?: ObjectOptions<T>
 }
 
-export type PropertyOptions<T> =
+export type PropertyOptions<T extends Object> =
   | ArrayPropertyOptions<T>
   | BooleanPropertyOptions
   | NumberPropertyOptions

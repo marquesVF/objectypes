@@ -6,7 +6,10 @@ export type PropertyMetadata<T> = PropertyOptions<T> & {
 
 const metadataStorage = new Map<string, Array<PropertyMetadata<unknown>>>()
 
-export function saveMetadata<T>(key: string, metadata: PropertyMetadata<T>) {
+export function saveMetadata<T extends object>(
+  key: string,
+  metadata: PropertyMetadata<T>
+) {
   const existingMetadata = metadataStorage.get(key)
   if (!existingMetadata) {
     metadataStorage.set(key, [metadata])
@@ -17,6 +20,8 @@ export function saveMetadata<T>(key: string, metadata: PropertyMetadata<T>) {
   existingMetadata.push(metadata)
 }
 
-export function findMetadata(key: string) {
-  return metadataStorage.get(key)
+export function findMetadata<T>(
+  key: string
+): Array<PropertyMetadata<T>> | undefined {
+  return metadataStorage.get(key) as Array<PropertyMetadata<T>> | undefined
 }

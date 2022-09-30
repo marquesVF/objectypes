@@ -1,6 +1,6 @@
 import { saveMetadata } from '../../utils/metadata'
 
-import { ArrayOptions, BooleanPropertyOptions, SharedOptions } from './types'
+import { ArrayOptions, SharedOptions } from './types'
 
 export function BooleanProperty(options?: SharedOptions): PropertyDecorator {
   return function (target: Object, key: string | symbol) {

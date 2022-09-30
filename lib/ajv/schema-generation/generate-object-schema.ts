@@ -2,10 +2,10 @@ import { JSONSchemaType } from 'ajv'
 
 import { PropertyMetadata } from '../utils/metadata'
 
-export function generateObjectSchema<T>(
+export function generateObjectSchema<T extends object>(
   metadata: Array<PropertyMetadata<T>>,
   properties: object
-): JSONSchemaType<Record<string, T>> {
+): JSONSchemaType<T> {
   const required = findRequiredProperties(metadata)
 
   return {
@@ -13,7 +13,7 @@ export function generateObjectSchema<T>(
     type: 'object',
     properties,
     required: required as never[],
-  } as JSONSchemaType<Record<string, T>>
+  } as JSONSchemaType<T>
 }
 
 function findRequiredProperties<T>(metadata: Array<PropertyMetadata<T>>) {
