@@ -46,6 +46,7 @@ export type PropertyOptions<T> =
   | StringPropertyOptions
 
 export type SharedOptions = {
+  name?: string
   nullable?: boolean
 }
 

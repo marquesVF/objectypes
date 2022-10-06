@@ -10,7 +10,9 @@ export function findMetadataAndGenerateSchema<T>(
   const className = getClassName(classConstructor)
   const metadata = findMetadata(className)
   if (!metadata) {
-    throw new Error('Unknown error while parsing: no metadata found')
+    throw new Error(
+      `Unknown error while parsing ${className}: no metadata found`
+    )
   }
 
   return generateClassJsonSchema(className, metadata)

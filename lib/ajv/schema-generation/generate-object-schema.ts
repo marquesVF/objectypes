@@ -25,5 +25,5 @@ export function generateObjectSchema<T>(
 function findRequiredProperties<T>(metadata: Array<PropertyMetadata<T>>) {
   return metadata
     .filter(meta => meta.options?.nullable !== true)
-    .map(meta => meta.propertyName)
+    .map(meta => meta.options?.name ?? meta.propertyName)
 }

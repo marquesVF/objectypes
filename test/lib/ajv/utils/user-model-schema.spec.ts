@@ -55,9 +55,14 @@ describe('UserModel Schema spec', () => {
       expect(userParser.schema.properties).toHaveProperty('currentCart', {
         additionalProperties: false,
         properties: {
-          cartId: { type: 'string' },
+          ID: {
+            name: 'ID',
+            // FIXME is not a json schema valid property. It's from decorator options
+            type: 'string',
+          },
+          totalItems: { type: 'number' },
         },
-        required: ['cartId'],
+        required: ['ID', 'totalItems'],
         type: 'object',
       })
       expect(userParser.schema).toHaveProperty('required', [

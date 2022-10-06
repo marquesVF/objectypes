@@ -1,22 +1,19 @@
-import {
-  findSchemaInCache,
-  saveSchemaInCache,
-} from '../schema-management/schema-caching'
+import { schemaCache } from '../caches'
 import { PropertyMetadata } from '../utils/metadata'
 
-import { generateJsonSchemaFromMetadata } from './generate-json-schema-from-metadata'
+import { generateObjectSchemaFromMetadata } from './generate-object-schema-from-metadata'
 
 export function generateClassJsonSchema<T>(
   className: string,
   metadata: Array<PropertyMetadata<T>>
 ) {
-  const cachedSchema = findSchemaInCache(className)
+  const cachedSchema = schemaCache.find(className)
   if (cachedSchema) {
     return cachedSchema
   }
 
-  const jsonSchema = generateJsonSchemaFromMetadata(metadata)
-  saveSchemaInCache(className, jsonSchema)
+  const jsonSchema = generateObjectSchemaFromMetadata(metadata)
+  schemaCache.save(className, jsonSchema)
 
   return jsonSchema
 }

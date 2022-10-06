@@ -9,8 +9,11 @@ import {
 } from '../../../lib/ajv/decorators/properties'
 
 export class CartModel {
-  @StringProperty()
+  @StringProperty({ name: 'ID' })
   cartId: string
+
+  @NumberProperty()
+  totalItems: number
 }
 
 export class UserModel {

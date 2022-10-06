@@ -5,12 +5,13 @@ import { generateArrayProperty } from './generate-array-property'
 import { generateObjectSchema, ObjectSchema } from './generate-object-schema'
 import { generatePrimitiveProperty } from './generate-primitive-property'
 
-export function generateJsonSchemaFromMetadata<T>(
+export function generateObjectSchemaFromMetadata<T>(
   metadata: Array<PropertyMetadata<T>>
 ): ObjectSchema {
   const properties = metadata.reduce((prev, curr) => {
     const propertyValue =
       generatePrimitiveProperty(curr) ?? generateArrayProperty(curr)
+    const propertyName = curr.options?.name ?? curr.propertyName
 
     if (curr.expectedType === 'object') {
       if (!curr.options) {
@@ -24,17 +25,17 @@ export function generateJsonSchemaFromMetadata<T>(
         throw new Error(`Not metadata found for class ${className}`)
       }
       const nestedObjectJsonSchema: ObjectSchema =
-        generateJsonSchemaFromMetadata(typeMetadata)
+        generateObjectSchemaFromMetadata(typeMetadata)
 
       return {
         ...prev,
-        [curr.propertyName]: nestedObjectJsonSchema,
+        [propertyName]: nestedObjectJsonSchema,
       }
     }
 
     return {
       ...prev,
-      [curr.propertyName]: propertyValue,
+      [propertyName]: propertyValue,
     }
   }, {})
 

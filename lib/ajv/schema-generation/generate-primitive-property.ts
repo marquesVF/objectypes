@@ -6,6 +6,7 @@ export function generatePrimitiveProperty<T>(metadata: PropertyMetadata<T>) {
   }
 
   return {
+    // FIXME metadata.options might include decorator options, and they aren't a valid json schema property
     ...metadata.options,
     type: metadata.expectedType,
   }
