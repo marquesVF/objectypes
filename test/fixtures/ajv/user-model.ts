@@ -30,9 +30,9 @@ export class UserModel {
   favoriteStoreNames: string[]
 
   @BooleanArrayProperty()
-  isActionSuccessfull: boolean[]
+  isActionSuccessful: boolean[]
 
-  @ObjectProperty({ type: () => CartModel })
+  @ObjectProperty({ type: CartModel })
   currentCart: CartModel
 
   @NumberArrayProperty({ nullable: true, uniqueItems: true })

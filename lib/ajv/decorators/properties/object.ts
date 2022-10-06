@@ -2,7 +2,7 @@ import { saveMetadata } from '../../utils/metadata'
 
 import { ArrayOptions, ObjectOptions } from './types'
 
-export function ObjectProperty<T extends object>(
+export function ObjectProperty<T>(
   options: ObjectOptions<T>
 ): PropertyDecorator {
   return function (target: Object, key: string | symbol) {
@@ -14,7 +14,7 @@ export function ObjectProperty<T extends object>(
   }
 }
 
-export function ObjectArrayProperty<T extends object>(
+export function ObjectArrayProperty<T>(
   options: ArrayOptions & ObjectOptions<T>
 ): PropertyDecorator {
   return function (target: Object, key: string | symbol) {

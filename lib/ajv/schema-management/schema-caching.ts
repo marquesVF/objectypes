@@ -1,16 +1,11 @@
-import { JSONSchemaType } from 'ajv'
+import { ObjectSchema } from '../schema-generation/generate-object-schema'
 
-const cachedSchemas = new Map<string, JSONSchemaType<object>>()
+const cachedSchemas = new Map<string, ObjectSchema>()
 
-export function findSchemaInCache<T>(
-  className: string
-): JSONSchemaType<T> | undefined {
+export function findSchemaInCache(className: string): ObjectSchema | undefined {
   return cachedSchemas.get(className)
 }
 
-export function saveSchemaInCache<T extends object>(
-  className: string,
-  schema: JSONSchemaType<T>
-) {
-  cachedSchemas.set(className, schema as JSONSchemaType<object>)
+export function saveSchemaInCache(className: string, schema: ObjectSchema) {
+  cachedSchemas.set(className, schema)
 }

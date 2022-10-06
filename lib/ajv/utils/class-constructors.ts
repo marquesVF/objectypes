@@ -1,9 +1,6 @@
-import { LazyClassConstructor } from '../types'
+import { ClassConstructor } from '../types'
 
-export function getClassName<T extends object>(
-  lazyClassConstructor: LazyClassConstructor<T>
-): string {
-  const classConstructor = lazyClassConstructor()
+export function getClassName<T>(classConstructor: ClassConstructor<T>): string {
   const classInstance = new classConstructor()
 
   return classInstance.constructor.name

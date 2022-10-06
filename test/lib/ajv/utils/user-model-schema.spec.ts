@@ -1,9 +1,9 @@
-import { parseObject } from '../../../lib/ajv/parse-object'
-import { UserModel } from '../../fixtures/ajv/user-model'
+import { parseObject } from '../../../../lib/ajv/parse-object'
+import { UserModel } from '../../../fixtures/ajv/user-model'
 
-describe('UserModel spec', () => {
-  describe('when parsing an object', () => {
-    const userParser = parseObject(() => UserModel)
+describe('UserModel Schema spec', () => {
+  describe('when generating a JSON schema', () => {
+    const userParser = parseObject(UserModel)
 
     it('generates the expected schema', () => {
       expect(userParser.schema).toHaveProperty('additionalProperties', false)
@@ -44,7 +44,7 @@ describe('UserModel spec', () => {
         },
       })
       expect(userParser.schema.properties).toHaveProperty(
-        'isActionSuccessfull',
+        'isActionSuccessful',
         {
           type: 'array',
           items: {
@@ -66,13 +66,13 @@ describe('UserModel spec', () => {
         'isEmailConfirmed',
         'rating',
         'favoriteStoreNames',
-        'isActionSuccessfull',
+        'isActionSuccessful',
         'currentCart',
       ])
     })
 
     it('reuses the already generated schema object', () => {
-      const anotherUserParser = parseObject(() => UserModel)
+      const anotherUserParser = parseObject(UserModel)
 
       expect(
         Object.is(anotherUserParser.schema, userParser.schema)

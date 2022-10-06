@@ -1,19 +1,25 @@
-import { JSONSchemaType } from 'ajv'
-
 import { PropertyMetadata } from '../utils/metadata'
 
-export function generateObjectSchema<T extends object>(
+// It reflects more or less the type found in ajv
+export type ObjectSchema = {
+  additionalProperties: boolean
+  type: 'object'
+  properties: object
+  required: string[]
+}
+
+export function generateObjectSchema<T>(
   metadata: Array<PropertyMetadata<T>>,
   properties: object
-): JSONSchemaType<T> {
+): ObjectSchema {
   const required = findRequiredProperties(metadata)
 
   return {
     additionalProperties: false,
     type: 'object',
     properties,
-    required: required as never[],
-  } as JSONSchemaType<T>
+    required,
+  }
 }
 
 function findRequiredProperties<T>(metadata: Array<PropertyMetadata<T>>) {
