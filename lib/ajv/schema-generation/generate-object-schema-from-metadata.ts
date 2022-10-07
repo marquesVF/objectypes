@@ -13,7 +13,7 @@ export function generateObjectSchemaFromMetadata<T>(
       generatePrimitiveProperty(curr) ?? generateArrayProperty(curr)
     const propertyName = curr.options?.name ?? curr.propertyName
 
-    if (curr.expectedType === 'object') {
+    if (curr.type === 'object') {
       if (!curr.options) {
         throw new Error('Object options was not provided')
       }

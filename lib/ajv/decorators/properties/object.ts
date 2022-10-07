@@ -24,7 +24,7 @@ export function ObjectArrayProperty<T>(
     const { nullable, ...objectOptions } = options
 
     saveMetadata(className, {
-      expectedType,
+      type: expectedType,
       propertyName,
       options: {
         nullable,

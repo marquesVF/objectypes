@@ -8,7 +8,7 @@ export function NumberProperty(options?: NumberOptions): PropertyDecorator {
     const propertyName = String(key)
     const expectedType = 'number'
 
-    saveMetadata(className, { propertyName, expectedType, options })
+    saveMetadata(className, { propertyName, type: expectedType, options })
   }
 }
 
@@ -22,13 +22,13 @@ export function NumberArrayProperty(
     const { nullable, ...numberOptions } = options
 
     saveMetadata(className, {
-      expectedType,
+      type: expectedType,
       propertyName,
       options: {
         nullable,
       },
       itemPropertyOptions: {
-        expectedType: 'number',
+        type: 'number',
         options: numberOptions,
       },
     })

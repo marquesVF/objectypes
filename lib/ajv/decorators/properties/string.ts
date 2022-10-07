@@ -22,7 +22,7 @@ export function StringArrayProperty(
     const { nullable, ...stringOptions } = options
 
     saveMetadata(className, {
-      expectedType,
+      type: expectedType,
       propertyName,
       options: {
         nullable,

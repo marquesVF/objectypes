@@ -8,7 +8,7 @@ export function BooleanProperty(options?: SharedOptions): PropertyDecorator {
     const propertyName = String(key)
     const expectedType = 'boolean'
 
-    saveMetadata(className, { propertyName, expectedType, options })
+    saveMetadata(className, { propertyName, type: expectedType, options })
   }
 }
 
@@ -21,11 +21,11 @@ export function BooleanArrayProperty(
     const expectedType = 'array'
 
     saveMetadata(className, {
-      expectedType,
+      type: expectedType,
       propertyName,
       options,
       itemPropertyOptions: {
-        expectedType: 'boolean',
+        type: 'boolean',
       },
     })
   }
