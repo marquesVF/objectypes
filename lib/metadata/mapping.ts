@@ -29,19 +29,21 @@ export function findClassMappingMetadata<T, K>(
     return undefined
   }
 
-  const parentClassMappingMetadata = findParentClassMappingMetadata(klass)
+  const parentClassMappingMetadata = findParentClassMappingMetadata<K, T>(klass)
 
   return parentClassMappingMetadata
     ? [...mappingProperties, ...parentClassMappingMetadata]
     : mappingProperties
 }
 
-function findParentClassMappingMetadata(klass: ClassConstructor<any>) {
+function findParentClassMappingMetadata<K, T>(
+  klass: ClassConstructor<any>
+): Array<MapPropertyMetadata<T, K>> | undefined {
   const parentClass = findParentClass(klass)
 
   if (parentClass === undefined) {
     return
   }
 
-  return findClassMappingMetadata(parentClass)
+  return findClassMappingMetadata<T, K>(parentClass)
 }

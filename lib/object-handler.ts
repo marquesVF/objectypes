@@ -2,10 +2,10 @@
 import { buildObject } from './build-object/build-object'
 import { extractObject } from './extract-object'
 import { validateObject } from './validate-object'
-import { ClassConstructor, ErrorSummary } from './types'
+import { ClassConstructor, ErrorSummary, Hashable } from './types'
 import { ValidationErrors } from './types/validation-errors'
 
-export class ObjectHandler<T> {
+export class ObjectHandler<T extends Hashable> {
   constructor(private readonly klass: ClassConstructor<T>) {}
 
   private buildValidationErrorResult(errors: ValidationErrors): ErrorSummary {
