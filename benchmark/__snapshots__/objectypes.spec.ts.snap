@@ -3,11 +3,11 @@
 exports[`buildObject FilmResults object matches snapshot 1`] = `
 FilmResults {
   "page": 1,
-  "results": Array [
+  "results": [
     FilmResult {
       "adult": false,
       "id": 164558,
-      "overview": "Go behind the scenes during One Directions sell out \\"Take Me Home\\" tour and experience life on the road.",
+      "overview": "Go behind the scenes during One Directions sell out "Take Me Home" tour and experience life on the road.",
       "releaseDate": 2013-08-30T00:00:00.000Z,
       "title": "One Direction: This Is Us",
       "voteCount": 55,
@@ -135,7 +135,7 @@ FilmResults {
     FilmResult {
       "adult": false,
       "id": 51052,
-      "overview": "This Christmas movie highlights the technological advances of operations at the North Pole, revealing how Santa and his vast army of highly trained elves produce gifts and distribute them around the world in one night. However, every operation has a margin of error… When one of 600 million children to receive a gift from Santa on Christmas Eve is missed, it is deemed \\"acceptable\\" to all but one, Arthur. Arthur Claus is Santa’s misfit son who executes an unauthorized rookie mission to get the last present half way around the globe before dawn on Christmas morning.",
+      "overview": "This Christmas movie highlights the technological advances of operations at the North Pole, revealing how Santa and his vast army of highly trained elves produce gifts and distribute them around the world in one night. However, every operation has a margin of error… When one of 600 million children to receive a gift from Santa on Christmas Eve is missed, it is deemed "acceptable" to all but one, Arthur. Arthur Claus is Santa’s misfit son who executes an unauthorized rookie mission to get the last present half way around the globe before dawn on Christmas morning.",
       "releaseDate": 2011-11-23T00:00:00.000Z,
       "title": "Arthur Christmas",
       "voteCount": 102,
@@ -151,7 +151,7 @@ FilmResults {
     FilmResult {
       "adult": false,
       "id": 11076,
-      "overview": "Amy is only 13 years old when her mother is killed. She goes to Canada to live with her father, an eccentric inventor whom she barely knows. Amy is miserable in her new life... until she discovers a nest of goose eggs that were abandoned when a local forest is torn down. The eggs hatch and Amy becomes \\"Mama Goose\\". When Winter comes, Amy, and her dad must find a way to lead the birds South...",
+      "overview": "Amy is only 13 years old when her mother is killed. She goes to Canada to live with her father, an eccentric inventor whom she barely knows. Amy is miserable in her new life... until she discovers a nest of goose eggs that were abandoned when a local forest is torn down. The eggs hatch and Amy becomes "Mama Goose". When Winter comes, Amy, and her dad must find a way to lead the birds South...",
       "releaseDate": 1996-09-13T00:00:00.000Z,
       "title": "Fly Away Home",
       "voteCount": 13,
