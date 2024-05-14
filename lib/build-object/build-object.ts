@@ -19,7 +19,7 @@ export function buildObject<T>(
   }
 
   for (const propertyMetadata of propertyMetadatas) {
-    const { propertyKey, nullable } = propertyMetadata
+    const { propertyKey, nullable, defaultValue } = propertyMetadata
     const wereReductionsApplied = applyReductionsToObject(
       targetClass,
       targetObject,
@@ -32,7 +32,11 @@ export function buildObject<T>(
     }
 
     const value = extractValueFromJsonObject(propertyMetadata, jsonObject)
-    if (nullable && !value) {
+    if (nullable && value === undefined) {
+      if (defaultValue !== undefined) {
+        Reflect.set(targetObject, propertyKey, defaultValue)
+      }
+
       continue
     }
 
