@@ -1,5 +1,10 @@
 /* eslint-disable max-len */
-import { RequestPayloadModel } from '../fixtures/request-payload-mode'
+import {
+  ModelWithBoolean,
+  ModelWithOptionalBoolean,
+  ModelWithOptionalBooleanWithFalseDefault,
+  RequestPayloadModel,
+} from '../fixtures/request-payload-mode'
 import { buildObject } from '../../lib/build-object/build-object'
 import { OptionalModel } from '../fixtures/optional-model'
 import { PrimitiveModel } from '../fixtures/primitive-model'
@@ -7,6 +12,100 @@ import { Statement } from '../fixtures/nested-in-array-model'
 import { OptionalBuildModel } from '../fixtures/optional-build-model'
 
 describe('buildObject method', () => {
+  describe('building boolean values', () => {
+    describe('class with required boolean', () => {
+      it('builds true value', () => {
+        const jsonObject = {
+          name: 'John',
+          flag: true,
+        }
+        const requestPayload = buildObject(ModelWithBoolean, jsonObject)
+
+        const resultingObject: ModelWithBoolean = {
+          name: 'John',
+          flag: true,
+        }
+
+        expect(requestPayload).toEqual(resultingObject)
+      })
+
+      it('builds false value', () => {
+        const jsonObject = {
+          name: 'John',
+          flag: false,
+        }
+        const requestPayload = buildObject(ModelWithBoolean, jsonObject)
+
+        const resultingObject: ModelWithBoolean = {
+          name: 'John',
+          flag: false,
+        }
+
+        expect(requestPayload).toEqual(resultingObject)
+      })
+    })
+
+    describe('class with optional boolean with default', () => {
+      it('builds true value', () => {
+        const jsonObject = {
+          name: 'John',
+          flag: true,
+        }
+        const requestPayload = buildObject(ModelWithOptionalBoolean, jsonObject)
+
+        const resultingObject: ModelWithOptionalBoolean = {
+          flag: true,
+        }
+
+        expect(requestPayload).toEqual(resultingObject)
+      })
+
+      it('builds false value', () => {
+        const jsonObject = {
+          name: 'John',
+          flag: false,
+        }
+        const requestPayload = buildObject(ModelWithOptionalBoolean, jsonObject)
+
+        const resultingObject: ModelWithOptionalBoolean = {
+          flag: false,
+        }
+
+        expect(requestPayload).toEqual(resultingObject)
+      })
+
+      it('builds false as default value', () => {
+        const jsonObject = {}
+        const requestPayload = buildObject(
+          ModelWithOptionalBooleanWithFalseDefault,
+          jsonObject
+        )
+
+        const resultingObject: ModelWithOptionalBooleanWithFalseDefault = {
+          flag: false,
+        }
+
+        expect(requestPayload).toEqual(resultingObject)
+      })
+
+      it('uses json value instead of default', () => {
+        const jsonObject = {
+          flag: true,
+        }
+        const requestPayload = buildObject(
+          ModelWithOptionalBooleanWithFalseDefault,
+          jsonObject
+        )
+
+        const resultingObject: ModelWithOptionalBooleanWithFalseDefault = {
+          flag: true,
+        }
+
+        expect(requestPayload).toEqual(resultingObject)
+      })
+    })
+  })
+
   describe('when dealing with a valid JSON object', () => {
     it('should convert and successfuly validate the resulting typescript object', () => {
       const jsonObject = {
