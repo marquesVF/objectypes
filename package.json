@@ -1,6 +1,6 @@
 {
   "name": "objectypes",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "description": "A type-safe library to transform and validate objects",
   "files": [
     "dist"
@@ -23,7 +23,7 @@
     "benchmark:run": "node build-benchmark/benchmark/objectypes.js",
     "prepare": "yarn build",
     "lint": "yarn lint:eslint && yarn lint:prettier",
-    "lint:eslint": "eslint --ext .ts --cache lib",
+    "lint:eslint": "ESLINT_USE_FLAT_CONFIG=false eslint --cache --ext .ts lib",
     "lint:prettier": "prettier \"**/*.{ts,md,yml}\"",
     "fix": "yarn lint:prettier --write && yarn lint:eslint --fix",
     "test": "jest",

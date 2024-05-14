@@ -3,9 +3,12 @@ module.exports = {
   testEnvironment: 'node',
   clearMocks: true,
   coverageDirectory: 'coverage',
-  globals: {
-    'ts-jest': {
-      tsconfig: 'tsconfig.test.json',
-    },
+  transform: {
+    '^.+\\.tsx?$': [
+      'ts-jest',
+      {
+        tsconfig: 'tsconfig.test.json',
+      },
+    ],
   },
 }
